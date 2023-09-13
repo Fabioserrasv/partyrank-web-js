@@ -1,0 +1,3 @@
+type SongSet = {
+  name: string;
+}

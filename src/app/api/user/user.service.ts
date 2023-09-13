@@ -64,7 +64,11 @@ export class UserService {
 
   async getAllUsers(): Promise<User[]> {
     try {
-      const users = await prisma.user.findMany({});
+      const users = await prisma.user.findMany({
+        where: {
+          deletedAt: null
+        }
+      });
 
       return users.map(this.convertDbUserToModel);
     } catch (error) {
@@ -76,7 +80,8 @@ export class UserService {
     try {
       const user = await prisma.user.findUnique({
         where: {
-          id: id
+          id: id,
+          deletedAt: null
         }
       })
 
