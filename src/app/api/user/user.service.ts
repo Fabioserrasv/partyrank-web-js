@@ -19,7 +19,8 @@ export class UserService {
           username: data.username,
           password: data.password,
           animeList: data.animeList,
-          admin: false
+          admin: false,
+          createdAt: new Date()
         }
       })
 

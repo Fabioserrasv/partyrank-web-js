@@ -17,6 +17,7 @@ model User {
   animeList String
   admin Boolean
   scores Score[]
+  createdAt DateTime?
   updatedAt DateTime?
   deletedAt DateTime?
 }
@@ -25,8 +26,15 @@ model SongSet {
   id Int @id @default(autoincrement())
   name String
   songs Song[]  
+  createdAt DateTime?
   updatedAt DateTime?
   deletedAt DateTime?
+}
+
+enum SongType {
+  OPENING
+  ENDING
+  INSERT_SONG
 }
 
 model Song {
@@ -37,8 +45,9 @@ model Song {
   artist String
   name String
   link String
-  type String
+  type SongType @default(OPENING)
   scores Score[]
+  createdAt DateTime?
   updatedAt DateTime?
   deletedAt DateTime?
 }
@@ -52,6 +61,7 @@ model Score {
   value Float
   videoTimeStamp Int
   valid Int
+  createdAt DateTime?
   updatedAt DateTime?
   deletedAt DateTime? 
 }

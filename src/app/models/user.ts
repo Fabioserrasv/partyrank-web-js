@@ -11,4 +11,6 @@ type User = {
   animeList: string;
   admin: boolean;
   scores?: Score[];
+  createdAt?: Date;
+  updatedAt?: Date;
 }
