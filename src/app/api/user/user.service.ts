@@ -1,5 +1,5 @@
 import { prisma } from '../../lib/prisma';
-
+import { compareSync, hashSync } from "bcrypt-ts";
 export class UserService {
   constructor() { }
 
@@ -14,10 +14,11 @@ export class UserService {
 
   async create(data: UserPostData): Promise<User> {
     try {
+      console.log(hashSync(data.password, 12))
       const newUser = await prisma.user.create({
         data: {
           username: data.username,
-          password: data.password,
+          password: hashSync(data.password, 12),
           animeList: data.animeList,
           admin: false,
           createdAt: new Date()
@@ -87,6 +88,29 @@ export class UserService {
       })
 
       return this.convertDbUserToModel(user)
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async login(userLogin: UserLoginPost){
+    try {
+      const user = await prisma.user.findMany({
+        where: {
+          username: userLogin.username,
+          deletedAt: null
+        }
+      })
+
+      if (user.length > 0) {
+        if (compareSync(userLogin.password, user[0].password as string)) {
+          return this.convertDbUserToModel(user[0])
+        } else { 
+          return null
+        }
+      }
+      
+      return null
     } catch (error) {
       throw error;
     }

@@ -21,10 +21,10 @@ export async function POST(req: Request, res: Response) {
       message: "Invalid data"
     })
   }
-
+  
   try {
     const newUser = await userService.create(user);
-
+    
     return NextResponse.json({
       user: newUser
     }, { status: 201 })

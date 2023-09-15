@@ -3,6 +3,11 @@ type SongType =
   | 'ENDING'
   | 'INSERT_SONG';
 
+type UserLoginPost = {
+  username: string,
+  password: string
+}
+
 type SongPostData = {
   songSetId: number;
   anime: string;
