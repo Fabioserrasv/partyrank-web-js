@@ -6,7 +6,6 @@ export async function GET(req: Request) {
   const url = new URL(req.url)
   const id = Number(url.pathname.slice(url.pathname.lastIndexOf('/') + 1));
   let generateJsonParam = (new URL(req.url)).searchParams.get('generate-json');
-  console.log((new URL(req.url)).pathname)
   let generateJson = generateJsonParam != null && generateJsonParam == '1'? true : false;
   
   try {

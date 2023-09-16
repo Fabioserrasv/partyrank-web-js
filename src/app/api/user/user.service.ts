@@ -7,7 +7,6 @@ export class UserService {
 
   async create(data: UserPostData): Promise<User> {
     try {
-      console.log(hashSync(data.password, 12))
       const newUser = await prisma.user.create({
         data: {
           username: data.username,
@@ -60,7 +59,6 @@ export class UserService {
 
       return convertDbUserToModel(user);
     } catch (error) {
-
       throw error;
     }
   }
