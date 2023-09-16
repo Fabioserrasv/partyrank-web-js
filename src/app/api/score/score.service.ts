@@ -1,18 +1,8 @@
 import { prisma } from '../../lib/prisma';
+import { convertDbScoreToModel } from './score.repository';
 
 export class ScoreService {
   constructor() { }
-
-  private convertDbScoreToModel(data: any){
-    return {
-      id: data.id,
-      songId: data.songId,
-      userId: data.userId,
-      value: data.value,
-      videoTimeStamp: data.videoTimeStamp,
-      valid: data.valid
-    }
-  }
 
   private async checkIfScoreExists(songId: number, userId: number) : Promise<boolean>{
     const score = await prisma.score.findMany({
@@ -46,7 +36,7 @@ export class ScoreService {
         }
       })
 
-      return this.convertDbScoreToModel(newScore);
+      return convertDbScoreToModel(newScore);
     } catch (error) {
       throw error;
     }
@@ -68,7 +58,7 @@ export class ScoreService {
         }
       })
 
-      return this.convertDbScoreToModel(set);
+      return convertDbScoreToModel(set);
     } catch (error) {
       throw error;
     }
@@ -84,7 +74,7 @@ export class ScoreService {
         }
       });
 
-      return songs.map(this.convertDbScoreToModel)[0];
+      return songs.map(convertDbScoreToModel)[0];
     } catch (error) {
       throw error;
     }
@@ -99,7 +89,7 @@ export class ScoreService {
         }
       });
 
-      return songs.map(this.convertDbScoreToModel);
+      return songs.map(convertDbScoreToModel);
     } catch (error) {
       throw error;
     }

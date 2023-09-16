@@ -1,4 +1,5 @@
 import { similarity } from "@/app/lib/similiarity";
+import { AnimeThemesService } from "./services/AnimeThemes.service";
 
 function checkTypeEqual(a: string, b: string) {
   if (a === "OPENING" && b === "OP") return true;
@@ -21,4 +22,30 @@ export function getMostPossibleSong(songWebs: SongWeb[], songDb: Song) {
     }
   })
   return result;
+}
+
+export function generateSongFinderFolder() : string {
+  let today = new Date();
+  let dd = String(today.getDate()).padStart(2, '0');
+  let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  let yyyy = today.getFullYear();
+
+  let x = dd + '' + mm + '' + yyyy;
+
+  return String(Math.floor(Math.random() * 900) + 'song_finder_' + x)
+}
+
+export function getService(name: string) {
+  let service: SongFinderContract | null
+
+  switch (name) {
+    case "animethemes":
+      service = new AnimeThemesService(generateSongFinderFolder());
+      break;
+    default:
+      service = null;
+      break;
+  }
+
+  return service;
 }

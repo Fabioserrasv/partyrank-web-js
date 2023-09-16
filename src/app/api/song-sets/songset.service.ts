@@ -1,32 +1,8 @@
 import { prisma } from '../../lib/prisma';
+import { convertDbSetToModel } from './songset.repository';
 
 export class SongSetService {
   constructor() { }
-
-  private convertDbSongToModel(data: any) : Song{
-    return {
-      id: data.id,
-      songSet: data.songSet,
-      anime: data.anime,
-      artist: data.artist,
-      name: data.name,
-      link: data.link,
-      type: data.type,
-      scores: data.scores,
-      createdAt: data.createdAt,
-      updatedAt: data.updatedAt
-    }
-  }
-
-  private convertDbSetToModel(data: any) : SongSet{
-    
-    return {
-      name: data.name,
-      songs: data.songs !== undefined && data.songs.length > 0 ? data.songs.map(this.convertDbSongToModel) : [],
-      createdAt: data.createdAt,
-      updatedAt: data.updatedAt
-    }
-  }
 
   async create(data: SongSetPostData): Promise<SongSet> {
     try {
@@ -37,7 +13,7 @@ export class SongSetService {
         }
       })
 
-      return this.convertDbSetToModel(newSet);
+      return convertDbSetToModel(newSet);
     } catch (error) {
       throw error;
     }
@@ -51,7 +27,7 @@ export class SongSetService {
         }
       });
 
-      return sets.map(this.convertDbSetToModel);
+      return sets.map(convertDbSetToModel);
     } catch (error) {
       throw error;
     }
@@ -69,7 +45,7 @@ export class SongSetService {
         }
       })
       if (set !== null) {
-        return this.convertDbSetToModel(set)
+        return convertDbSetToModel(set)
       }else{
         throw new Error('Could not find Song Set')
       }
@@ -90,7 +66,7 @@ export class SongSetService {
         }
       })
 
-      return this.convertDbSetToModel(set);
+      return convertDbSetToModel(set);
     } catch (error) {
       throw error;
     }
@@ -106,7 +82,6 @@ export class SongSetService {
           deletedAt: new Date()
         }
       })
-
     } catch (error) {
       throw error;
     }
