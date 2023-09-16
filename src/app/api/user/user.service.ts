@@ -1,3 +1,4 @@
+import { NextResponse } from 'next/server';
 import { prisma } from '../../lib/prisma';
 import { compareSync, hashSync } from "bcrypt-ts";
 export class UserService {
@@ -27,12 +28,31 @@ export class UserService {
 
       return this.convertDbUserToModel(newUser);
     } catch (error) {
-
       throw error;
     }
   }
 
-  async update(data: UserPostData, id: number): Promise<User>{
+  async updateProfilePicture(imageUrl: string, userId: number) {
+    try {
+      await prisma.user.update({
+        where: {
+          id: userId
+        },
+        data: {
+          imageUrl: imageUrl,
+          updatedAt: new Date()
+        }
+      })
+
+      return NextResponse.json({})
+    } catch (error) {
+      return NextResponse.json({
+        "message": "Error updating profile picture"
+      }, { status: 400 })
+    }
+  }
+
+  async update(data: UserPostData, id: number): Promise<User> {
     try {
       const user = await prisma.user.update({
         where: {
@@ -49,7 +69,7 @@ export class UserService {
       return this.convertDbUserToModel(user);
     } catch (error) {
 
-      throw error;  
+      throw error;
     }
   }
 
@@ -93,7 +113,7 @@ export class UserService {
     }
   }
 
-  async login(userLogin: UserLoginPost){
+  async login(userLogin: UserLoginPost) {
     try {
       const user = await prisma.user.findMany({
         where: {
@@ -105,11 +125,11 @@ export class UserService {
       if (user.length > 0) {
         if (compareSync(userLogin.password, user[0].password as string)) {
           return this.convertDbUserToModel(user[0])
-        } else { 
+        } else {
           return null
         }
       }
-      
+
       return null
     } catch (error) {
       throw error;

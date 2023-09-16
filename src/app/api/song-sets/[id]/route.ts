@@ -4,9 +4,15 @@ import { Prisma } from '@prisma/client';
 
 export async function GET(req: Request) {
   const id = Number(req.url.slice(req.url.lastIndexOf('/') + 1));
-  const sets = await setService.get(id);
-
-  return NextResponse.json(sets)
+  try {
+    const sets = await setService.get(id);
+    
+    return NextResponse.json(sets)
+  } catch (error) {
+    return NextResponse.json({
+      message: "Song Set not found"
+    })
+  }
 }
 
 export async function PUT(req: Request, res: Response) {

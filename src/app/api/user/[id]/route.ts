@@ -3,10 +3,16 @@ import { userService, validateUser } from '../route';
 import { Prisma } from '@prisma/client';
 
 export async function GET(req: Request) {
-  const id = Number(req.url.slice(req.url.lastIndexOf('/') + 1));
-  const users = await userService.getUser(id);
-
-  return NextResponse.json(users)
+  try {
+    const id = Number(req.url.slice(req.url.lastIndexOf('/') + 1));
+    const users = await userService.getUser(id);
+  
+    return NextResponse.json(users)
+  } catch (error) {
+    return NextResponse.json({
+      message: "User not found"
+    })
+  }
 }
 
 export async function PUT(req: Request) {

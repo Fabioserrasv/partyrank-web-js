@@ -7,9 +7,15 @@ export const validateSongSet = new SongSetRequest;
 export const setService = new SongSetService;
 
 export async function GET() {
-  const users = await setService.getAll();
-
-  return NextResponse.json(users)
+  try {
+    const users = await setService.getAll();
+    
+    return NextResponse.json(users)
+  } catch (error) {
+    return NextResponse.json({
+      message: "Song Sets Not Found"
+    })  
+  }
 }
 
 export async function POST(req: Request, res: Response) {
@@ -26,7 +32,7 @@ export async function POST(req: Request, res: Response) {
     const newSet = await setService.create(set);
 
     return NextResponse.json({
-      user: newSet
+      songSet: newSet
     }, { status: 201 })
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {

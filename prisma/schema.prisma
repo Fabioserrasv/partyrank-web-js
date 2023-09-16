@@ -15,6 +15,7 @@ model User {
   username String @unique
   password String
   animeList String
+  imageUrl String?
   admin Boolean
   scores Score[]
   createdAt DateTime?

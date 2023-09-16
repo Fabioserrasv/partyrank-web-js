@@ -7,9 +7,15 @@ export const validateUser = new UserRequest;
 export const userService = new UserService;
 
 export async function GET() {
-  const users = await userService.getAllUsers();
-
-  return NextResponse.json(users)
+  try {
+    const users = await userService.getAllUsers();
+  
+    return NextResponse.json(users)
+  } catch (error) {
+    return NextResponse.json({
+      message: "User Not Found"
+    })
+  }
 }
 
 export async function POST(req: Request, res: Response) {
