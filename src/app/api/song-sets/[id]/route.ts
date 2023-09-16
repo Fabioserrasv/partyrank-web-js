@@ -3,12 +3,18 @@ import { setService, validateSongSet } from '../route';
 import { Prisma } from '@prisma/client';
 
 export async function GET(req: Request) {
-  const id = Number(req.url.slice(req.url.lastIndexOf('/') + 1));
+  const url = new URL(req.url)
+  const id = Number(url.pathname.slice(url.pathname.lastIndexOf('/') + 1));
+  let generateJsonParam = (new URL(req.url)).searchParams.get('generate-json');
+  console.log((new URL(req.url)).pathname)
+  let generateJson = generateJsonParam != null && generateJsonParam == '1'? true : false;
+  
   try {
-    const sets = await setService.get(id);
+    const sets = await setService.get(id, generateJson);
     
     return NextResponse.json(sets)
   } catch (error) {
+    // console.log(error);
     return NextResponse.json({
       message: "Song Set not found"
     })

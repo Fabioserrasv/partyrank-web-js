@@ -8,6 +8,7 @@ type ScorePost = {
 type Score = {
   id: number;
   songId: number;
+  user?: User;
   userId: number;
   value: number;
   videoTimeStamp: number;

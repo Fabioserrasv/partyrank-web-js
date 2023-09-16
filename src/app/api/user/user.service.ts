@@ -1,17 +1,9 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '../../lib/prisma';
 import { compareSync, hashSync } from "bcrypt-ts";
+import { convertDbUserToModel } from './user.repository';
 export class UserService {
   constructor() { }
-
-  private convertDbUserToModel(dbUser: any): User {
-    return {
-      id: dbUser.id,
-      username: dbUser.username,
-      animeList: dbUser.animeList,
-      admin: dbUser.admin
-    }
-  }
 
   async create(data: UserPostData): Promise<User> {
     try {
@@ -26,7 +18,7 @@ export class UserService {
         }
       })
 
-      return this.convertDbUserToModel(newUser);
+      return convertDbUserToModel(newUser);
     } catch (error) {
       throw error;
     }
@@ -66,7 +58,7 @@ export class UserService {
         }
       })
 
-      return this.convertDbUserToModel(user);
+      return convertDbUserToModel(user);
     } catch (error) {
 
       throw error;
@@ -92,7 +84,7 @@ export class UserService {
         }
       });
 
-      return users.map(this.convertDbUserToModel);
+      return users.map(convertDbUserToModel);
     } catch (error) {
       throw error;
     }
@@ -107,7 +99,7 @@ export class UserService {
         }
       })
 
-      return this.convertDbUserToModel(user)
+      return convertDbUserToModel(user)
     } catch (error) {
       throw error;
     }
@@ -124,7 +116,7 @@ export class UserService {
 
       if (user.length > 0) {
         if (compareSync(userLogin.password, user[0].password as string)) {
-          return this.convertDbUserToModel(user[0])
+          return convertDbUserToModel(user[0])
         } else {
           return null
         }

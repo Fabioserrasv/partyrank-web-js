@@ -13,7 +13,7 @@ export class SongSetService {
         }
       })
 
-      return convertDbSetToModel(newSet);
+      return await convertDbSetToModel(newSet);
     } catch (error) {
       throw error;
     }
@@ -27,17 +27,37 @@ export class SongSetService {
         }
       });
 
-      return sets.map(convertDbSetToModel);
+      const result = await Promise.all(sets.map(async (s) => await convertDbSetToModel(s)));
+
+      return result;
     } catch (error) {
       throw error;
     }
   }
 
-  async get(id: number): Promise<SongSet> {
+  async get(id: number, generateJson: boolean): Promise<SongSet> {
     try {
       const set = await prisma.songSet.findUnique({
         include: {
-          songs: true
+          songs: {
+            include: {
+              scores: {
+                orderBy: {
+                  userId: 'asc'
+                },
+                select: {
+                  user: {
+                    select: {
+                      username: true,
+                      animeList: true
+                    }
+                  },
+                  value: true,
+                  videoTimeStamp: true
+                }
+              }
+            }
+          }
         },
         where: {
           id: id,
@@ -45,7 +65,7 @@ export class SongSetService {
         }
       })
       if (set !== null) {
-        return convertDbSetToModel(set)
+        return await convertDbSetToModel(set, generateJson)
       }else{
         throw new Error('Could not find Song Set')
       }
@@ -66,7 +86,7 @@ export class SongSetService {
         }
       })
 
-      return convertDbSetToModel(set);
+      return await convertDbSetToModel(set);
     } catch (error) {
       throw error;
     }

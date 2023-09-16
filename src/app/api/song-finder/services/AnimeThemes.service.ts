@@ -59,7 +59,7 @@ export class AnimeThemesService implements SongFinderContract {
 
   async searchBySongSetId(songSetId: number) {
     const songSetService = new SongSetService;
-    const songSet = await songSetService.get(songSetId);
+    const songSet = await songSetService.get(songSetId, false);
 
     const finalResult: SongWeb[] = []
 
