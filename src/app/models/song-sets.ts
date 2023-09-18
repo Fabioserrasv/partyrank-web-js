@@ -13,7 +13,7 @@ type SongSet = {
 
 // Changed json format for generating images, need to change on party-rank-video-generator
 
-type Note = {
+type ScoreNote = {
   participant: string;
   value: number;
 }
@@ -25,7 +25,7 @@ type JsonToGenerateImages = {
     type: string,
     anime: string,
     song: string,
-    notes: Note[] | null,
+    scores: ScoreNote[] | null,
     average: number,
     cover: string
   }>

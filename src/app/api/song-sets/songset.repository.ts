@@ -36,7 +36,7 @@ function generateImageObjectConverter(data: any) {
 
   for (let i = 0; i < times; i++) {
     let song: Song = data.songs[i]
-    let notes: Note[] = song.scores.map(score => {
+    let notes: ScoreNote[] = song.scores.map(score => {
       return {
         participant: score.user?.username ? score.user.username : "Username not found",
         value: score.value
@@ -55,7 +55,7 @@ function generateImageObjectConverter(data: any) {
       cover: "",
       song: `${song.artist} - ${song.name}`,
       average: average,
-      notes: notes
+      scores: notes
     })
   }
 
