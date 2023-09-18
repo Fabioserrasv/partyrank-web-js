@@ -1,4 +1,4 @@
-import { prisma } from '../../lib/prisma';
+import { prisma } from '../lib/prisma';
 import { convertDbSetToModel } from './songset.repository';
 
 export class SongSetService {

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '../../lib/prisma';
+import { prisma } from '../lib/prisma';
 import { compareSync, hashSync } from "bcrypt-ts";
 import { convertDbUserToModel } from './user.repository';
 export class UserService {

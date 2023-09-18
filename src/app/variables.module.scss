@@ -1,0 +1,23 @@
+$primaryColor: #800080;
+$secondaryColor: #00FF00;
+
+$darkBackground: #333333;
+$darkSecondBackground: #222222;
+$darkTextPrimary: #cccccc;
+
+$lightBackground: #f5f5f5;
+$lightSecondBackground: #CCCCCC;
+$lightTextPrimary: #333333;
+
+:export {
+  primaryColor: $primaryColor;
+  secondaryColor: $secondaryColor;
+
+  darkBackground: $darkBackground;
+  darkSecondBackground: $darkSecondBackground;
+  darkTextPrimary: $darkTextPrimary;
+
+  lightBackground: $lightBackground;
+  lightSecondBackground: $lightSecondBackground;
+  lightTextPrimary: $lightTextPrimary;
+}

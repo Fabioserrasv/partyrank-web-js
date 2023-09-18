@@ -1,4 +1,4 @@
-import { prisma } from '../../lib/prisma';
+import { prisma } from '../lib/prisma';
 import { convertDbScoreToModel } from './score.repository';
 
 export class ScoreService {

@@ -1,0 +1,28 @@
+@import '../../styles/mixins.scss';
+
+.modal {
+  background-color: $lightSecondBackground;
+  border-radius: .5rem;
+  padding: 1.5rem 2rem 1.5rem 2rem;
+
+  @include dark {
+    background-color: $darkSecondBackground;
+  }
+
+  &.sm {
+    width: 400px;
+    height: 270px;
+  }
+
+  &.md {
+    width: 600px;
+    height: 400px;
+  }
+
+  &.lg {
+    width: 700px;
+    height: 500px;
+  }
+
+  .body {}
+}
