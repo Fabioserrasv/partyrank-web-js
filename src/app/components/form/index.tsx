@@ -1,3 +1,4 @@
+'use client'
 import { ReactNode } from "react";
 import { Csrf } from "../csrf";
 
@@ -8,7 +9,6 @@ type FormProps = React.FormHTMLAttributes<HTMLFormElement> & {
 export async function Form({ children, ...rest }: FormProps) {
   return(
     <form {...rest}>
-      <Csrf />
       {children}
     </form>
   )

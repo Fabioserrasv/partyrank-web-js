@@ -5,5 +5,9 @@ module.exports = (phase, {defaultConfig}) => {
           prependData: `@import "~@/app/variables.module.scss";`,
       }
   }
+  defaultConfig['experimental'] = {
+    appDir: true,
+    serverActions: true
+  }
   return defaultConfig;
 }
