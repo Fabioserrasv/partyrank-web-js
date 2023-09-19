@@ -1,9 +1,11 @@
 'use client';
 
+import { useSession } from "next-auth/react";
 import { ReactNode, createContext, useState, useContext } from "react";
 
-type ThemProviderProps = {
-  children: ReactNode
+type ThemeProviderProps = {
+  children: ReactNode;
+  theme: "dark" | "light";
 }
 
 type ThemeContextProps = {
@@ -16,11 +18,13 @@ export const ThemeContext = createContext<ThemeContextProps>({
   toggleTheme: () => {}
 });
 
-export const ThemeProvider = ({ children }: ThemProviderProps) => {
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(false)
+export const ThemeProvider = ({ theme, children }: ThemeProviderProps) => {
+  
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(theme == "dark")
 
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode)
+
     document.documentElement.classList.toggle('dark');
   }
 

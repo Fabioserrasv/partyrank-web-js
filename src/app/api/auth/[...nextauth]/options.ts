@@ -35,6 +35,7 @@ export const options: NextAuthOptions = {
               username: user.username,
               animeList: user.animeList,
               admin: user.admin,
+              theme: "light"
             }
           }
 
@@ -53,6 +54,7 @@ export const options: NextAuthOptions = {
         token.username = user.username
         token.animeList = user.animeList
         token.admin = user.admin;
+        token.theme = user.theme
       }
       return token;
     },
@@ -62,6 +64,7 @@ export const options: NextAuthOptions = {
         session.user.username = token.username
         session.user.animeList = token.animeList
         session.user.id = token.id
+        session.user.theme = token.theme
       }
       return session;
     },

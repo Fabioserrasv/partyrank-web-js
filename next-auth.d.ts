@@ -8,6 +8,7 @@ declare module "next-auth" {
       username: string;
       animeList: string;
       admin: boolean;
+      theme?: "dark" | "light";
     } & DefaultSession
   }
 
@@ -16,6 +17,7 @@ declare module "next-auth" {
     username: string;
     animeList: string;
     admin: boolean;
+    theme?: "dark" | "light";
   }
 }
 
@@ -24,6 +26,7 @@ declare module "next-auth/jwt" {
     id:number;
     username: string;
     animeList: string;
+    theme?: "dark" | "light";
     admin: boolean;
   }
 }

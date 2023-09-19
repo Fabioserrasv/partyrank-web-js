@@ -3,6 +3,7 @@ import { Roboto } from 'next/font/google'
 import { ThemeProvider } from '../../context/ThemeContext'
 import './styles/layout.scss';
 import { Page } from './components/page';
+import { getSession } from 'next-auth/react';
 
 const roboto = Roboto({
   weight: '400',
@@ -14,20 +15,23 @@ export const metadata: Metadata = {
   description: 'A platform for rating anime songs with your friends and, in the end, generating a ranking!',
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const session = await getSession();
+  const theme = session?.user.theme || "light"
+
   return (
     <html lang="pt-BR">
       <body className={roboto.className}>
-        <ThemeProvider>
-          <Page>
-            {children}
-          </Page>
-        </ThemeProvider>
-      </body>
+          <ThemeProvider theme={theme}>
+            <Page>
+              {children}
+            </Page>
+          </ThemeProvider>
+      </body> 
     </html>
   )
 }
