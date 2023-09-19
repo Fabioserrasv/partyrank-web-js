@@ -1,3 +1,4 @@
+import { SignOut } from '../components/signout';
 import './home.scss';
 
 export default async function Home() {
