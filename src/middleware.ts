@@ -21,7 +21,8 @@ export const config = {
     "/api/score",
     "/api/song",
     "/api/song-sets",
-    "/api/user-auth"
+    "/api/user-auth",
+    "/home"
   ]
 }
 
