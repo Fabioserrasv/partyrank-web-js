@@ -3,6 +3,7 @@ export function convertDbUserToModel(dbUser: any): User {
     id: dbUser.id,
     username: dbUser.username,
     animeList: dbUser.animeList,
-    admin: dbUser.admin
+    admin: dbUser.admin,
+    imageUrl: dbUser.imageUrl 
   }
 }

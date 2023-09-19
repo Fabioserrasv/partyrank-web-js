@@ -5,6 +5,8 @@ import './styles/layout.scss';
 import { Page } from './components/page';
 import { getSession } from 'next-auth/react';
 import AuthProvider from './context/AuthProvider';
+import { Nav } from './components/nav';
+import { getServerSession } from 'next-auth';
 
 const roboto = Roboto({
   weight: '400',
@@ -21,9 +23,9 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const session = await getSession();
+  const session = await getServerSession();
   const theme = session?.user.theme || "light"
-  
+
   return (
     <html lang="pt-BR">
       <body className={roboto.className}>

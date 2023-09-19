@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
   const buffer = Buffer.from(bytes)
 
   const fileName = session?.user.username + '.' + extension;
-  const path = `/user_images/${fileName}`
+  const path = `/public/user_images/${fileName}`
   await writeFile('.' + path, buffer)
   userService.updateProfilePicture(path, session?.user.id as number)
 

@@ -13,7 +13,6 @@ export async function GET(req: Request) {
     
     return NextResponse.json(sets)
   } catch (error) {
-    // console.log(error);
     return NextResponse.json({
       message: "Song Set not found"
     })

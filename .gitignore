@@ -36,5 +36,5 @@ next-env.d.ts
 
 .history
 .env
-.user_images/
+public/user_images/
 mysql/

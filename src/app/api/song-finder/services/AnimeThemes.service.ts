@@ -13,7 +13,6 @@ export class AnimeThemesService implements SongFinderContract {
   }
 
   webDataToSongWebModel = (data: AnimeThemesResponse): SongWeb => {
-    // console.log(this)
     const artist = data.song.artists !== null && data.song.artists.length > 0 ? data.song.artists[0].name : "";
     const coverImageUrl = data.anime.images !== null && data.anime.images.length > 0 ? data.anime.images[0].link : ""
     const videoId = data.animethemeentries !== null && data.animethemeentries.length > 0 && data.animethemeentries[0].videos ? data.animethemeentries[0].videos[0].id : ""

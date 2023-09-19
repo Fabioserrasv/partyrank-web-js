@@ -4,7 +4,7 @@ import { UserService } from '../../user/user.service';
 import { encode, decode } from 'next-auth/jwt';
 import { PrismaClient } from "@prisma/client";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import {prisma} from '../../lib/prisma';
+import { prisma } from '../../lib/prisma';
 
 export const options: NextAuthOptions = {
   pages: {
@@ -19,7 +19,10 @@ export const options: NextAuthOptions = {
           type: "text",
           placeholder: "Digite seu nome de usuario"
         },
-        password: { label: "Password", type: "password" }
+        password: {
+          label: "Password",
+          type: "password"
+        }
       },
       async authorize(credentials) {
         try {
@@ -28,13 +31,16 @@ export const options: NextAuthOptions = {
             username: credentials?.username as string,
             password: credentials?.password as string
           })
-          
+
+          console.log(user)
+
           if (user != null) {
             return {
               id: user.id,
               username: user.username,
               animeList: user.animeList,
               admin: user.admin,
+              imageUrl: user.imageUrl,
               theme: "light"
             }
           }
@@ -49,7 +55,7 @@ export const options: NextAuthOptions = {
   ],
   callbacks: {
     jwt: async ({ user, token, trigger, session }) => {
-      if (trigger === "update") return {...token, ...session.user}
+      if (trigger === "update") return { ...token, ...session.user }
 
       if (user) {
         token.id = user.id as number
@@ -57,6 +63,7 @@ export const options: NextAuthOptions = {
         token.animeList = user.animeList
         token.admin = user.admin;
         token.theme = user.theme
+        token.imageUrl = user.imageUrl
       }
       return token;
     },
@@ -67,6 +74,7 @@ export const options: NextAuthOptions = {
         session.user.animeList = token.animeList
         session.user.id = token.id
         session.user.theme = token.theme
+        session.user.imageUrl = token.imageUrl
       }
       return session;
     },
