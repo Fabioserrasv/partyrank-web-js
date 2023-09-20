@@ -15,11 +15,11 @@ export function Nav({ user }: NavProps) {
         <Library />
         <span>Song Set</span>
       </div>
-      <div className="navItem active">
+      <div className="navItem">
         <FolderSearch2 />
         <span>Song Finder</span>
       </div>
-      <div className="navItem">
+      <div className="navItem active">
         <Users />
         <span>Users</span>
       </div>

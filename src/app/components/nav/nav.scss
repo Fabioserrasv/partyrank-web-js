@@ -5,19 +5,16 @@ $heightNav: 80px;
 nav {
   display: flex;
 
-  align-items: flex-end;
+  align-items: center;
   background-color: $lightSecondBackground;
   height: $heightNav;
 
   font-size: larger;
 
-  padding: 1rem 1rem 0px 4rem;
-
-  border-bottom: 2px solid $primaryColor;
+  padding: 1rem 1rem 0px 2rem;
 
   @include dark {
     background-color: $darkSecondBackground;
-    border-bottom: 2px solid $secondaryColor;
   }
 
   .actions {
@@ -80,30 +77,9 @@ nav {
 
     padding: 5px;
 
-    $navItemWidth: 150px;
-
-    width: $navItemWidth;
     justify-content: center;
 
     &.active {
-
-      border-top: 2px solid $primaryColor;
-      border-left: 2px solid $primaryColor;
-      border-right: 2px solid $primaryColor;
-
-      @include dark {
-        border-top: 2px solid $secondaryColor;
-        border-left: 2px solid $secondaryColor;
-        border-right: 2px solid $secondaryColor;
-      }
-
-      margin-bottom: -2px;
-
-      $borderRadiusActive: .3rem;
-
-      border-top-left-radius: $borderRadiusActive;
-      border-top-right-radius: $borderRadiusActive;
-
       position: relative;
 
       &::before {
@@ -111,16 +87,17 @@ nav {
         display: block;
         position: absolute;
 
-        bottom: 0;
-        left: 0;
-        width: ($navItemWidth - 4px);
-
-        height: 2px;
-        background-color: $lightSecondBackground;
-
-        @include dark {
-          background-color: $darkSecondBackground;
+        top: 50%;
+        transform: translateY(-50%);
+        left: -5%;
+        width: 3px;
+        height: 60%;
+        background-color: $primaryColor;
+        
+        @include dark{
+          background-color: $secondaryColor;
         }
+
       }
     }
 

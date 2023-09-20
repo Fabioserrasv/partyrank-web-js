@@ -3,10 +3,9 @@ import { Roboto } from 'next/font/google'
 import { ThemeProvider } from './context/ThemeContext'
 import './styles/layout.scss';
 import { Page } from './components/page';
-import { getSession } from 'next-auth/react';
 import AuthProvider from './context/AuthProvider';
-import { Nav } from './components/nav';
 import { getServerSession } from 'next-auth';
+import { options } from './api/auth/[...nextauth]/options';
 
 const roboto = Roboto({
   weight: '400',
@@ -23,11 +22,11 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const session = await getServerSession();
+  const session = await getServerSession(options);
   const theme = session?.user.theme || "light"
 
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" className={theme}>
       <body className={roboto.className}>
         <AuthProvider>
           <ThemeProvider theme={theme}>

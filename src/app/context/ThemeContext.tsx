@@ -17,11 +17,11 @@ export const ThemeContext = createContext<ThemeContextProps>({
   toggleTheme: () => { }
 });
 
-export const ThemeProvider = ({ theme, children }: ThemeProviderProps) => {
+export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const { data: session, update } = useSession()
   const [isDarkMode, setIsDarkMode] = useState<boolean>(session?.user.theme === "dark")
 
-  async function toggleTheme() {
+  const toggleTheme = useCallback(async() => {
     setIsDarkMode(!isDarkMode)
     await update({
       ...session,
@@ -31,11 +31,7 @@ export const ThemeProvider = ({ theme, children }: ThemeProviderProps) => {
       }
     })
     document.documentElement.classList.toggle('dark', isDarkMode);
-  }
-  
-  useEffect(() => {
-    document.documentElement.classList.toggle('dark', session?.user.theme === "dark");
-  }, [session])
+  }, [session]);
 
   return (
     <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
