@@ -3,8 +3,10 @@ type SongSetPostData = {
 }
 
 type SongSet = {
+  id: number;
   name: string;
   songs?: Song[];
+  user?: User;
   generateImageObject?: JsonToGenerateImages;
   generateVideoObject?: JsonToGenerateVideo[];
   createdAt?: Date;

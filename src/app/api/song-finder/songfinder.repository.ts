@@ -1,4 +1,4 @@
-import { similarity } from "@/app/api/lib/similiarity";
+import { similarity } from "@/lib/similiarity";
 import { AnimeThemesService } from "./services/AnimeThemes.service";
 
 function checkTypeEqual(a: string, b: string) {

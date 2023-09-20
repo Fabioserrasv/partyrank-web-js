@@ -1,14 +1,21 @@
-import { prisma } from '../lib/prisma';
-import { convertDbSetToModel } from './songset.repository';
+import { getServerSession } from 'next-auth';
+import { prisma } from '../../lib/prisma';
+import { convertDbSetToModel } from '../repositories/songset.repository';
+import { options } from '../api/auth/[...nextauth]/options';
 
 export class SongSetService {
   constructor() { }
 
   async create(data: SongSetPostData): Promise<SongSet> {
+    const session = await getServerSession(options);
+
+    if (!session) throw new Error("No session");
+
     try {
       const newSet = await prisma.songSet.create({
         data: {
           name: data.name,
+          userId: session?.user.id,
           createdAt: new Date()
         }
       })
@@ -22,7 +29,19 @@ export class SongSetService {
   async getAll(): Promise<SongSet[]> {
     try {
       const sets = await prisma.songSet.findMany({
+        include: {
+          songs: true,
+          user: {
+            select:{
+              username: true,
+              id: true
+            }
+          }
+        },
         where: {
+          // name: { Incluir logica para filtro
+          //   contains: ""
+          // },
           deletedAt: null
         }
       });

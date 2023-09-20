@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
 import { NextResponse } from "next/server";
-import { SongService } from './song.service';
+import { SongService } from '../../services/song.service';
 import { SongRequest } from './request';
 
 export const validateSong = new SongRequest;

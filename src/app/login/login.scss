@@ -5,7 +5,10 @@ $marginBetweenInpuButton: 25px;
 .loginPage{
   
   margin-bottom: 200px;
-
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   span{
     display: block;
     margin-bottom: 10px;

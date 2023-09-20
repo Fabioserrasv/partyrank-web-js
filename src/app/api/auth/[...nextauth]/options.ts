@@ -1,10 +1,10 @@
 import type { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { UserService } from '../../user/user.service';
+import { UserService } from '../../../services/user.service';
 import { encode, decode } from 'next-auth/jwt';
 import { PrismaClient } from "@prisma/client";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { prisma } from '../../lib/prisma';
+import { prisma } from '../../../../lib/prisma';
 
 export const options: NextAuthOptions = {
   pages: {

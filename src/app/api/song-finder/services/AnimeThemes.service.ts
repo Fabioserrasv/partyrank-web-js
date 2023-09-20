@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SongSetService } from '../../song-sets/songset.service';
+import { SongSetService } from '../../../services/songset.service';
 import { generateSongFinderFolder, getMostPossibleSong } from '../songfinder.repository';
 
 const apiUrl = process.env.ANIMETHEMES_API_URL as string

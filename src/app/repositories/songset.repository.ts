@@ -1,4 +1,41 @@
 import axios from "axios"
+import { SongSetRequest } from "../api/song-sets/requests";
+import { SongSetService } from "../services/songset.service";
+import { Prisma } from "@prisma/client";
+
+export async function createSongSet(set: SongSetPostData) {
+  const validateSongSet = new SongSetRequest;
+  const setService = new SongSetService;
+  
+  if (!validateSongSet.rules(set)) {
+    throw new Error("Invalid data")
+  }
+
+  try {
+    const newSet = await setService.create(set);
+
+    return newSet
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === 'P2002') {
+        throw new Error("Duplicated")
+
+      }
+    }
+  }
+}
+
+export async function getAllSongSets() {
+  const validateSongSet = new SongSetRequest;
+  const setService = new SongSetService;
+  try {
+    const sets = await setService.getAll();
+
+    return sets
+  } catch (error) {
+    throw error
+  }
+}
 
 export function convertDbSongToModel(data: any): Song {
   return {
@@ -17,7 +54,9 @@ export function convertDbSongToModel(data: any): Song {
 
 export async function convertDbSetToModel(data: any, generateJson: boolean = false): Promise<SongSet> {
   return {
+    id: data.id,
     name: data.name,
+    user: data.user,
     songs: data.songs !== undefined && data.songs.length > 0 ? data.songs.map(convertDbSongToModel) : [],
     generateImageObject: generateJson ? generateImageObjectConverter(data) : undefined,
     generateVideoObject: generateJson ? await generateVideoObject(data) : undefined,

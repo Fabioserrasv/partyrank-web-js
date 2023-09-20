@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
 import { NextResponse } from "next/server";
-import { UserService } from "./user.service";
+import { UserService } from "../../services/user.service";
 import { UserRequest } from './request';
 
 export const validateUser = new UserRequest;

@@ -25,6 +25,8 @@
     padding: 10px;
     font-size: 1rem;
 
+    border: 1px solid $divisorColor;
+
     @include dark {
       background-color: $darkBackground;
       color: $darkTextPrimary;
