@@ -21,7 +21,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const { data: session, update } = useSession()
   const [isDarkMode, setIsDarkMode] = useState<boolean>(session?.user.theme === "dark")
 
-  const toggleTheme = useCallback(async() => {
+  async function toggleTheme() {
     setIsDarkMode(!isDarkMode)
     await update({
       ...session,
@@ -31,7 +31,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
       }
     })
     document.documentElement.classList.toggle('dark', isDarkMode);
-  }, [session]);
+  }
 
   return (
     <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>

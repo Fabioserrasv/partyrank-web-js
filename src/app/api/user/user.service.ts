@@ -106,6 +106,9 @@ export class UserService {
   async login(userLogin: UserLoginPost) {
     try {
       const user = await prisma.user.findMany({
+        include:{
+          scores: true
+        },
         where: {
           username: userLogin.username,
           deletedAt: null

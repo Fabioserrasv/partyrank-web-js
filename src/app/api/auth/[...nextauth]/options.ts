@@ -32,7 +32,11 @@ export const options: NextAuthOptions = {
             password: credentials?.password as string
           })
 
-          console.log(user)
+          let average = 0
+          if (user?.scores){
+            let sum = user.scores.map(score => score.value)
+            average = (sum.reduce((a, b) => a + b, 0) / sum.length)
+          }
 
           if (user != null) {
             return {
@@ -41,6 +45,7 @@ export const options: NextAuthOptions = {
               animeList: user.animeList,
               admin: user.admin,
               imageUrl: user.imageUrl,
+              average: average, 
               theme: "light"
             }
           }
@@ -63,6 +68,7 @@ export const options: NextAuthOptions = {
         token.animeList = user.animeList
         token.admin = user.admin;
         token.theme = user.theme
+        token.average = user.average
         token.imageUrl = user.imageUrl
       }
       return token;
@@ -74,6 +80,7 @@ export const options: NextAuthOptions = {
         session.user.animeList = token.animeList
         session.user.id = token.id
         session.user.theme = token.theme
+        session.user.average = token.average
         session.user.imageUrl = token.imageUrl
       }
       return session;

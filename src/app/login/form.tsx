@@ -25,7 +25,7 @@ export function FormLogin() {
       alert('errado')
     }
 
-    router.push('/home')
+    router.push('/songsets')
   }
 
   return (
