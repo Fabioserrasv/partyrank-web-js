@@ -1,5 +1,5 @@
 import axios from "axios"
-import { SongSetRequest } from "../api/song-sets/requests";
+import { SongSetRequest } from "../app/api/song-sets/requests";
 import { SongSetService } from "../services/songset.service";
 import { Prisma } from "@prisma/client";
 
@@ -25,11 +25,12 @@ export async function createSongSet(set: SongSetPostData) {
   }
 }
 
-export async function getAllSongSets() {
-  const validateSongSet = new SongSetRequest;
+export async function getAllSongSets(name: string) {
+  "use server"
+  
   const setService = new SongSetService;
   try {
-    const sets = await setService.getAll();
+    const sets = await setService.getAll(name);
 
     return sets
   } catch (error) {

@@ -1,6 +1,6 @@
-import { prisma } from '../../lib/prisma';
+import { prisma } from '../lib/prisma';
 import { SongSetService } from './songset.service';
-import { convertDbSongToModel, convertType } from '../api/song/song.repository';
+import { convertDbSongToModel, convertType } from '../app/api/song/song.repository';
 
 export class SongService {
   constructor() { }

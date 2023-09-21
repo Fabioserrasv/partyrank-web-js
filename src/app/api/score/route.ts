@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
 import { NextResponse } from "next/server";
-import { ScoreService } from '../../services/score.service';
+import { ScoreService } from '../../../services/score.service';
 import { ScoreRequest } from './request';
 import { getServerSession } from "next-auth/next";
 import { options } from '../auth/[...nextauth]/options';

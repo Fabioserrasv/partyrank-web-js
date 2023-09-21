@@ -1,7 +1,7 @@
 import { getServerSession } from 'next-auth';
-import { prisma } from '../../lib/prisma';
+import { prisma } from '../lib/prisma';
 import { convertDbSetToModel } from '../repositories/songset.repository';
-import { options } from '../api/auth/[...nextauth]/options';
+import { options } from '../app/api/auth/[...nextauth]/options';
 
 export class SongSetService {
   constructor() { }
@@ -26,7 +26,7 @@ export class SongSetService {
     }
   }
 
-  async getAll(): Promise<SongSet[]> {
+  async getAll(name: string): Promise<SongSet[]> {
     try {
       const sets = await prisma.songSet.findMany({
         include: {
@@ -39,9 +39,9 @@ export class SongSetService {
           }
         },
         where: {
-          // name: { Incluir logica para filtro
-          //   contains: ""
-          // },
+          name: {
+            contains: name
+          },
           deletedAt: null
         }
       });

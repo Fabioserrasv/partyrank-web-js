@@ -1,4 +1,3 @@
-'use client'
 import React, { useState } from 'react';
 import ReactPaginate from 'react-paginate';
 import { Table, TableRow } from '../components/table';
@@ -32,7 +31,7 @@ export function TablePaginated({ itemsPerPage, sets }: PaginatedItemsProps) {
   return (
     <>
       <Table>
-        {currentItems.map((s) => {
+        {currentItems ? currentItems.map((s) => {
           return (
             <TableRow key={s.id}>
               <div className='info'>
@@ -58,7 +57,7 @@ export function TablePaginated({ itemsPerPage, sets }: PaginatedItemsProps) {
               </div>
             </TableRow>
           )
-        })}
+        }) : <></>}
       </Table>
       <ReactPaginate
         className='pagination'

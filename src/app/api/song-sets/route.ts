@@ -1,15 +1,15 @@
 import { Prisma } from '@prisma/client';
 import { NextResponse } from "next/server";
-import { SongSetService } from '../../services/songset.service';
+import { SongSetService } from '../../../services/songset.service';
 import { SongSetRequest } from './requests';
-import { createSongSet, getAllSongSets } from '../../repositories/songset.repository';
+import { createSongSet, getAllSongSets } from '../../../repositories/songset.repository';
 
 export const validateSongSet = new SongSetRequest;
 export const setService = new SongSetService;
 
 export async function GET() {
   try {
-    const sets = await getAllSongSets();
+    const sets = await getAllSongSets("");
 
     return NextResponse.json(sets)
   } catch (error) {

@@ -1,25 +1,16 @@
-import { getAllSongSets } from "../repositories/songset.repository";
-import { Table, TableRow } from "../components/table";
-import './songsets.scss';
+import { getAllSongSets } from "../../repositories/songset.repository";
 import { TablePaginated } from "./TablePaginated";
-import { Input } from "../components/input";
+import { TableWithFilter } from "./TableWithFilter";
+import './songsets.scss';
 
 export default async function SongSets() {
-  const sets = await getAllSongSets();
-
+  let sets = await getAllSongSets("");
+  
   return (
     <div className="songSetPage">
-      <div className="filters">
-        <Input
-          displayName="Name"
-          name="name"
-          className="nameFilter"
-          autoComplete="off"
-        />
-      </div>
-      <TablePaginated
-        sets={sets}
-        itemsPerPage={10}
+      <TableWithFilter
+        search={getAllSongSets}
+        initialSets={sets}
       />
     </div>
   )
