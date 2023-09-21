@@ -15,10 +15,11 @@ export function TableWithFilter({ initialSets, search }: InputFilterProps) {
       <div className="filters">
         <Input
           onChange={async (e) => { setSets(await search(e.target.value)) }}
-          displayName="Name"
+          displayName=""
           name="name"
           className="nameFilter"
           autoComplete="off"
+          placeholder="Naruto Shippuden..."
         />
       </div>
       <TablePaginated

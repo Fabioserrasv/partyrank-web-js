@@ -9,7 +9,7 @@ type NavItemProps = {
 export function NavItem({ route, children }: NavItemProps) {
   function isActive(route: string) {
     
-    return route == usePathname() ? 'active' : ''; 
+    return usePathname().includes(route)  ? 'active' : ''; 
   }
 
   return (

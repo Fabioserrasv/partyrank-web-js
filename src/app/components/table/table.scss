@@ -5,6 +5,16 @@
     height: 120px;
     display: flex;
     justify-content: center;
+    
+    border-radius: .4rem;
+    margin-bottom: 10px;
+    padding: 10px;
+    
+    background-color: $lightSecondBackground;
+    
+    @include dark{
+      background-color: $darkSecondBackground;
+    }
 
     .info{
       display: flex;
@@ -24,9 +34,6 @@
       }
     }
 
-    // padding: 1rem;
-
-
     span {
       color: $primaryColor;
       font-size: 2rem;
@@ -38,14 +45,15 @@
     
     .extraInfo{
       display: flex;
-      // margin-top: 5px;
+      margin-top: 10px;
+
       span{
         svg{
           height: 10px;
         }
 
         color: $lightTextPrimary;
-        font-size: .9rem;
+        font-size: 1rem;
       
         &:not(:first-child){
           margin-left: 20px;
