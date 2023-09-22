@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { HTMLAttributes, ReactNode } from "react";
 import './table.scss';
 
 type TableContainerProps = {
@@ -9,7 +9,7 @@ type TableContainerProps = {
   }
 }
 
-type CellProps = {
+type CellProps = HTMLAttributes<HTMLDivElement> & {
   children: ReactNode
 }
 
@@ -21,9 +21,9 @@ export function Table({ children }: CellProps) {
   )
 }
 
-export function TableRow({ children }: CellProps) {
+export function TableRow({ children, ...rest }: CellProps) {
   return (
-    <div className="cell">
+    <div {...rest} className="cell">
       {children}
     </div>
   )

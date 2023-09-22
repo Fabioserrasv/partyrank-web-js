@@ -6,7 +6,7 @@ import { Prisma } from "@prisma/client";
 export async function createSongSet(set: SongSetPostData) {
   const validateSongSet = new SongSetRequest;
   const setService = new SongSetService;
-  
+
   if (!validateSongSet.rules(set)) {
     throw new Error("Invalid data")
   }
@@ -19,15 +19,26 @@ export async function createSongSet(set: SongSetPostData) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === 'P2002') {
         throw new Error("Duplicated")
-
       }
     }
   }
 }
 
+export async function getSongSet(id: number, generateJson: boolean = false) {
+  const setService = new SongSetService;
+
+  try {
+    const sets = await setService.get(id, generateJson);
+
+    return sets
+  } catch (error) {
+    throw error;
+  }
+}
+
 export async function getAllSongSets(name: string) {
   "use server"
-  
+
   const setService = new SongSetService;
   try {
     const sets = await setService.getAll(name);

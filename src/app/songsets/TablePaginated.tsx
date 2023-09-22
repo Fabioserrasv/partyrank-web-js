@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import ReactPaginate from 'react-paginate';
 import { Table, TableRow } from '../components/table';
-import { Calendar, FolderEdit, Music, PenSquare, User } from 'lucide-react';
+import { Calendar, FolderEdit, Music, Play, User } from 'lucide-react';
 import moment from 'moment';
+import Link from 'next/link';
 
 // Example items, to simulate fetching from another resources.
 type PaginatedItemsProps = { itemsPerPage: number; sets: SongSet[] }
@@ -53,7 +54,9 @@ export function TablePaginated({ itemsPerPage, sets }: PaginatedItemsProps) {
               </div>
               <div className='actions'>
                 <FolderEdit />
-                <PenSquare />
+                <Link href={`/songsets/vote/${s.id}`}>
+                  <Play />
+                </Link>
               </div>
             </TableRow>
           )

@@ -67,6 +67,7 @@ export class SongSetService {
                 select: {
                   user: {
                     select: {
+                      id: true,
                       username: true,
                       animeList: true
                     }

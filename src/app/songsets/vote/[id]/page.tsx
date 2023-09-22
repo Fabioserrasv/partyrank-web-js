@@ -1,44 +1,28 @@
-import { Input } from '@/app/components/input';
+import { getSongSet } from '@/repositories/songset.repository';
+import { ClientPage } from './clientPage';
+import { getServerSession } from 'next-auth';
+import { options } from '@/app/api/auth/[...nextauth]/options';
 import './vote.scss';
-import { Button } from '@/app/components/button/Button';
+import { handleFormSubmit } from '@/repositories/score.repository';
 
 type VotePageProps = {
   params: {
-    id: number | string;
+    id: number;
   }
 }
 
-export default function Vote({ params }: VotePageProps) {
+export default async function Vote({ params }: VotePageProps) {
+  const session = await getServerSession(options);
+  const set = await getSongSet(Number(params.id));
+  if (!session) return;
 
   return (
     <div className="votePage">
-      <div className="video">
-        <iframe src="https://drive.google.com/file/d/1GEEdx9JHWudLnLC9Dn8Ev0usdtkO5WiS/preview"></iframe>
-      </div>
-
-      <div className="left">
-        <span>Artista - Nome da musica</span>
-        <div className='inputsvote'>
-          <Input
-            displayName='Score'
-            name='score'
-          />
-          <Input
-            displayName='Time suggested'
-            name='time'
-          />
-          <Button
-            name='Send'
-
-          />
-        </div>
-      </div>
-
-      <div className="aside">
-        <div className='list'>
-
-        </div>
-      </div>
+      <ClientPage
+        user={session.user}
+        set={set}
+        handleVoteForm={handleFormSubmit}
+      />
     </div>
   )
 }

@@ -4,25 +4,16 @@ import { ScoreService } from '../../../services/score.service';
 import { ScoreRequest } from './request';
 import { getServerSession } from "next-auth/next";
 import { options } from '../auth/[...nextauth]/options';
+import { createScore } from '@/repositories/score.repository';
 
 export const validateScore = new ScoreRequest;
 export const scoreService = new ScoreService;
 
 export async function POST(req: Request, res: Response) {
   const score: ScorePost = await req.json();
-  const session = await getServerSession(options);
   
-  score.userId = session?.user.id as number
-
-  // Validating the score (must improve, searching for libraries)
-  if (!validateScore.rules(score)) {
-    return NextResponse.json({
-      message: "Invalid data"
-    })
-  }
-
   try {
-    const newScore = await scoreService.create(score);
+    const newScore = createScore(score);
 
     return NextResponse.json({
       score: newScore

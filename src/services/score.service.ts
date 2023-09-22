@@ -1,5 +1,5 @@
 import { prisma } from '../lib/prisma';
-import { convertDbScoreToModel } from '../app/api/score/score.repository';
+import { convertDbScoreToModel } from '../repositories/score.repository';
 
 export class ScoreService {
   constructor() { }
