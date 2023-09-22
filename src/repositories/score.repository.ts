@@ -1,5 +1,6 @@
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { ScoreRequest } from "@/app/api/score/request";
+import { FormVote } from "@/app/songsets/vote/[id]/clientPage";
 import { ScoreService } from "@/services/score.service";
 import { getServerSession } from "next-auth";
 
@@ -29,17 +30,17 @@ export async function createScore(score: ScorePost) {
   return await scoreService.create(score);
 }
 
-export async function handleFormSubmit(formData: FormData) {
+export async function handleFormSubmit(data: FormVote) {
   "use server"
 
   try {
     const session = await getServerSession(options);
   
     const newScore = await createScore({
-      songId: Number(formData.get('id')),
+      songId: Number(data.id),
       userId: session?.user.id as number,
-      value: Number(formData.get('score')),
-      videoTimeStamp: Number(formData.get('time'))
+      value: Number(data.score),
+      videoTimeStamp: Number(data.timeStamp)
     })
     return newScore.id
   } catch (error) {

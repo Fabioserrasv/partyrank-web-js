@@ -14,19 +14,19 @@ export function NavUser({ user }: NavUserProps) {
   let imgRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
-    function checkChildsWasClicked(nodes: NodeListOf<ChildNode>, target: HTMLElement){
-      for (let i = 0; i < nodes.length; i++){
-        if (nodes[i] === target){
+    function checkChildsWasClicked(nodes: NodeListOf<ChildNode>, target: HTMLElement) {
+      for (let i = 0; i < nodes.length; i++) {
+        if (nodes[i] === target) {
           return true;
-        } 
+        }
       }
-      
+
       return false;
     }
 
-    let handler = (e: MouseEvent ) => {
+    let handler = (e: MouseEvent) => {
       if (
-        menuRef.current 
+        menuRef.current
         && imgRef.current
         && !menuRef.current.contains(e.target as HTMLElement)
         && !imgRef.current.contains(e.target as HTMLElement)
@@ -38,7 +38,7 @@ export function NavUser({ user }: NavUserProps) {
 
     document.addEventListener('mousedown', handler);
 
-    return() => {
+    return () => {
       document.removeEventListener("mousedown", handler);
     }
   })
@@ -49,7 +49,7 @@ export function NavUser({ user }: NavUserProps) {
         <span className="name">{user.username}</span>
         <span className="avg">Average: {user.average}</span>
       </div>
-      <div className="pfp" onClick={() => { setIsDropdownOpen(!isDropdownOpen);console.log('clicou');}}>
+      <div className="pfp" onClick={() => { setIsDropdownOpen(!isDropdownOpen); }}>
         <img src={user.imageUrl} alt="Profile Picture" ref={imgRef} />
       </div>
 

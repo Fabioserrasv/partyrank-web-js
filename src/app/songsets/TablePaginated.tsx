@@ -14,18 +14,13 @@ type handlePageClickProps = {
 
 export function TablePaginated({ itemsPerPage, sets }: PaginatedItemsProps) {
   const [itemOffset, setItemOffset] = useState(0);
-
   const endOffset = itemOffset + itemsPerPage;
-  console.log(`Loading items from ${itemOffset} to ${endOffset}`);
   const currentItems = sets.slice(itemOffset, endOffset);
   const pageCount = Math.ceil(sets.length / itemsPerPage);
 
 
   const handlePageClick = ({ selected }: handlePageClickProps) => {
     const newOffset = (selected * itemsPerPage) % sets.length;
-    console.log(
-      `User requested page number ${selected}, which is offset ${newOffset}`
-    );
     setItemOffset(newOffset);
   };
 

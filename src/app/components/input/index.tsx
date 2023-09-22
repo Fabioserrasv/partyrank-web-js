@@ -6,9 +6,10 @@ import { FieldValues, UseFormRegister } from 'react-hook-form';
 type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   displayName: string;
   name: string;
+  errorMessage?: string;
 }
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(({ displayName, name, ...rest }: InputProps, ref) => {
+export const Input = forwardRef<HTMLInputElement, InputProps>(({ displayName, errorMessage, name, ...rest }: InputProps, ref) => {
   return (
     <div className='inputGroup'>
       <label htmlFor={name}>{displayName}</label>
@@ -17,6 +18,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(({ displayName, na
         {...rest}
         name={name}
       />
+      {errorMessage ? <span className='error'>{errorMessage}</span> : <></>}
     </div>
   )
 })
