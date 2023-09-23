@@ -48,7 +48,9 @@ export function TablePaginated({ itemsPerPage, sets }: PaginatedItemsProps) {
                 </div>
               </div>
               <div className='actions'>
-                <FolderEdit />
+                <Link href={`/songsets/create/${s.id}`}>
+                  <FolderEdit />
+                </Link>
                 <Link href={`/songsets/vote/${s.id}`}>
                   <Play />
                 </Link>

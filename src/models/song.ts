@@ -24,7 +24,7 @@ type Song = {
   artist: string;
   name: string;
   link: string;
-  type: string;
+  type: SongType;
   scores: Score[];
   createdAt?: Date;
   updatedAt?: Date;

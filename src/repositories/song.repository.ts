@@ -38,20 +38,39 @@ export async function createSong(song: SongPostData) {
   return await songService.create(song);
 }
 
+export async function updateSong(song: SongPostData, id: number) {
+  const validateSong = new SongRequest;
+  const songService = new SongService;
+  // Validating the song (must improve, searching for libraries)
+  if (!validateSong.rules(song)) {
+    throw new Error("Invalid data")
+  }
+
+  return await songService.update(song, id);
+}
+
 export async function handleAddSongFormSubmit(data: AddSongFormSchema, songSetId: number) {
   "use server"
 
   try {
-    const newScore = await createSong({
+    let newSong: false | Song  = false
+    const song = {
       anime: data.anime,
       artist: data.artist,
       link: data.link,
       name: data.name,
       type: data.type,
       songSetId: songSetId
-    })
+    };
 
-    return newScore.id
+    if (data.id == 0) {
+      newSong = await createSong(song)
+    }else{
+      newSong = await updateSong(song, data.id)
+    }
+
+    if (newSong) return newSong.id
+    return false;
   } catch (error) {
     return false
   }

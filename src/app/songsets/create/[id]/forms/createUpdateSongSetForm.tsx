@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 
 type createUpdateSongSetFormProps = {
   songSet: SongSet;
-  updateSetSongSet: (name:string, id: number) => void;
+  updateSetSongSet: (name: string, id: number) => void;
   handleCreateFormSubmit: ({ }: CreateForm) => Promise<number | boolean>;
   buttonName: string;
 }
@@ -21,9 +21,13 @@ export function CreateUpdateSongSetForm({ songSet, handleCreateFormSubmit, updat
 
   async function onSubmitHandleCreateSongSet(data: CreateForm) {
     try {
+      data.id = songSet.id;
       const id = await handleCreateFormSubmit(data)
+      
+      const newOrUp = data.id == 0 ? "created" : "updated"
       if (id) {
         updateSetSongSet(songSet.name, Number(id))
+        toast.success(`Song set ${newOrUp} successfully`)
       }
     } catch (error) {
       toast.error("Something went wrong")
@@ -33,9 +37,9 @@ export function CreateUpdateSongSetForm({ songSet, handleCreateFormSubmit, updat
   function onNameInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     updateSetSongSet(e.target.value, songSet.id)
   }
-  
+
   return (
-    <form onSubmit={handleSubmit(onSubmitHandleCreateSongSet)}>
+    <form onSubmit={handleSubmit(onSubmitHandleCreateSongSet)} className="formSongSet">
       <Input
         displayName="Name"
         placeholder="All Mawaru Penguindrum songs..."

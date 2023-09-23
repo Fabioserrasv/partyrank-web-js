@@ -27,7 +27,7 @@ export class SongService {
     }
   }
 
-  async update(data: SongPostData, id: number): Promise<SongSet> {
+  async update(data: SongPostData, id: number): Promise<Song> {
     try {
       const set = await prisma.song.update({
         where: {

@@ -5,9 +5,10 @@ import { Form } from "../components/form";
 import { Csrf } from "../components/csrf";
 import { Input } from "../components/input";
 import { Button } from "../components/button/Button";
-import {signIn} from "next-auth/react";
+import { signIn } from "next-auth/react";
 
 import { useRouter } from 'next/navigation';
+import toast from "react-hot-toast";
 
 type FormLoginDataProps = {
   username: string;
@@ -19,18 +20,19 @@ export function FormLogin() {
   const { register, handleSubmit } = useForm<FormLoginDataProps>();
   const router = useRouter();
   async function onSubmitLogin(data: FormLoginDataProps) {
-    const signInResponse = await signIn("credentials", {...data, redirect: false})
+    const signInResponse = await signIn("credentials", { ...data, redirect: false })
     
-    if (!signInResponse?.ok){
-      alert('errado')
+    if (signInResponse?.error) {
+      toast.error("User not found")
+      return;
     }
 
-    router.push('/songsets')
+    window.location.href = "/songsets"
   }
 
   return (
     <Form onSubmit={handleSubmit(onSubmitLogin)}>
-      <Csrf {...register("csrfToken")}/>
+      <Csrf {...register("csrfToken")} />
 
       <Input
         displayName="Username"

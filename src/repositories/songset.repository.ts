@@ -2,6 +2,7 @@ import axios from "axios"
 import { SongSetRequest } from "../app/api/song-sets/requests";
 import { SongSetService } from "../services/songset.service";
 import { Prisma } from "@prisma/client";
+import { CreateForm } from "@/app/songsets/create/[id]/clientPage";
 
 export async function createSongSet(set: SongSetPostData) {
   const validateSongSet = new SongSetRequest;
@@ -16,18 +17,42 @@ export async function createSongSet(set: SongSetPostData) {
 
     return newSet
   } catch (error) {
-    throw new Error("Something went wrong")
+    return false;
   }
 }
 
-export async function handleCreateSongSetFormSubmit(data: { name: string }) {
+export async function updateSongSet(set: CreateForm, id: number) {
+  const validateSongSet = new SongSetRequest;
+  const setService = new SongSetService;
+
+  if (!validateSongSet.rules(set)) {
+    throw new Error("Invalid data")
+  }
+
+  try {
+    const newSet = await setService.update(set, id);
+
+    return newSet
+  } catch (error) {
+    return false;
+  }
+}
+
+export async function handleCreateSongSetFormSubmit(data: CreateForm) {
   "use server"
 
   try {
-    const newSongSet = await createSongSet({
-      name: data.name,
-    })
-    return newSongSet.id
+    let newSongSet: false | SongSet = false
+    if (data.id == 0) {
+      newSongSet = await createSongSet({
+        name: data.name,
+      })
+    } else {
+      newSongSet = await updateSongSet(data, data.id)
+    }
+
+    if (newSongSet) return newSongSet.id
+    return false;
   } catch (error) {
     return false
   }

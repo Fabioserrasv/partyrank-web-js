@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { CreateUpdateSongSetForm } from "./forms/createUpdateSongSetForm";
 import { AddSongForm } from "./forms/addSongForm";
 import { Table, TableRow } from "@/app/components/table";
-import { X } from "lucide-react";
+import { Globe, Mic2, Monitor, X } from "lucide-react";
 import { handleAddSongFormSubmit } from "@/repositories/song.repository";
 import Link from "next/link";
 import toast from "react-hot-toast";
@@ -22,15 +22,17 @@ type SongSetFormatter = {
 }
 
 export type CreateForm = {
+  id: number;
   name: string;
 }
 
 export type AddSongFormSchema = {
+  id: number;
   anime: string;
   artist: string;
   name: string;
   link: string;
-  type: string;
+  type: SongType;
 }
 
 const initialValue = {
@@ -39,8 +41,24 @@ const initialValue = {
   songs: []
 }
 
+export const initialSongValue: AddSongFormSchema = {
+  id: 0,
+  anime: '',
+  artist: '',
+  name: '',
+  link: '',
+  type: 'OPENING' as SongType
+}
+
+const formattedTypes = {
+  "OPENING": "Opening",
+  "ENDING": "Ending",
+  "INSERT_SONG": "Insert Song"
+}
+
 export function ClientCreateSongPage({ dbSet, handleCreateFormSubmit, handleDeleteSong, handleAddSongFormSubmit }: ClientCreateSongPageProps) {
   const [songSet, setSongSet] = useState<SongSetFormatter>(initialValue)
+  const [song, setSong] = useState<AddSongFormSchema>(initialSongValue)
 
   const cardTitle = dbSet == false ? "Create new Song set" : "Edit song set"
   const buttonTitle = dbSet == false ? "Create" : "Update";
@@ -53,8 +71,23 @@ export function ClientCreateSongPage({ dbSet, handleCreateFormSubmit, handleDele
     })
   }
 
+  function updateSongState(song: AddSongFormSchema) {
+    setSong(song)
+  }
+
   function addSongToSongSetState(song: Song) {
-    const updatedSongs = songSet.songs.concat([...songSet.songs], [song])
+    let newSong = true
+    const updatedSongs = songSet.songs.map((songOld) => { 
+      if(songOld.id == song.id) {
+        songOld = song
+        newSong = false
+      }
+      return songOld
+    })
+
+    if (newSong){
+      updatedSongs.push(song)
+    }
 
     setSongSet({
       ...songSet,
@@ -69,7 +102,27 @@ export function ClientCreateSongPage({ dbSet, handleCreateFormSubmit, handleDele
       ...songSet,
       songs: updatedSongs
     })
-  } 
+  }
+
+  async function onDeleteSong(id: number) {
+    const result = await handleDeleteSong(id)
+
+    if (result) {
+      deleteSongToSongSetState(id)
+      toast.success("Song deleted successfully")
+    }
+  }
+
+  function onSongClick(song: Song) {
+    setSong({
+      id: song.id,
+      name: song.name,
+      anime: song.anime,
+      artist: song.artist,
+      link: song.link,
+      type: song.type
+    })
+  }
 
   useEffect(() => {
     if (dbSet != false) {
@@ -81,15 +134,6 @@ export function ClientCreateSongPage({ dbSet, handleCreateFormSubmit, handleDele
       })
     }
   }, [dbSet])
-
-  async function onDeleteSong(id: number) {
-    const result = await handleDeleteSong(id)
-
-    if(result){
-      deleteSongToSongSetState(id)
-      toast.success("Song deleted successfully")
-    }
-  }
 
   return (
     <>
@@ -110,6 +154,8 @@ export function ClientCreateSongPage({ dbSet, handleCreateFormSubmit, handleDele
               songSet={songSet}
               handleAddSongFormSubmit={handleAddSongFormSubmit}
               addSongToSongSetState={addSongToSongSetState}
+              song={song}
+              updateSongState={updateSongState}
             />
           </div>
         }
@@ -122,9 +168,22 @@ export function ClientCreateSongPage({ dbSet, handleCreateFormSubmit, handleDele
               (songSet.songs.toReversed()).map(song => {
                 return (
                   <TableRow key={song.id}>
-                    <div className='info'>
+                    <div className='info' onClick={() => { onSongClick(song) }}>
                       <span>{`${song.artist} - ${song.name}`}</span>
-
+                      <div className="extraInfo">
+                        <span>
+                          <Monitor />
+                          {song.anime}
+                        </span>
+                        <span>
+                          <Mic2 />
+                          {formattedTypes[song.type]}
+                        </span>
+                        <span>
+                          <Globe />
+                          {song.link}
+                        </span>
+                      </div>
                     </div>
                     <div className='actions'>
                       <X className="icon" onClick={() => { onDeleteSong(song.id) }} />

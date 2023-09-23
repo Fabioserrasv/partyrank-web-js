@@ -17,12 +17,13 @@ export default withAuth(
 
 export const config = {
   matcher: [
-    "/api/user",
-    "/api/score",
-    "/api/song",
-    "/api/song-sets",
+    "/api/user/:path*",
+    "/api/score/:path*",
+    "/api/song/:path*",
+    "/api/song-sets/:path*",
     "/api/user-auth",
-    "/home"
+    "/home",
+    "/songsets/:path*"
   ]
 }
 

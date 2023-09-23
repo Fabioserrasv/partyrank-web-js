@@ -3,12 +3,13 @@ import "./login.scss";
 import { FormLogin } from './form';
 import { redirect } from 'next/navigation';
 import { getServerSession } from "next-auth/next"
+import { RedirectType } from 'next/dist/client/components/redirect';
 
 export default async function Login() {
   const session = await getServerSession();
-  
+
   if (session?.user) {
-    redirect('/home')
+    redirect('/songsets', "push" as RedirectType)
   }
 
   return (
