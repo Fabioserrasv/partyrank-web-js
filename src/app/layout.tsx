@@ -6,6 +6,8 @@ import { Page } from './components/page';
 import AuthProvider from '../context/AuthProvider';
 import { getServerSession } from 'next-auth';
 import { options } from './api/auth/[...nextauth]/options';
+import { Suspense } from 'react';
+import { Loading } from './components/loading';
 
 const roboto = Roboto({
   weight: '400',
@@ -31,7 +33,9 @@ export default async function RootLayout({
         <AuthProvider>
           <ThemeProvider theme={theme}>
             <Page>
-              {children}
+              <Suspense fallback={<Loading />}>
+                {children}
+              </Suspense>
             </Page>
           </ThemeProvider>
         </AuthProvider>

@@ -5,7 +5,6 @@ import './songsets.scss';
 
 export default async function SongSets() {
   let sets = await getAllSongSets("");
-  
   return (
     <div className="songSetPage">
       <TableWithFilter

@@ -23,7 +23,6 @@ export async function PUT(req: Request, res: Response) {
   const set: SongSetPostData = await req.json();
   const id = Number(req.url.slice(req.url.lastIndexOf('/') + 1));
 
-  // Validating the set (must improve, searching for libraries)
   if (!validateSongSet.rules(set)) {
     return NextResponse.json({
       message: "Invalid data"

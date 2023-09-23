@@ -32,10 +32,10 @@ export async function createScore(score: ScorePost) {
 
 export async function handleFormSubmit(data: FormVote) {
   "use server"
-
+  
   try {
     const session = await getServerSession(options);
-  
+    
     const newScore = await createScore({
       songId: Number(data.id),
       userId: session?.user.id as number,

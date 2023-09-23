@@ -3,11 +3,12 @@ import { Button } from "@/app/components/button/Button";
 import { Input } from "@/app/components/input"
 import { Table, TableRow } from "@/app/components/table"
 import { useEffect, useState } from "react";
-import { redirect } from 'next/navigation';
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { scoreVoteSchema } from "../../validations/scoreValidation";
+import { maskValueToDecimal } from "@/lib/utils";
+import toast from "react-hot-toast";
 
 type VoteClientPageProps = {
   user: User;
@@ -22,7 +23,8 @@ export type FormVote = {
 }
 
 export function ClientPage({ user, set, handleVoteForm }: VoteClientPageProps) {
-  if (!set.songs) {
+  if (!set.songs || set.songs.length == 0) {
+    toast.success("No songs found")
     const route = useRouter()
     route.push("/songsets")
     return;
@@ -32,14 +34,38 @@ export function ClientPage({ user, set, handleVoteForm }: VoteClientPageProps) {
   const [songUserData, setSongUserData] = useState<FormVote>({ score: 0, timeStamp: 0 })
   const [songs, setSongs] = useState<Song[]>(set.songs)
   const [average, setAverage] = useState<number>(0)
-  const { register, handleSubmit, formState: { errors }, watch } = useForm<FormVote>({
+  const { register, handleSubmit, formState: { errors }, setValue } = useForm<FormVote>({
     resolver: zodResolver(scoreVoteSchema)
   });
 
+  async function handleFormSubmit(data: FormVote) {
+    try {
+      data.id = selectedSong.id
+      const id = await handleVoteForm(data)
+
+      if (id) {
+        setSessionDataSong(selectedSong, id as number, {
+          score: data.score,
+          timeStamp: data.timeStamp
+        })
+
+        let nextIndex = songs.indexOf(selectedSong) + 1
+
+        if (nextIndex <= (songs.length - 1)) {
+          setSelectedSong(songs[nextIndex])
+        } else {
+          setSelectedSong(songs[0])
+        }
+
+      }
+    } catch (error) {
+      toast.error("Something went wrong")
+      console.log(error)
+    }
+  }
 
   function getSessionDataSong(song: Song) {
     const data = song.scores.filter((score) => score.user?.id === user.id)[0]
-
     if (data !== undefined) {
       return ({ score: data.value, timeStamp: data.videoTimeStamp });
     }
@@ -52,7 +78,7 @@ export function ClientPage({ user, set, handleVoteForm }: VoteClientPageProps) {
     const updatedSongs = songs.map((songOld) => {
       if (songOld.id === song.id) {
         songOld.scores = songOld.scores.map((scoreOld) => {
-          if (scoreOld.userId == user.id) {
+          if (scoreOld.user?.id == user.id && songOld.id === song.id) {
             scoreOld.value = Number(score)
             scoreOld.videoTimeStamp = Number(timeStamp)
             newScore = false
@@ -77,6 +103,20 @@ export function ClientPage({ user, set, handleVoteForm }: VoteClientPageProps) {
     setSongs(updatedSongs)
   }
 
+  function onScoreInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+    let value = parseFloat(e.target.value)
+    value = Number.isNaN(value) ? 0 : value
+    e.target.value = String(maskValueToDecimal(value).toFixed(2))
+    setSongUserData({ ...songUserData, score: Number(e.target.value) })
+  }
+
+  function onTimeStampInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+    let value = parseFloat(e.target.value)
+
+    value = Number.isNaN(value) ? 0 : value
+    setSongUserData({ ...songUserData, timeStamp: Number(value) })
+  }
+
   useEffect(() => {
     let userAllScores: number[] = []
     songs.map((s) => {
@@ -94,60 +134,15 @@ export function ClientPage({ user, set, handleVoteForm }: VoteClientPageProps) {
     setSongUserData({ score: userDataForSong.score, timeStamp: userDataForSong.timeStamp })
   }, [selectedSong])
 
-  async function handleFormSubmit(data: FormVote) {
-    try {
-      data.id = selectedSong.id
-      const id = await handleVoteForm(data)
-
-      if (id) {
-        setSessionDataSong(selectedSong, id as number, {
-          score: data.score,
-          timeStamp: data.timeStamp
-        })
-        
-        let nextIndex = songs.indexOf(selectedSong) + 1
-
-        if (nextIndex <= (songs.length - 1)) {
-          setSelectedSong(songs[nextIndex])
-        }else{
-          setSelectedSong(songs[0])
-        }
-        
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  // REMEMBER VALIDATE INPUTS
-  let f = (a: string | number) => {
-    if (a == '') a = 0
-    let n = parseFloat(a as string)
-    if (isNaN(n)) return NaN;
-    if (n < 0) return 0
-    if (n > 10) return f(n / 10)
-    return n
-  }
-
-  function onScoreInputChange(e: React.ChangeEvent<HTMLInputElement>) {
-    let value = parseFloat(e.target.value)
-    value = Number.isNaN(value) ? 0 : value
-    e.target.value = String(f(value).toFixed(2))
-    setSongUserData({ ...songUserData, score: Number(e.target.value) })
-  }
-
-  function onTimeStampInputChange(e: React.ChangeEvent<HTMLInputElement>) {
-    let value = parseFloat(e.target.value)
-    value = Number.isNaN(value) ? 0 : value
-    setSongUserData({ ...songUserData, timeStamp: Number(value) })
-  }
-
-  watch('id')
+  useEffect(() => {
+    setValue('score', String(songUserData.score));
+    setValue('timeStamp', String(songUserData.timeStamp));
+  }, [songUserData])
 
   return (
     <>
       <div className="video">
-        <iframe src={selectedSong.link}></iframe>
+        {selectedSong?.link ? <iframe src={selectedSong.link}></iframe> : <div>Song Not Found</div>}
       </div>
 
       <div className="left">

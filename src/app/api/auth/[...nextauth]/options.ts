@@ -33,6 +33,7 @@ export const options: NextAuthOptions = {
           })
 
           let average = 0
+          
           if (user?.scores){
             let sum = user.scores.map(score => score.value)
             average = (sum.reduce((a, b) => a + b, 0) / sum.length)
@@ -61,7 +62,7 @@ export const options: NextAuthOptions = {
   callbacks: {
     jwt: async ({ user, token, trigger, session }) => {
       if (trigger === "update") return { ...token, ...session.user }
-
+      
       if (user) {
         token.id = user.id as number
         token.username = user.username

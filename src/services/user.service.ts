@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { prisma } from '../lib/prisma';
 import { compareSync, hashSync } from "bcrypt-ts";
 import { convertDbUserToModel } from '../app/api/user/user.repository';
+import { getServerSession } from 'next-auth';
+import { options } from '@/app/api/auth/[...nextauth]/options';
 export class UserService {
   constructor() { }
 
@@ -106,7 +108,7 @@ export class UserService {
   async login(userLogin: UserLoginPost) {
     try {
       const user = await prisma.user.findMany({
-        include:{
+        include: {
           scores: true
         },
         where: {
@@ -128,4 +130,32 @@ export class UserService {
       throw error;
     }
   }
+
+  // async getSessionUserAverage(): Promise<number> {
+  //   try {
+  //     const session = await getServerSession(options);
+  //     if (!session?.user) return 0;
+
+  //     const user = await prisma.user.findUnique({
+  //       include: {
+  //         scores: true
+  //       },
+  //       where: {
+  //         id: session.user.id,
+  //         deletedAt: null
+  //       }
+  //     })
+
+  //     let average = 0
+
+  //     if (user?.scores) {
+  //       let sum = user.scores.map(score => score.value)
+  //       average = (sum.reduce((a, b) => a + b, 0) / sum.length)
+  //     }
+
+  //     return average
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // }
 }
