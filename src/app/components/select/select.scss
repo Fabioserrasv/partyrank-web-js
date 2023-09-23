@@ -12,7 +12,7 @@
     }
   }
 
-  input {
+  select {
     background-color: $lightBackground;
     color: $lightTextPrimary;
     height: 40px;
@@ -20,7 +20,7 @@
     outline: none;
     border: none;
     padding: 10px;
-    font-size: 1rem;
+    font-size: .9rem;
 
     border: 1px solid $divisorColor;
 

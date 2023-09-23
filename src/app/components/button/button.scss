@@ -1,14 +1,19 @@
 button{
+  
   background-color: $primaryColor;
   color: $darkTextPrimary;
+  @include dark{
+    background-color: $secondaryColor;
+    color: $lightTextPrimary;
+  }
 
   height: 35px;
   width: 100%;
-
+  
   border: none;
   border-radius: .5rem;
 
-  font-size: 1rem;
+  font-size: 1.1rem;
 
   cursor: pointer;
 }

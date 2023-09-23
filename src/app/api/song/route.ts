@@ -2,6 +2,7 @@ import { Prisma } from '@prisma/client';
 import { NextResponse } from "next/server";
 import { SongService } from '../../../services/song.service';
 import { SongRequest } from './request';
+import { createSong } from '@/repositories/song.repository';
 
 export const validateSong = new SongRequest;
 export const songService = new SongService;
@@ -21,15 +22,8 @@ export async function GET() {
 export async function POST(req: Request, res: Response) {
   const song: SongPostData = await req.json();
 
-  // Validating the song (must improve, searching for libraries)
-  if (!validateSong.rules(song)) {
-    return NextResponse.json({
-      message: "Invalid data"
-    })
-  }
-
   try {
-    const newSong = await songService.create(song);
+    const newSong = await createSong(song)
 
     return NextResponse.json({
       song: newSong

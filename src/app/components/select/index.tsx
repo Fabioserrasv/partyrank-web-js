@@ -1,24 +1,26 @@
 'use client'
-import React, { forwardRef } from 'react'
-import './input.scss';
+import React, { ReactNode, forwardRef } from 'react'
+import './select.scss';
 import { FieldValues, UseFormRegister } from 'react-hook-form';
 
-type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
+type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
   displayName: string;
   name: string;
   errorMessage?: string;
+  children: ReactNode;
 }
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(({ displayName, errorMessage, name, ...rest }: InputProps, ref) => {
+export const Select = forwardRef<HTMLSelectElement, SelectProps>(({ displayName, children, errorMessage, name, ...rest }: SelectProps, ref) => {
   return (
     <div className='inputGroup'>
       <label htmlFor={name}>{displayName}</label>
-      <input
+      <select
         ref={ref}
         {...rest}
-        autoComplete="off"
         name={name}
-      />
+      >
+        {children}
+      </select>
       {errorMessage ? <span className='error'>{errorMessage}</span> : <></>}
     </div>
   )

@@ -16,23 +16,34 @@ export async function createSongSet(set: SongSetPostData) {
 
     return newSet
   } catch (error) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      if (error.code === 'P2002') {
-        throw new Error("Duplicated")
-      }
-    }
+    throw new Error("Something went wrong")
+  }
+}
+
+export async function handleCreateSongSetFormSubmit(data: { name: string }) {
+  "use server"
+
+  try {
+    const newSongSet = await createSongSet({
+      name: data.name,
+    })
+    return newSongSet.id
+  } catch (error) {
+    return false
   }
 }
 
 export async function getSongSet(id: number, generateJson: boolean = false) {
+  "use server"
   const setService = new SongSetService;
 
   try {
-    const sets = await setService.get(id, generateJson);
+    const set = await setService.get(Number(id), generateJson);
 
-    return sets
+    return set;
   } catch (error) {
-    throw error;
+    // console.log(error)
+    return false;
   }
 }
 

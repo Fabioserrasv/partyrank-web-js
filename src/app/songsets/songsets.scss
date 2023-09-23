@@ -1,8 +1,3 @@
-.asd{
-  width: 100%;
-  background-color: $darkSecondBackground;
-}
-
 .songSetPage {
   display: flex;
   flex-direction: column;
@@ -13,19 +8,24 @@
     width: 60%;
     display: flex;
     justify-content: flex-start;
-
+    align-items: center;
     margin-bottom: 20px;
     margin-top: 20px;
-
-    // background-color: $darkSecondBackground;
-    // border-radius: .4rem;
-    // padding: 10px;
 
     .inputGroup:first-child{
       width: 100%;
       input{
         width:100%;
         height: 50px;
+      }
+    }
+    a{
+      width: 20%;
+      button{
+        width: 100%;
+        height: 50px;
+        margin-top: 5px;
+        margin-left: 5px;
       }
     }
   }

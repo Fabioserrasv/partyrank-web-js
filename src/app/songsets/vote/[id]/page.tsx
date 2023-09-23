@@ -16,7 +16,8 @@ export default async function Vote({ params }: VotePageProps) {
   const session = await getServerSession(options);
   const set = await getSongSet(Number(params.id));
   if (!session) return;
-
+  if (set == false) return;
+  
   return (
     <div className="votePage">
       <ClientPage

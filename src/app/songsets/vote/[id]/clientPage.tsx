@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { scoreVoteSchema } from "../../validations/scoreValidation";
+import { scoreVoteSchema } from "../../validations/songSetValidations";
 import { maskValueToDecimal } from "@/lib/utils";
 import toast from "react-hot-toast";
 
@@ -56,7 +56,6 @@ export function ClientPage({ user, set, handleVoteForm }: VoteClientPageProps) {
         } else {
           setSelectedSong(songs[0])
         }
-
       }
     } catch (error) {
       toast.error("Something went wrong")

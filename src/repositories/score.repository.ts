@@ -35,7 +35,6 @@ export async function handleFormSubmit(data: FormVote) {
   
   try {
     const session = await getServerSession(options);
-    
     const newScore = await createScore({
       songId: Number(data.id),
       userId: session?.user.id as number,

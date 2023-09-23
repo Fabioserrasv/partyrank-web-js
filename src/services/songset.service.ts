@@ -30,7 +30,11 @@ export class SongSetService {
     try {
       const sets = await prisma.songSet.findMany({
         include: {
-          songs: true,
+          songs: {
+            where: {
+              deletedAt: null
+            }
+          },
           user: {
             select:{
               username: true,
@@ -59,6 +63,9 @@ export class SongSetService {
       const set = await prisma.songSet.findUnique({
         include: {
           songs: {
+            where:{
+              deletedAt: null
+            },
             include: {
               scores: {
                 orderBy: {
