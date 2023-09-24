@@ -108,6 +108,12 @@ Usuário padrão:
 *Usuário*: admin
 *Senha*: admin
 
+# Contact
+
+<small>_PT-BR: Contato_</small>
+
+Discord: serrra
+
 ## License
 <small>_PT-BR: Licença_</small>
 
