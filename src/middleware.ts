@@ -23,7 +23,8 @@ export const config = {
     "/api/song-sets/:path*",
     "/api/user-auth",
     "/home",
-    "/songsets/:path*"
+    "/songsets/:path*",
+    "/profile"
   ]
 }
 
