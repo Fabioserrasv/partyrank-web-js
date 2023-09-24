@@ -5,7 +5,7 @@
 _Status: Under Development_
 _Status: Em Desenvolvimento_
 
-##Table of Contents
+## Table of Contents
 <small>_PT-BR: Índice_</small>
 
 - [About](#about)
@@ -15,7 +15,8 @@ _Status: Em Desenvolvimento_
 - [License](#license)
 - [Contact](#contact)
 
-#About 
+# About
+
 <small>_PT-BR:Sobre_</small>
 
 The Party Rank Web is a web development project created for ranking anime songs with friends, such as Openings, Endings, Insert Songs, you decide. The system works in partnership with the 'Party Rank Video Generator' software to automatically generate the edited video.
