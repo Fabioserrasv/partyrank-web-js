@@ -49,3 +49,36 @@ type AnimeThemesResponse = {
 type AnimeThemesApiResponse = {
   animethemes: AnimeThemesResponse[];
 }
+
+type AnisongApiResponse = {
+  data: AnisongResponse[]
+}
+
+type AnisongResponse = {
+  annId: number;
+  annSongId: number;
+  animeENName: string;
+  animeJPName: string;
+  animeAltName?: string;
+  animeVintage: string;
+  animeType: string;
+  songType: string;
+  songName: string;
+  songArtist: string;
+  songDifficulty: number;
+  songCategory: string;
+  HQ: string;
+  MQ?: string;
+  audio: string;
+  artists: Array<{
+    id: number;
+    names: string[];
+    line_up_id: number;
+    groups?: Array<{
+      id: number;
+      names: string[];
+    }
+    >
+  }>
+
+}

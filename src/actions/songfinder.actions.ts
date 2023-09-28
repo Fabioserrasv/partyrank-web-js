@@ -12,7 +12,7 @@ export async function searchSongFinder(query: string = '', songSetId: number = 0
       const songs = await service.search(query);
       return songs
     }
-  
+    
     if (songSetId != 0) {
       const songs = await service.searchBySongSetId(Number(songSetId));
       return songs

@@ -1,20 +1,22 @@
 import { similarity } from "@/lib/similiarity";
 import { AnimeThemesService } from "../app/api/song-finder/services/AnimeThemes.service";
+import { AnisongDBService } from "@/app/api/song-finder/services/AnisongDB.service";
 
 function checkTypeEqual(a: string, b: string) {
-  if (a === "OPENING" && b === "OP") return true;
-  if (a === "ENDING" && b === "ED") return true;
+  if (a === "OPENING" && (b === "OP" || b.includes("Opening"))) return true;
+  if (a === "ENDING" && b === "ED" || b.includes("Ending")) return true;
   return false;
 }
 
 export function getMostPossibleSong(songWebs: SongWeb[], songDb: Song) {
   let result: SongWeb | null = null
   songWebs.forEach((songW) => {
-    if (result != null) return; 
+    if (result != null) return;
     let animeNamePercentage = similarity(songW.anime, songDb.anime)
-    if (animeNamePercentage > 0.30) {
+    if (animeNamePercentage > 0.2) {
       if (checkTypeEqual(songDb.type, songW.type)) {
         let titlePercentage = similarity(songDb.name, songW.title)
+        console.log(titlePercentage)
         if (titlePercentage > 0.40) {
           result = songW
         }
@@ -24,7 +26,7 @@ export function getMostPossibleSong(songWebs: SongWeb[], songDb: Song) {
   return result;
 }
 
-export function generateSongFinderFolder() : string {
+export function generateSongFinderFolder(): string {
   let today = new Date();
   let dd = String(today.getDate()).padStart(2, '0');
   let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -41,6 +43,9 @@ export function getService(name: string) {
   switch (name) {
     case "animethemes":
       service = new AnimeThemesService(generateSongFinderFolder());
+      break;
+    case "anisongdb":
+      service = new AnisongDBService(generateSongFinderFolder());
       break;
     default:
       service = null;
