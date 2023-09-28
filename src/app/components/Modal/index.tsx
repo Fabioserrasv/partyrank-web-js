@@ -1,19 +1,29 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 import './modal.scss';
+import { X } from 'lucide-react';
 
 type ModalProps = {
   children: ReactNode;
-  size: "sm" | "md" | "lg";
+  title: string;
+  className: string;
+  closeModal: (isModalOpen: boolean) => void;
 }
 
-export function Modal({ children, size }: ModalProps) {
+export default function Modal({ title, children, className, closeModal }: ModalProps) {
   return (
-    <div className={`modal ${size}`}>
-      <div className="header"></div>
-      <div className="body">
-        {children}
+    <div className="modal">
+      <div className={`modalContainer ${className}`}>
+        <div className="title">
+          <h3>{title}</h3>
+          <X className='iconClose' onClick={() => { closeModal(false) }} />
+        </div>
+        <div className="modalBody">
+          {children}
+        </div>
+        <div className="modalFooter">
+          
+        </div>
       </div>
-      <div className="footer"></div>
     </div>
   )
 }

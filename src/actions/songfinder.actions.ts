@@ -1,23 +1,25 @@
 import { getService } from "@/repositories/songfinder.repository";
 
-export async function searchSongFinder(query: string = '', songSetId: number = 0, serviceName: string = '') {
+export async function searchSongFinder(data: SongFinderAction) {
   try {
-    if (serviceName == '') throw new Error("Service not found")
+    if (data.serviceName == '') throw new Error("Service not found")
 
-    const service = getService(serviceName)
-    
+    const service = getService(data.serviceName)
+
     if (!service) throw new Error("Service not found")
-  
-    if (query != '') {
-      const songs = await service.search(query);
-      return songs
-    }
-    
-    if (songSetId != 0) {
-      const songs = await service.searchBySongSetId(Number(songSetId));
+
+    if (data.query != '') {
+      console.log(data)
+      const songs = await service.search(data.query, data.songName, data.artistName);
       return songs
     }
 
+    if (data.songSetId != 0) {
+      const songs = await service.searchBySongSetId(Number(data.songSetId));
+      return songs
+    }
+
+    return []
   } catch (error) {
     throw error;
   }

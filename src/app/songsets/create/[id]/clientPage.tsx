@@ -5,11 +5,13 @@ import { AddSongForm } from "./forms/addSongForm";
 import { Table, TableRow } from "@/app/components/table";
 import { Globe, Mic2, Monitor, X } from "lucide-react";
 import toast from "react-hot-toast";
+import { SongFinderModal } from "./modals/songFinderModal";
 
 type ClientCreateSongPageProps = {
   dbSet: SongSet | false;
   handleCreateFormSubmit: ({ }: SongSetPostData) => Promise<number | boolean>;
   handleAddSongFormSubmit: ({ }: AddSongFormSchema, songSetId: number) => Promise<number | boolean>;
+  handleSongFinderFormSubmit: (data: SongFinderAction) => Promise<SongWeb[]>;
   handleDeleteSong: (id: number) => Promise<boolean>;
 }
 
@@ -49,10 +51,11 @@ const formattedTypes = {
   "INSERT_SONG": "Insert Song"
 }
 
-export function ClientCreateSongPage({ dbSet, handleCreateFormSubmit, handleDeleteSong, handleAddSongFormSubmit }: ClientCreateSongPageProps) {
+export function ClientCreateSongPage({ dbSet, handleCreateFormSubmit, handleDeleteSong, handleSongFinderFormSubmit, handleAddSongFormSubmit }: ClientCreateSongPageProps) {
   const [songSet, setSongSet] = useState<SongSetFormatter>(initialValue)
   const [song, setSong] = useState<AddSongFormSchema>(initialSongValue)
-
+  const [songFinderModalOpen, setSongFinderModalOpen] = useState<boolean>(false);
+  
   const cardTitle = dbSet == false ? "Create new Song set" : "Edit song set"
   const buttonTitle = dbSet == false ? "Create" : "Update";
 
@@ -64,21 +67,25 @@ export function ClientCreateSongPage({ dbSet, handleCreateFormSubmit, handleDele
     })
   }
 
+  function changeSongFinderModalOpen(isModalOpen: boolean) {
+    setSongFinderModalOpen(isModalOpen)
+  }
+
   function updateSongState(song: AddSongFormSchema) {
     setSong(song)
   }
 
   function addSongToSongSetState(song: Song) {
     let newSong = true
-    const updatedSongs = songSet.songs.map((songOld) => { 
-      if(songOld.id == song.id) {
+    const updatedSongs = songSet.songs.map((songOld) => {
+      if (songOld.id == song.id) {
         songOld = song
         newSong = false
       }
       return songOld
     })
 
-    if (newSong){
+    if (newSong) {
       updatedSongs.push(song)
     }
 
@@ -130,6 +137,13 @@ export function ClientCreateSongPage({ dbSet, handleCreateFormSubmit, handleDele
 
   return (
     <>
+      {
+        songFinderModalOpen &&
+        <SongFinderModal
+          changeSongFinderModalOpen={changeSongFinderModalOpen}
+          handleSongFinderFormSubmit={handleSongFinderFormSubmit}
+        />
+      }
       <div className="infoSection">
         <h3>{cardTitle}</h3>
         <CreateUpdateSongSetForm
@@ -142,7 +156,10 @@ export function ClientCreateSongPage({ dbSet, handleCreateFormSubmit, handleDele
         {
           songSet.id != 0 &&
           <div className="songFormSection">
-            <h3>Add song</h3>
+            <div className="sectionTitle">
+              <h3>Manage song</h3>
+              <span onClick={() => { setSongFinderModalOpen(true) }}>Search on Song Finder</span>
+            </div>
             <AddSongForm
               songSet={songSet}
               handleAddSongFormSubmit={handleAddSongFormSubmit}

@@ -1,4 +1,4 @@
-import { Modal } from '../components/Modal';
+import { Card } from '../components/card';
 import "./login.scss";
 import { FormLogin } from './form';
 import { redirect } from 'next/navigation';
@@ -15,9 +15,9 @@ export default async function Login() {
   return (
     <div className="loginPage">
       <span>Sign in to Party Rank Web</span>
-      <Modal size="sm">
+      <Card size="sm">
         <FormLogin  />
-      </Modal>
+      </Card>
     </div>
   );
 }

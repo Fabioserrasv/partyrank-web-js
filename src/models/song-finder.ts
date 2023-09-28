@@ -80,5 +80,12 @@ type AnisongResponse = {
     }
     >
   }>
+}
 
+type SongFinderAction = {
+  query: string;
+  serviceName: string;
+  songName?: string;
+  artistName?: string;
+  songSetId?: number;
 }

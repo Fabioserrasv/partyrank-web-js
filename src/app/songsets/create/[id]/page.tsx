@@ -2,6 +2,7 @@ import './createSongSet.scss';
 import { ClientCreateSongPage } from "./clientPage";
 import { handleCreateSongSetFormSubmit } from "@/handlers/songset.handlers";
 import { handleAddSongFormSubmit, handleDeleteSong } from "@/handlers/song.handlers";
+import { handleSongFinderFormSubmit } from '@/handlers/songfinder.handlers';
 import { getSongSet } from "@/actions/songset.actions";
 
 type CreateSongSetProps = {
@@ -20,6 +21,7 @@ export default async function CreateSongSet({params} : CreateSongSetProps){
         handleCreateFormSubmit={handleCreateSongSetFormSubmit}
         handleAddSongFormSubmit={handleAddSongFormSubmit}
         handleDeleteSong={handleDeleteSong}
+        handleSongFinderFormSubmit={handleSongFinderFormSubmit}
       />
     </div>
   )

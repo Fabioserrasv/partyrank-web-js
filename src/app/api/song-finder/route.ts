@@ -7,7 +7,7 @@ export async function GET(req: Request, res: Response) {
     const songSetId = Number((new URL(req.url)).searchParams.get('id')) || 0;
     const serviceName = (new URL(req.url)).searchParams.get('service')  || '';
 
-    const songs = await searchSongFinder(query, songSetId, serviceName);
+    const songs = await searchSongFinder({query, songSetId, serviceName});
 
     return NextResponse.json(songs);
   } catch (error) {

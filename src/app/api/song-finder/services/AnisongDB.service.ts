@@ -63,7 +63,7 @@ export class AnisongDBService implements SongFinderContract {
         }
       }
 
-      if (songName) {
+      if (songName && songName != '') {
         searchParams['song_name_search_filter'] = {
           "search": songName,
           "partial_match": true

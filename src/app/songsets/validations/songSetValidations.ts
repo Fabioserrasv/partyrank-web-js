@@ -16,3 +16,10 @@ export const addSongSchema = z.object({
   link: z.string().min(0),
   type: z.string().min(0),
 })
+
+export const songFinderSchema = z.object({
+  query: z.string().min(1),
+  songName: z.string(),
+  artistName: z.string(),
+  serviceName: z.string(),
+})

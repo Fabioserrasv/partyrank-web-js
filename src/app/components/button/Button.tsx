@@ -1,10 +1,19 @@
+import { ReactNode } from 'react';
 import './button.scss';
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  name: string;
+  name?: string;
+  children?: React.ReactNode
 }
-export function Button({ name, ...rest }: ButtonProps) {
+export function Button({ name, children, ...rest }: ButtonProps) {
   return(
-    <button {...rest}>{name}</button>    
+    <button {...rest}>
+      {
+        name ? name : <></>
+      }
+      {
+        children ? children : <></>
+      }
+    </button>    
   )
 }
