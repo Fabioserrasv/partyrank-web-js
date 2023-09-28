@@ -2,10 +2,6 @@ import type { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { UserService } from '../../../../services/user.service';
 import { encode, decode } from 'next-auth/jwt';
-import { PrismaClient } from "@prisma/client";
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import { prisma } from '../../../../lib/prisma';
-
 export const options: NextAuthOptions = {
   pages: {
     signIn: '/login'
@@ -33,8 +29,8 @@ export const options: NextAuthOptions = {
           })
 
           let average = 0
-          
-          if (user?.scores){
+
+          if (user?.scores) {
             let sum = user.scores.map(score => score.value)
             average = (sum.reduce((a, b) => a + b, 0) / sum.length)
           }
@@ -46,7 +42,7 @@ export const options: NextAuthOptions = {
               animeList: user.animeList,
               admin: user.admin,
               imageUrl: user.imageUrl,
-              average: average, 
+              average: average,
               theme: "light"
             }
           }
@@ -62,7 +58,7 @@ export const options: NextAuthOptions = {
   callbacks: {
     jwt: async ({ user, token, trigger, session }) => {
       if (trigger === "update") return { ...token, ...session.user }
-      
+
       if (user) {
         token.id = user.id as number
         token.username = user.username

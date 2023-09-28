@@ -8,4 +8,14 @@ export class UserRequest {
 
     return Object.values(rulesTested).every(Boolean)
   }
+
+  rulesUpdate(data: UserUpdateData){
+    const rulesTested = {
+      "username": typeof data.username === 'string',
+      "animeList": typeof data.username === 'string'
+    }
+
+    return Object.values(rulesTested).every(Boolean)
+  }
+
 }

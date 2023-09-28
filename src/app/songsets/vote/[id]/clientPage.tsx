@@ -24,7 +24,7 @@ export type FormVote = {
 
 export function ClientPage({ user, set, handleVoteForm }: VoteClientPageProps) {
   if (!set.songs || set.songs.length == 0) {
-    toast.success("No songs found")
+    toast.error("No songs found")
     const route = useRouter()
     route.push("/songsets")
     return;

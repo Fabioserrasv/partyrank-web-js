@@ -1,0 +1,67 @@
+.profilePage {
+  padding-left: 1rem;
+
+  .userCard {
+    height: 800px;
+    padding: 1rem;
+    width: 20%;
+    border-radius: 1rem;
+
+
+    background-color: $lightSecondBackground;
+
+    @include dark {
+      background-color: $darkSecondBackground;
+    }
+
+    .profilePicture {
+      width: 100%;
+      text-align: center;
+      margin-bottom: 20px ;
+      img {
+        width: 100%;
+        border-radius: 50%;
+      }
+
+      span {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        font-size: 2rem;
+      }
+    }
+
+    .formAnimeList {
+      display: flex;
+      flex-direction: column;
+
+      .inputs{
+        display: flex;
+        justify-content: space-between;
+        .inputGroup{
+          width: 48%;
+        }
+      }
+
+      .updateAnimeListButton {
+        width: 30%;
+        margin-top: 10px;
+        margin-left: auto;
+      }
+    }
+
+    .formPassword {
+      display: flex;
+      flex-direction: column;
+
+      .inputGroup {
+        margin-top: 10px;
+      }
+
+      .updatePasswordButton {
+        width: 30%;
+        margin-top: 10px;
+        margin-left: auto;
+      }
+    }
+  }
+}

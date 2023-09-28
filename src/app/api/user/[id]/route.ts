@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { userService, validateUser } from '../route';
 import { Prisma } from '@prisma/client';
+import { updateUserInfo } from '@/repositories/user.repository';
 
 export async function GET(req: Request) {
   try {
@@ -16,18 +17,13 @@ export async function GET(req: Request) {
 }
 
 export async function PUT(req: Request) {
-  const user: UserPostData = await req.json();
+  const user: UserUpdateData = await req.json();
   const id = Number(req.url.slice(req.url.lastIndexOf('/') + 1));
 
-  // Validating the user (must improve, searching for libraries)
-  if (!validateUser.rules(user)) {
-    return NextResponse.json({
-      message: "Invalid data"
-    })
-  }
+  
 
   try {
-    const newUser = await userService.update(user, id);
+    const newUser = await updateUserInfo(user, id);
 
     return NextResponse.json({
       user: newUser

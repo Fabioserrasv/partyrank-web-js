@@ -4,6 +4,11 @@ type UserPostData = {
   animeList: string;
 } 
 
+type UserUpdateData = {
+  username: string;
+  animeList: string;
+} 
+
 type UserProfilePicturePost = {
   image: File;
 }

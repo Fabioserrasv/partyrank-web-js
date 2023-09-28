@@ -1,9 +1,13 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '../lib/prisma';
 import { compareSync, hashSync } from "bcrypt-ts";
-import { convertDbUserToModel } from '../app/api/user/user.repository';
 import { getServerSession } from 'next-auth';
 import { options } from '@/app/api/auth/[...nextauth]/options';
+import { convertDbUserToModel } from '@/repositories/user.repository';
+import { Prisma } from '@prisma/client';
+
+export class UserException extends Error {};
+
 export class UserService {
   constructor() { }
 
@@ -44,8 +48,8 @@ export class UserService {
       }, { status: 400 })
     }
   }
-
-  async update(data: UserPostData, id: number): Promise<User> {
+  
+  async update(data: UserUpdateData, id: number): Promise<User> {
     try {
       const user = await prisma.user.update({
         where: {
@@ -53,15 +57,14 @@ export class UserService {
         },
         data: {
           username: data.username,
-          password: data.password,
           animeList: data.animeList,
           updatedAt: new Date()
         }
       })
 
       return convertDbUserToModel(user);
-    } catch (error) {
-      throw error;
+    } catch (e) {
+      throw e
     }
   }
 
@@ -131,31 +134,31 @@ export class UserService {
     }
   }
 
-  // async getSessionUserAverage(): Promise<number> {
-  //   try {
-  //     const session = await getServerSession(options);
-  //     if (!session?.user) return 0;
+  async getSessionUserAverage(): Promise<number> {
+    try {
+      const session = await getServerSession(options);
+      if (!session?.user) return 0;
 
-  //     const user = await prisma.user.findUnique({
-  //       include: {
-  //         scores: true
-  //       },
-  //       where: {
-  //         id: session.user.id,
-  //         deletedAt: null
-  //       }
-  //     })
+      const user = await prisma.user.findUnique({
+        include: {
+          scores: true
+        },
+        where: {
+          id: session.user.id,
+          deletedAt: null
+        }
+      })
 
-  //     let average = 0
+      let average = 0
 
-  //     if (user?.scores) {
-  //       let sum = user.scores.map(score => score.value)
-  //       average = (sum.reduce((a, b) => a + b, 0) / sum.length)
-  //     }
+      if (user?.scores) {
+        let sum = user.scores.map(score => score.value)
+        average = (sum.reduce((a, b) => a + b, 0) / sum.length)
+      }
 
-  //     return average
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // }
+      return average
+    } catch (error) {
+      throw error;
+    }
+  }
 }

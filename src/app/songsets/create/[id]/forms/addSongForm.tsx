@@ -128,7 +128,7 @@ export function AddSongForm({ handleAddSongFormSubmit, updateSongState, song, ad
           />
         }
         <Button
-          name="Add song"
+          name={song.id == 0 ? "Add" : "Update"}
           type="submit"
         />
       </div>
