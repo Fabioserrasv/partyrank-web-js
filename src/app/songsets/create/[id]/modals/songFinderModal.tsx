@@ -7,17 +7,44 @@ import { Table, TableRow } from "@/app/components/table";
 import { Globe, Mic2, Monitor, Plus, Search, X } from "lucide-react";
 import { SongFinderModalForm } from "../forms/songFinderModalForm";
 import { useState } from "react";
+import toast from "react-hot-toast";
+import { AddSongFormSchema } from "../clientPage";
 
 type SongFinderModalProps = {
+  songSet: SongSet;
+  addSongToSongSetState: (song: Song) => void;
   changeSongFinderModalOpen: (isModalOpen: boolean) => void
   handleSongFinderFormSubmit: (data: SongFinderAction) => Promise<SongWeb[]>;
+  handleAddSongFormSubmit: ({ }: AddSongFormSchema, songSetId: number) => Promise<number | boolean>;
+
 }
 
-export function SongFinderModal({ changeSongFinderModalOpen, handleSongFinderFormSubmit }: SongFinderModalProps) {
+export function SongFinderModal({ changeSongFinderModalOpen, handleSongFinderFormSubmit, addSongToSongSetState,  handleAddSongFormSubmit, songSet }: SongFinderModalProps) {
   const [songsFind, setSongsFind] = useState<SongWeb[]>([]);
 
   function populateTableSongsWeb(songs: SongWeb[]) {
     setSongsFind(songs);
+  }
+
+  async function onSubmitHandleAddSong(data: AddSongFormSchema) {
+    try {
+      const id = await handleAddSongFormSubmit(data, songSet.id)
+      if (id) {
+        addSongToSongSetState({
+          id: Number(id),
+          anime: data.anime,
+          artist: data.artist,
+          link: data.link,
+          name: data.name,
+          type: data.type,
+          scores: [],
+          songSet: songSet
+        })
+        toast.success("Song added successfully")
+      }
+    } catch (error) {
+      toast.error("Something went wrong")
+    }
   }
 
   return (
@@ -54,7 +81,14 @@ export function SongFinderModal({ changeSongFinderModalOpen, handleSongFinderFor
                     </div>
                   </div>
                   <div className='actions'>
-                    <Plus className="icon" />
+                    <Plus className="icon" onClick={() => {onSubmitHandleAddSong({
+                      id: 0,
+                      anime: song.anime,
+                      artist: song.artist,
+                      link: song.video?.link || '',
+                      name: song.title,
+                      type: 'ENDING'
+                    })}} />
                     <X className="icon" />
                   </div>
                 </TableRow>

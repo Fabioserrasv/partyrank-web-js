@@ -55,7 +55,7 @@ export function ClientCreateSongPage({ dbSet, handleCreateFormSubmit, handleDele
   const [songSet, setSongSet] = useState<SongSetFormatter>(initialValue)
   const [song, setSong] = useState<AddSongFormSchema>(initialSongValue)
   const [songFinderModalOpen, setSongFinderModalOpen] = useState<boolean>(false);
-  
+
   const cardTitle = dbSet == false ? "Create new Song set" : "Edit song set"
   const buttonTitle = dbSet == false ? "Create" : "Update";
 
@@ -140,7 +140,10 @@ export function ClientCreateSongPage({ dbSet, handleCreateFormSubmit, handleDele
       {
         songFinderModalOpen &&
         <SongFinderModal
+          songSet={songSet}
+          addSongToSongSetState={addSongToSongSetState}
           changeSongFinderModalOpen={changeSongFinderModalOpen}
+          handleAddSongFormSubmit={handleAddSongFormSubmit}
           handleSongFinderFormSubmit={handleSongFinderFormSubmit}
         />
       }

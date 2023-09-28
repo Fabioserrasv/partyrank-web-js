@@ -6,13 +6,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Search } from "lucide-react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { AddSongFormSchema } from "../clientPage";
 
 type SongFinderModalFormProps = {
   handleSongFinderFormSubmit: (data: SongFinderAction) => Promise<SongWeb[]>;
   populateTableSongsWeb: (songs: SongWeb[]) => void;
 }
 
-export function SongFinderModalForm({ handleSongFinderFormSubmit, populateTableSongsWeb }: SongFinderModalFormProps) {
+export function SongFinderModalForm({  handleSongFinderFormSubmit, populateTableSongsWeb }: SongFinderModalFormProps) {
   const { register, handleSubmit, formState: { errors }, setValue } = useForm<SongFinderAction>({
     resolver: zodResolver(songFinderSchema)
   });
