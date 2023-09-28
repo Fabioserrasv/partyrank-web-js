@@ -1,13 +1,13 @@
 import { NextResponse } from 'next/server';
-import { songService, validateSong } from '../route';
 import { Prisma } from '@prisma/client';
+import { deleteSong, getSong, updateSong } from '@/actions/song.actions';
 
 export async function GET(req: Request) {
   try {
     const id = Number(req.url.slice(req.url.lastIndexOf('/') + 1));
-    const sets = await songService.get(id);
+    const song = await getSong(id);
   
-    return NextResponse.json(sets)
+    return NextResponse.json(song)
   } catch (error) {
     return NextResponse.json({
       message: "Song not found"
@@ -19,15 +19,8 @@ export async function PUT(req: Request, res: Response) {
   const song: SongPostData = await req.json();
   const id = Number(req.url.slice(req.url.lastIndexOf('/') + 1));
 
-  // Validating the song (must improve, searching for libraries)
-  if (!validateSong.rules(song)) {
-    return NextResponse.json({
-      message: "Invalid data"
-    })
-  }
-
   try {
-    const newSong = await songService.update(song, id);
+    const newSong = await updateSong(song, id);
 
     return NextResponse.json({
       user: newSong
@@ -47,7 +40,7 @@ export async function DELETE(req: Request) {
   const id = Number(req.url.slice(req.url.lastIndexOf('/') + 1));
 
   try {
-    await songService.delete(id);
+    await deleteSong(id);
 
     return NextResponse.json({})
   } catch (error) {

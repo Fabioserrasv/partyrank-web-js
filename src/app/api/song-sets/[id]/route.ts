@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { setService, validateSongSet } from '../route';
 import { Prisma } from '@prisma/client';
+import { deleteSongSet, getSongSet, updateSongSet } from '@/actions/songset.actions';
 
 export async function GET(req: Request) {
   const url = new URL(req.url)
@@ -9,7 +9,7 @@ export async function GET(req: Request) {
   let generateJson = generateJsonParam != null && generateJsonParam == '1'? true : false;
   
   try {
-    const sets = await setService.get(id, generateJson);
+    const sets = await getSongSet(id, generateJson);
     
     return NextResponse.json(sets)
   } catch (error) {
@@ -23,14 +23,8 @@ export async function PUT(req: Request, res: Response) {
   const set: SongSetPostData = await req.json();
   const id = Number(req.url.slice(req.url.lastIndexOf('/') + 1));
 
-  if (!validateSongSet.rules(set)) {
-    return NextResponse.json({
-      message: "Invalid data"
-    })
-  }
-
   try {
-    const newSet = await setService.update(set, id);
+    const newSet = await updateSongSet(set, id);
 
     return NextResponse.json({
       user: newSet
@@ -50,7 +44,7 @@ export async function DELETE(req: Request) {
   const id = Number(req.url.slice(req.url.lastIndexOf('/') + 1));
 
   try {
-    await setService.delete(id);
+    await deleteSongSet(id);
 
     return NextResponse.json({})
   } catch (error) {

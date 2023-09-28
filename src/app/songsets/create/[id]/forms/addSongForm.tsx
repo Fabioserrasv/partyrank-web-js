@@ -4,7 +4,7 @@ import { Input } from "@/app/components/input"
 import { Select } from "@/app/components/select";
 import { addSongSchema } from "@/app/songsets/validations/songSetValidations";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { AddSongFormSchema, initialSongValue } from "../clientPage";
 import toast from "react-hot-toast";
@@ -18,7 +18,6 @@ type AddSongFormProps = {
 }
 
 type fields = "name" | "anime" | "artist" | "name" | "type"
-
 
 export function AddSongForm({ handleAddSongFormSubmit, updateSongState, song, addSongToSongSetState, songSet }: AddSongFormProps) {
   const { register, handleSubmit, formState: { errors }, setValue } = useForm<AddSongFormSchema>({

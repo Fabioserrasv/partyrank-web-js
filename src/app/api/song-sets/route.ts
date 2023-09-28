@@ -1,11 +1,5 @@
-import { Prisma } from '@prisma/client';
 import { NextResponse } from "next/server";
-import { SongSetService } from '../../../services/songset.service';
-import { SongSetRequest } from './requests';
-import { createSongSet, getAllSongSets } from '../../../repositories/songset.repository';
-
-export const validateSongSet = new SongSetRequest;
-export const setService = new SongSetService;
+import { createSongSet, getAllSongSets } from '@/actions/songset.actions';
 
 export async function GET() {
   try {

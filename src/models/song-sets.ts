@@ -1,4 +1,5 @@
 type SongSetPostData = {
+  id?: number;
   name: string;
 }
 

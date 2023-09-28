@@ -1,5 +1,5 @@
 import { similarity } from "@/lib/similiarity";
-import { AnimeThemesService } from "./services/AnimeThemes.service";
+import { AnimeThemesService } from "../app/api/song-finder/services/AnimeThemes.service";
 
 function checkTypeEqual(a: string, b: string) {
   if (a === "OPENING" && b === "OP") return true;

@@ -3,23 +3,22 @@ import { Button } from "@/app/components/button/Button";
 import { Input } from "@/app/components/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createSongSetSchema } from "../../../validations/songSetValidations";
-import { CreateForm } from "../clientPage";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
 type createUpdateSongSetFormProps = {
   songSet: SongSet;
   updateSetSongSet: (name: string, id: number) => void;
-  handleCreateFormSubmit: ({ }: CreateForm) => Promise<number | boolean>;
+  handleCreateFormSubmit: ({ }: SongSetPostData) => Promise<number | boolean>;
   buttonName: string;
 }
 
 export function CreateUpdateSongSetForm({ songSet, handleCreateFormSubmit, updateSetSongSet, buttonName }: createUpdateSongSetFormProps) {
-  const { register, handleSubmit, formState: { errors }, setValue } = useForm<CreateForm>({
+  const { register, handleSubmit, formState: { errors }, setValue } = useForm<SongSetPostData>({
     resolver: zodResolver(createSongSetSchema)
   });
 
-  async function onSubmitHandleCreateSongSet(data: CreateForm) {
+  async function onSubmitHandleCreateSongSet(data: SongSetPostData) {
     try {
       data.id = songSet.id;
       const id = await handleCreateFormSubmit(data)

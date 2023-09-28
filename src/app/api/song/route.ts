@@ -1,17 +1,12 @@
 import { Prisma } from '@prisma/client';
 import { NextResponse } from "next/server";
-import { SongService } from '../../../services/song.service';
-import { SongRequest } from './request';
-import { createSong } from '@/repositories/song.repository';
-
-export const validateSong = new SongRequest;
-export const songService = new SongService;
+import { createSong, getAllSongs } from '@/actions/song.actions';
 
 export async function GET() {
   try {
-    const users = await songService.getAll();
+    const songs = await getAllSongs();
   
-    return NextResponse.json(users)
+    return NextResponse.json(songs)
   } catch (error) {
     return NextResponse.json({
       message: "Songs not found"

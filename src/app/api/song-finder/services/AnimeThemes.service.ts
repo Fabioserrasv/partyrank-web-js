@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { SongSetService } from '../../../../services/songset.service';
-import { generateSongFinderFolder, getMostPossibleSong } from '../songfinder.repository';
+import { generateSongFinderFolder, getMostPossibleSong } from '../../../../repositories/songfinder.repository';
 
 const apiUrl = process.env.ANIMETHEMES_API_URL as string
 const queryParamsUrl = "?include=animethemeentries.videos,anime.images,song.artists&fields[anime]=name,year&fields[animetheme]=type&fields[animethemeentry]=version&fields[video]=link,basename,id&fields[image]=facet,link&fields[song]=title&filter[has]=song&filter[song][title-like]=A%25&page[size]=100&page[number]=1&q=";

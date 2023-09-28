@@ -1,12 +1,11 @@
 import { NextResponse } from 'next/server';
-import { userService, validateUser } from '../route';
 import { Prisma } from '@prisma/client';
-import { updateUserInfo } from '@/repositories/user.repository';
+import { deleteUser, getUser, updateUserInfo } from '@/actions/user.actions';
 
 export async function GET(req: Request) {
   try {
     const id = Number(req.url.slice(req.url.lastIndexOf('/') + 1));
-    const users = await userService.getUser(id);
+    const users = await getUser(id);
   
     return NextResponse.json(users)
   } catch (error) {
@@ -19,8 +18,6 @@ export async function GET(req: Request) {
 export async function PUT(req: Request) {
   const user: UserUpdateData = await req.json();
   const id = Number(req.url.slice(req.url.lastIndexOf('/') + 1));
-
-  
 
   try {
     const newUser = await updateUserInfo(user, id);
@@ -43,7 +40,7 @@ export async function DELETE(req: Request) {
   const id = Number(req.url.slice(req.url.lastIndexOf('/') + 1));
 
   try {
-    await userService.removeUser(id);
+    await deleteUser(id);
 
     return NextResponse.json({})
   } catch (error) {

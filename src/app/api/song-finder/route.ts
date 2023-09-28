@@ -1,28 +1,15 @@
-import { Prisma } from '@prisma/client';
-import { NextResponse } from "next/server"; import { AnimeThemesService } from './services/AnimeThemes.service';
-import { generateSongFinderFolder, getService } from './songfinder.repository';
+import { NextResponse } from "next/server";
+import { searchSongFinder } from '@/actions/songfinder.actions';
 
 export async function GET(req: Request, res: Response) {
   try {
-    const query = (new URL(req.url)).searchParams.get('q');
-    const songSetId = (new URL(req.url)).searchParams.get('id');
-    const serviceName = (new URL(req.url)).searchParams.get('service');
+    const query = (new URL(req.url)).searchParams.get('q') || '';
+    const songSetId = Number((new URL(req.url)).searchParams.get('id')) || 0;
+    const serviceName = (new URL(req.url)).searchParams.get('service')  || '';
 
-    if (!serviceName) return NextResponse.json({ "message": "Service not found" }, { status: 400 })
-    const service = getService(serviceName)
-    if (!service) return NextResponse.json({ "message": "Service not found" }, { status: 400 }) 
+    const songs = await searchSongFinder(query, songSetId, serviceName);
 
-    if (query) {
-      const songs = await service.search(query);
-      return NextResponse.json(songs)
-    }
-
-    if (songSetId) {
-      const songs = await service.searchBySongSetId(Number(songSetId));
-      return NextResponse.json(songs)
-    }
-
-    return NextResponse.json([]);
+    return NextResponse.json(songs);
   } catch (error) {
     return NextResponse.json({
       message: "Something went wrong"

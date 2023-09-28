@@ -1,14 +1,10 @@
 import { Prisma } from '@prisma/client';
 import { NextResponse } from "next/server";
-import { UserService } from "../../../services/user.service";
-import { UserRequest } from './request';
-
-export const validateUser = new UserRequest;
-export const userService = new UserService;
+import { createUser, getAllUsers } from '@/actions/user.actions';
 
 export async function GET() {
   try {
-    const users = await userService.getAllUsers();
+    const users = await getAllUsers();
   
     return NextResponse.json(users)
   } catch (error) {
@@ -20,16 +16,9 @@ export async function GET() {
 
 export async function POST(req: Request, res: Response) {
   const user: UserPostData = await req.json();
-
-  // Validating the user (must improve, searching for libraries)
-  if (!validateUser.rules(user)) {
-    return NextResponse.json({
-      message: "Invalid data"
-    })
-  }
   
   try {
-    const newUser = await userService.create(user);
+    const newUser = await createUser(user);
     
     return NextResponse.json({
       user: newUser
@@ -43,5 +32,4 @@ export async function POST(req: Request, res: Response) {
       }
     }
   }
-
 }

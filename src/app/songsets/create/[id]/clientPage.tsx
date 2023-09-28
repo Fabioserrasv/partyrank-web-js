@@ -4,13 +4,11 @@ import { CreateUpdateSongSetForm } from "./forms/createUpdateSongSetForm";
 import { AddSongForm } from "./forms/addSongForm";
 import { Table, TableRow } from "@/app/components/table";
 import { Globe, Mic2, Monitor, X } from "lucide-react";
-import { handleAddSongFormSubmit } from "@/repositories/song.repository";
-import Link from "next/link";
 import toast from "react-hot-toast";
 
 type ClientCreateSongPageProps = {
   dbSet: SongSet | false;
-  handleCreateFormSubmit: ({ }: CreateForm) => Promise<number | boolean>;
+  handleCreateFormSubmit: ({ }: SongSetPostData) => Promise<number | boolean>;
   handleAddSongFormSubmit: ({ }: AddSongFormSchema, songSetId: number) => Promise<number | boolean>;
   handleDeleteSong: (id: number) => Promise<boolean>;
 }
@@ -19,11 +17,6 @@ type SongSetFormatter = {
   id: number;
   name: string;
   songs: Song[];
-}
-
-export type CreateForm = {
-  id: number;
-  name: string;
 }
 
 export type AddSongFormSchema = {

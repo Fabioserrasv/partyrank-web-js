@@ -1,13 +1,6 @@
 import { Prisma } from '@prisma/client';
 import { NextResponse } from "next/server";
-import { ScoreService } from '../../../services/score.service';
-import { ScoreRequest } from './request';
-import { getServerSession } from "next-auth/next";
-import { options } from '../auth/[...nextauth]/options';
-import { createScore } from '@/repositories/score.repository';
-
-export const validateScore = new ScoreRequest;
-export const scoreService = new ScoreService;
+import { createScore } from '@/actions/score.actions';
 
 export async function POST(req: Request, res: Response) {
   const score: ScorePost = await req.json();
