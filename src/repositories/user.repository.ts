@@ -12,12 +12,27 @@ export async function updateUserInfo(data: UserUpdateData, id: number) {
   }
 
   try {
-    const newUser = userService.update({
+    const newUser = await userService.update({
       username: data.username,
       animeList: data.animeList
     }, id)
 
     return newUser;
+  } catch (error) {
+    throw error
+  }
+}
+
+export async function updateUserPassword({ oldPass, newPass }: ChangePasswordType, id: number) {
+  const userService = new UserService;
+
+  try {
+    const response = await userService.updatePassword({
+     oldPass,
+     newPass
+    }, id)
+
+    return response;
   } catch (error) {
     throw error
   }
@@ -33,6 +48,21 @@ export async function handleUpdateUserInfoForm(data: ChangeUserInfoFormSchema, i
     }, id)
 
     return true
+  } catch (error) {
+    throw error
+  }
+}
+
+export async function handleUpdatePasswordForm({ oldPass, newPass }: ChangePasswordType, id: number) {
+  "use server"
+
+  try {
+    const response = await updateUserPassword({
+      oldPass,
+      newPass
+    }, id)
+
+    return response
   } catch (error) {
     throw error
   }

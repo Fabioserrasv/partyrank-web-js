@@ -3,7 +3,7 @@ import { ChangeUserInfoForm } from "./forms/changeUserInfoForm";
 import { options } from "../api/auth/[...nextauth]/options";
 import './profile.scss';
 import { ChangePasswordForm } from "./forms/changePasswordForm";
-import { handleUpdateUserInfoForm } from "@/repositories/user.repository";
+import { handleUpdatePasswordForm, handleUpdateUserInfoForm } from "@/repositories/user.repository";
 
 export default async function Profile() {
   const session = await getServerSession(options);
@@ -22,7 +22,10 @@ export default async function Profile() {
           handleUpdateUserInfoForm={handleUpdateUserInfoForm}
         />
 
-        <ChangePasswordForm />
+        <ChangePasswordForm
+          handleUpdatePasswordForm={handleUpdatePasswordForm}
+          id={user.id}
+        />
       </div>
     </div>
   )

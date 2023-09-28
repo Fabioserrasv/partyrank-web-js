@@ -12,14 +12,13 @@ type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
 export const Input = forwardRef<HTMLInputElement, InputProps>(({ displayName, errorMessage, name, ...rest }: InputProps, ref) => {
   return (
     <div className='inputGroup'>
-      <label htmlFor={name}>{displayName}</label>
+      <label htmlFor={name}>{displayName} {errorMessage ? <span className='error'>{errorMessage}</span> : <></>} </label>
       <input
         ref={ref}
         {...rest}
         autoComplete="off"
         name={name}
       />
-      {errorMessage ? <span className='error'>{errorMessage}</span> : <></>}
     </div>
   )
 })

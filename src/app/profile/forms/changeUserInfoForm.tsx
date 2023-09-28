@@ -8,6 +8,7 @@ import { changeUserInfoSchema } from "./validations/profileValidations";
 import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { error } from "console";
 
 type ChangeAnimeListFormProps = {
   user: User;
@@ -79,13 +80,15 @@ export function ChangeUserInfoForm({ handleUpdateUserInfoForm, user }: ChangeAni
           {...register("username")}
           value={userInput.username}
           onChange={onInputChange}
-        />
+          errorMessage={errors.username?.message}
+          />
         <Input
           displayName="Anime List Link"
           placeholder="https://myanimelist.net/profile/elonmusk"
           {...register("animelist")}
           value={userInput.animelist}
           onChange={onInputChange}
+          errorMessage={errors.animelist?.message}
         />
       </div>
       <Button

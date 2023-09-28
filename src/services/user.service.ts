@@ -6,9 +6,11 @@ import { options } from '@/app/api/auth/[...nextauth]/options';
 import { convertDbUserToModel } from '@/repositories/user.repository';
 import { Prisma } from '@prisma/client';
 
-export class UserException extends Error {};
+
+export class UserException extends Error { };
 
 export class UserService {
+  SALT = 12
   constructor() { }
 
   async create(data: UserPostData): Promise<User> {
@@ -16,7 +18,7 @@ export class UserService {
       const newUser = await prisma.user.create({
         data: {
           username: data.username,
-          password: hashSync(data.password, 12),
+          password: hashSync(data.password, this.SALT),
           animeList: data.animeList,
           admin: false,
           createdAt: new Date()
@@ -48,7 +50,7 @@ export class UserService {
       }, { status: 400 })
     }
   }
-  
+
   async update(data: UserUpdateData, id: number): Promise<User> {
     try {
       const user = await prisma.user.update({
@@ -159,6 +161,34 @@ export class UserService {
       return average
     } catch (error) {
       throw error;
+    }
+  }
+
+  async updatePassword({ oldPass, newPass }: ChangePasswordType, id: number): Promise<boolean> {
+    try {
+      const user = await prisma.user.findUnique({
+        where: {
+          id: id,
+          deletedAt: null
+        }
+      })
+
+      if (compareSync(oldPass, user?.password!)) {
+        await prisma.user.update({
+          where: {
+            id: id
+          },
+          data: {
+            password: hashSync(newPass, this.SALT),
+            updatedAt: new Date()
+          }
+        })
+        return true
+      }
+
+      return false
+    } catch (e) {
+      throw e
     }
   }
 }
