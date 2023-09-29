@@ -1,5 +1,6 @@
 .profilePage {
   padding-left: 1rem;
+  display: flex;
 
   .userCard {
     height: 820px;
@@ -16,10 +17,13 @@
 
     .profilePicture {
       width: 100%;
+      aspect-ratio: 1/1;
       text-align: center;
-      margin-bottom: 20px ;
+      margin-bottom: 20px;
+      
       img {
         width: 100%;
+        aspect-ratio: 1/1;
         border-radius: 50%;
       }
 
@@ -34,10 +38,11 @@
       display: flex;
       flex-direction: column;
 
-      .inputs{
+      .inputs {
         display: flex;
         justify-content: space-between;
-        .inputGroup{
+
+        .inputGroup {
           width: 48%;
         }
       }
@@ -61,6 +66,27 @@
         width: 30%;
         margin-top: 10px;
         margin-left: auto;
+      }
+    }
+  }
+
+  .songSetsInviteDiv {
+    width: 40%;
+    padding: 1rem;
+
+    h2 {
+      margin-bottom: 10px;
+    }
+
+    .table {
+      width: 100%;
+
+      .cell{
+        .actions{
+          svg{
+            cursor: pointer;
+          }
+        }
       }
     }
   }

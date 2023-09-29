@@ -15,12 +15,21 @@ export function convertDbSongToModel(data: any): Song {
   }
 }
 
+function convertDbUsersOn(data: any): UserOn{
+  return {
+    songSet: data,
+    accepted: data.accepted,
+    user: data.user
+  }
+}
+
 export async function convertDbSetToModel(data: any, generateJson: boolean = false): Promise<SongSet> {
   return {
     id: data.id,
     name: data.name,
     user: data.user,
     songs: data.songs !== undefined && data.songs.length > 0 ? data.songs.map(convertDbSongToModel) : [],
+    usersOn: data.users !== undefined && data.users.length > 0 ? data.users.map(convertDbUsersOn) : [],
     generateImageObject: generateJson ? generateImageObjectConverter(data) : undefined,
     generateVideoObject: generateJson ? await generateVideoObject(data) : undefined,
     createdAt: data.createdAt,

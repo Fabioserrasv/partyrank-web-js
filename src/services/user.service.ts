@@ -101,6 +101,39 @@ export class UserService {
         where: {
           id: id,
           deletedAt: null
+        },
+        include:{
+          SongSetsOn: {
+            select: {
+              accepted: true,
+              songSet: {
+                select: {
+                  id: true,
+                  name: true,
+                  user: {
+                    select: {
+                      username: true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      })
+
+      return convertDbUserToModel(user)
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getUserByUsername(username: string): Promise<User> {
+    try {
+      const user = await prisma.user.findUnique({
+        where: {
+          username: username,
+          deletedAt: null
         }
       })
 
@@ -189,6 +222,21 @@ export class UserService {
       return false
     } catch (e) {
       throw e
+    }
+  }
+
+  async checkAcceptingInvite(userId: number) : Promise<boolean> {
+    try {
+      const user = await prisma.user.findUnique({
+        where: {
+          id: userId,
+          deletedAt: null
+        }
+      })
+
+      return user?.acceptingInvite || false
+    } catch (error) {
+      throw error;
     }
   }
 }

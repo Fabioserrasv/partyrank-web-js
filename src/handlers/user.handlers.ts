@@ -1,4 +1,4 @@
-import { updateUserInfo, updateUserPassword } from "@/actions/user.actions"
+import { getUser, updateUserInfo, updateUserPassword } from "@/actions/user.actions"
 import { ChangeUserInfoFormSchema } from "@/app/profile/forms/changeUserInfoForm"
 
 export async function handleUpdateUserInfoForm(data: ChangeUserInfoFormSchema, id: number) {
@@ -15,6 +15,17 @@ export async function handleUpdateUserInfoForm(data: ChangeUserInfoFormSchema, i
     throw error
   }
 }
+
+export async function handleGetUser(id: number) {
+  "use server"
+
+  try {
+    return await getUser(id);
+  } catch (error) {
+    throw error
+  }
+}
+
 
 export async function handleUpdatePasswordForm({ oldPass, newPass }: ChangePasswordType, id: number) {
   "use server"

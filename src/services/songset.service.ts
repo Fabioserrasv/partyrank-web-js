@@ -2,6 +2,7 @@ import { getServerSession } from 'next-auth';
 import { prisma } from '../lib/prisma';
 import { convertDbSetToModel } from '../repositories/songset.repository';
 import { options } from '../app/api/auth/[...nextauth]/options';
+import { UserService } from './user.service';
 
 export class SongSetService {
   constructor() { }
@@ -36,7 +37,7 @@ export class SongSetService {
             }
           },
           user: {
-            select:{
+            select: {
               username: true,
               id: true
             }
@@ -63,7 +64,7 @@ export class SongSetService {
       const set = await prisma.songSet.findUnique({
         include: {
           songs: {
-            where:{
+            where: {
               deletedAt: null
             },
             include: {
@@ -77,10 +78,22 @@ export class SongSetService {
                       id: true,
                       username: true,
                       animeList: true
-                    }
+                    },
                   },
                   value: true,
                   videoTimeStamp: true
+                }
+              }
+            }
+          },
+          users: {
+            select: {
+              accepted: true,
+              user: {
+                select: {
+                  id: true,
+                  username: true,
+                  animeList: true
                 }
               }
             }
@@ -128,6 +141,56 @@ export class SongSetService {
           deletedAt: new Date()
         }
       })
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async inviteUser(songSetId: number, userId: number): Promise<Boolean> {
+    try {
+      const userService = new UserService;
+      const isAccepting = await userService.checkAcceptingInvite(userId);
+
+      if (isAccepting) {
+        await prisma.usersOnSongSet.create({
+          data: {
+            userId: userId,
+            songSetId: songSetId
+          }
+        })
+        return true
+      }
+      return false
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async answerInvite(songSetId: number, userId: number, accept: boolean): Promise<Boolean> {
+    try {
+      if (accept) {
+        await prisma.usersOnSongSet.update({
+          where: {
+            songSetId_userId: {
+              songSetId: songSetId,
+              userId: userId
+            }
+          },
+          data: {
+            accepted: true
+          }
+        })
+      } else {
+        await prisma.usersOnSongSet.delete({
+          where: {
+            songSetId_userId: {
+              songSetId: songSetId,
+              userId: userId
+            }
+          }
+        })
+      }
+      return true
     } catch (error) {
       throw error;
     }

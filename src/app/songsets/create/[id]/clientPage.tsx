@@ -2,13 +2,12 @@
 import { useEffect, useState } from "react";
 import { CreateUpdateSongSetForm } from "./forms/createUpdateSongSetForm";
 import { AddSongForm } from "./forms/addSongForm";
-import { Table, TableRow } from "@/app/components/table";
-import { Globe, Mic2, Monitor, Upload, X } from "lucide-react";
+import { Music, Upload, Users } from "lucide-react";
 import toast from "react-hot-toast";
 import { SongFinderModal } from "./modals/songFinderModal";
-import { reverseArray } from "@/lib/utils";
 import { JsonViewModal } from "./modals/jsonViewModal";
-import { Button } from "@/app/components/button/Button";
+import { UsersTab } from "./tabs/usersTab";
+import { SongsTab } from "./tabs/songsTab";
 
 type ClientCreateSongPageProps = {
   dbSet: SongSet | null;
@@ -17,6 +16,7 @@ type ClientCreateSongPageProps = {
   handleSongFinderFormSubmit: (data: SongFinderAction) => Promise<SongWeb[]>;
   handleDeleteSong: (id: number) => Promise<boolean>;
   handleGetSongSet: (id: number, generateJson: boolean) => Promise<SongSet | null>
+  handleInviteUser: (songSetId: number, username: string) => Promise<Boolean>
 }
 
 type SongSetFormatter = {
@@ -49,11 +49,7 @@ export const initialSongValue: AddSongFormSchema = {
   type: 'OPENING' as SongType
 }
 
-const formattedTypes = {
-  "OPENING": "Opening",
-  "ENDING": "Ending",
-  "INSERT_SONG": "Insert Song"
-}
+type tabs = "users" | "songs"
 
 export function ClientCreateSongPage({
   dbSet,
@@ -61,13 +57,15 @@ export function ClientCreateSongPage({
   handleDeleteSong,
   handleSongFinderFormSubmit,
   handleAddSongFormSubmit,
-  handleGetSongSet
+  handleGetSongSet,
+  handleInviteUser
 }: ClientCreateSongPageProps) {
 
   const [songSet, setSongSet] = useState<SongSetFormatter>(initialValue)
   const [song, setSong] = useState<AddSongFormSchema>(initialSongValue)
   const [songFinderModalOpen, setSongFinderModalOpen] = useState<boolean>(false);
   const [jsonModalOpen, setJsonModalOpen] = useState<boolean>(false);
+  const [tab, setTab] = useState<tabs>("songs");
 
   const cardTitle = dbSet == null ? "Create new Song set" : "Edit song set"
   const buttonTitle = dbSet == null ? "Create" : "Update";
@@ -187,7 +185,14 @@ export function ClientCreateSongPage({
       <div className="infoSection">
         <div className="titleSection">
           <h3>{cardTitle}</h3>
-          <Upload className="generateIcon" onClick={() => { setJsonModalOpen(true) }} />
+          {
+            songSet.id != 0 &&
+            <div className="tabs">
+              <Upload className="generateIcon" onClick={() => { setJsonModalOpen(true) }} />
+              <Users className={tab == "users" ? "active" : ""} onClick={() => {setTab("users")}} />
+              <Music className={tab == "songs" ? "active" : ""} onClick={() => {setTab("songs")}}  />
+            </div>
+          }
         </div>
         <CreateUpdateSongSetForm
           songSet={songSet}
@@ -212,42 +217,23 @@ export function ClientCreateSongPage({
           </div>
         }
       </div>
-      {
-        songSet.songs.length > 0 &&
-        <div className="songsDiv">
-          <Table>
-            {
-              reverseArray(songSet.songs).map(song => {
-                return (
-                  <TableRow key={song.id}>
-                    <div className='info' onClick={() => { onSongClick(song) }}>
-                      <span>{`${song.artist} - ${song.name}`}</span>
-                      <div className="extraInfo">
-                        <span>
-                          <Monitor />
-                          {song.anime}
-                        </span>
-                        <span>
-                          <Mic2 />
-                          {formattedTypes[song.type]}
-                        </span>
-                        <span>
-                          <Globe />
-                          {song.link}
-                        </span>
-                      </div>
-                    </div>
-                    <div className='actions'>
-                      <X className="icon" onClick={() => { onDeleteSong(song.id) }} />
-                    </div>
-                  </TableRow>
-                )
-              })
-            }
-          </Table>
-        </div>
-      }
-
+      {(() => {
+        switch (tab) {
+          case 'users':
+            return <UsersTab
+              songSet={dbSet}
+              handleInviteUser={handleInviteUser}
+            />
+          case 'songs':
+            return <SongsTab
+              songs={songSet.songs}
+              onDeleteSong={onDeleteSong}
+              onSongClick={onSongClick}
+            />
+          default:
+            return <></>
+        }
+      })()}
     </>
   )
 }

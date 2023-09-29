@@ -17,6 +17,7 @@ model User {
   animeList String
   imageUrl String?
   admin Boolean
+  acceptingInvite Boolean @default(true)
   scores Score[]
   SongSetsCreated SongSet[]
   SongSetsOn UsersOnSongSet[]

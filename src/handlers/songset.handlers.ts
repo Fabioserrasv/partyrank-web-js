@@ -1,4 +1,5 @@
-import { createSongSet, getAllSongSets, getSongSet, updateSongSet } from "@/actions/songset.actions";
+import { answerUserToPartyRank, createSongSet, getAllSongSets, getSongSet, inviteUserToPartyRank, updateSongSet } from "@/actions/songset.actions";
+import { getUserByUsername } from "@/actions/user.actions";
 
 export async function handleCreateSongSetFormSubmit(data: SongSetPostData) {
   "use server"
@@ -41,5 +42,28 @@ export async function handleGetAllSongSets(name: string) {
     return sets
   } catch (error) {
     throw error
+  }
+}
+
+export async function handleInviteUser(songSetId: number, username: string) {
+  "use server"
+
+  try {
+    const user = await getUserByUsername(username)
+    
+    return await inviteUserToPartyRank(songSetId, user.id)
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function handleAnswerInvite(songSetId: number, userId: number, accept: boolean) {
+  "use server"
+
+  try {
+    return await answerUserToPartyRank(songSetId, userId, accept)
+    
+  } catch (error) {
+    throw error;
   }
 }

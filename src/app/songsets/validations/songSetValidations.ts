@@ -23,3 +23,7 @@ export const songFinderSchema = z.object({
   artistName: z.string(),
   serviceName: z.string(),
 })
+
+export const inviteUserSchema = z.object({
+  username: z.string().min(1)
+})

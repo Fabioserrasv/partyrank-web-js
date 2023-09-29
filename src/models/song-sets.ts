@@ -8,10 +8,17 @@ type SongSet = {
   name: string;
   songs?: Song[];
   user?: User;
+  usersOn?: UserOn[];
   generateImageObject?: JsonToGenerateImages;
   generateVideoObject?: JsonToGenerateVideo[];
   createdAt?: Date;
   updatedAt?: Date;
+}
+
+type UserOn ={
+  songSet: SongSet;
+  user: User;
+  accepted: boolean;
 }
 
 // Changed json format for generating images, need to change on party-rank-video-generator

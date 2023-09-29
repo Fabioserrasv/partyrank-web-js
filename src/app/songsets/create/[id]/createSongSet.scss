@@ -17,12 +17,29 @@
     margin-top: 20px;
     background-color: $lightSecondBackground;
 
-    .titleSection{
+    .titleSection {
       display: flex;
       justify-content: space-between;
-      .generateIcon{
-        cursor: pointer;
+
+      .tabs {
+        display: flex;
+
+        svg {
+          margin-right: 5px;
+          cursor: pointer;
+        }
+
+        .active > *{
+          color: $primaryColor;
+          
+          @include dark{
+            color: $secondaryColor;
+            
+          }
+        }
       }
+
+
     }
 
     h3 {
@@ -109,22 +126,62 @@
     }
   }
 
+  .usersDiv {
+    grid-area: songs;
+    padding: 1rem;
+    width: 100%;
+    overflow: auto;
+    max-height: 750px;
 
-  .modalResult{
-    .modalBody{
+    form {
+      .inviteDiv {
+        display: flex;
+        align-items: flex-end;
+
+        .inputGroup {
+          width: 20%;
+        }
+
+        button {
+          width: 10%;
+          margin-left: 10px;
+        }
+      }
+    }
+
+    .table {
+      margin-top: 10px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px;
+
+      width: 100%;
+
+      .cell {
+        flex: 50% 2;
+        // width: 100%;
+      }
+    }
+  }
+
+
+  .modalResult {
+    .modalBody {
       flex-direction: column;
-      .textAreasJson{
-        .inputGroup{
+
+      .textAreasJson {
+        .inputGroup {
           width: 33%;
           height: 90%;
         }
+
         display: flex;
         justify-content: space-evenly;
         height: 90%;
       }
 
-      .generateButton{
-        
+      .generateButton {
+
         width: 20%;
       }
     }
@@ -159,8 +216,8 @@
               background-color: $darkBackground;
             }
 
-            .actions{
-              .icon{
+            .actions {
+              .icon {
                 cursor: pointer;
               }
             }
@@ -168,7 +225,7 @@
         }
       }
 
-      .buttonAll{
+      .buttonAll {
         width: 15%;
         margin-top: 5px;
         height: 50px;

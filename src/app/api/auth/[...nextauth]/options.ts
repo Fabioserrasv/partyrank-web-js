@@ -1,7 +1,8 @@
 import type { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { UserService } from '../../../../services/user.service';
 import { encode, decode } from 'next-auth/jwt';
+import { UserService } from '@/services/user.service';
+
 export const options: NextAuthOptions = {
   pages: {
     signIn: '/login'
@@ -12,8 +13,7 @@ export const options: NextAuthOptions = {
       credentials: {
         username: {
           label: "Username",
-          type: "text",
-          placeholder: "Digite seu nome de usuario"
+          type: "text"
         },
         password: {
           label: "Password",
@@ -40,17 +40,16 @@ export const options: NextAuthOptions = {
               id: user.id,
               username: user.username,
               animeList: user.animeList,
-              admin: user.admin,
+              admin: user.admin || false,
               imageUrl: user.imageUrl,
               average: average,
               theme: "light"
-            }
+            } 
           }
 
           return null
         } catch (error) {
-          console.log(error)
-          return null
+          throw error;
         }
       }
     })

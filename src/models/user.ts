@@ -20,8 +20,9 @@ type User = {
   username: string;
   password?: string;
   animeList: string;
-  admin: boolean;
+  admin?: boolean;
   imageUrl?: string;
+  invites?: UserOn[];
   scores?: Score[];
   createdAt?: Date;
   updatedAt?: Date;

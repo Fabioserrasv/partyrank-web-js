@@ -67,3 +67,26 @@ export async function deleteSongSet(id: number) {
     throw error
   }
 }
+
+export async function inviteUserToPartyRank(songSetId: number, userId: number) {
+  try {
+    const setService = new SongSetService;
+    const response = await setService.inviteUser(songSetId, userId);
+
+    return response
+  } catch (error) {
+   throw error; 
+  }
+}
+
+export async function answerUserToPartyRank(songSetId: number, userId: number, accept: boolean) {
+  try {
+    const setService = new SongSetService;
+    const response = await setService.answerInvite(songSetId, userId, accept);
+
+    return response
+  } catch (error) {
+   throw error; 
+  }
+}
+

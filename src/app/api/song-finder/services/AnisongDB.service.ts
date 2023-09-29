@@ -104,13 +104,12 @@ export class AnisongDBService implements SongFinderContract {
 
     const finalResult: SongWeb[] = []
 
-    if (songSet.songs && songSet.songs.length > 0) {
+    if (songSet && songSet.songs && songSet.songs.length > 0) {
       const times = songSet.songs.length
       for (let i = 0; i < times; i++) {
         let songDb = songSet.songs[i]
 
         let possibilities = await this.search(songDb.anime, songDb.name, songDb.artist)
-        // console.log(possibilities)
         let mostPossibleMatch = getMostPossibleSong(possibilities, songDb)
 
         if (mostPossibleMatch) {

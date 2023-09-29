@@ -32,6 +32,17 @@ export async function getUser(id: number) {
   }
 }
 
+export async function getUserByUsername(username: string) {
+  const userService = new UserService;
+
+  try {
+    const user = await userService.getUserByUsername(username);
+    return user
+  } catch (error) {
+    throw error;
+  }
+}
+
 export async function getAllUsers() {
   const userService = new UserService;
 

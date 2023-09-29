@@ -43,7 +43,6 @@ export function JsonViewModal({ songSetId, closeModal, handleGetSongSet }: JsonV
         images: imageJson
       })
     } catch (error) {
-      console.log(error)
       toast.error("Something went wrong!")
     }
   }
