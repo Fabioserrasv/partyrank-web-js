@@ -18,10 +18,24 @@ model User {
   imageUrl String?
   admin Boolean
   scores Score[]
-  SongSets SongSet[]
+  SongSetsCreated SongSet[]
+  SongSetsOn UsersOnSongSet[]
   createdAt DateTime?
   updatedAt DateTime?
   deletedAt DateTime?
+}
+
+enum SongSetStatus {
+  RECRUITING
+  ON_GOING
+  PROCESSING
+  FINISHED
+  PAUSED
+}
+
+enum SongSetInviteType {
+  PRIVATE
+  PUBLIC
 }
 
 model SongSet {
@@ -30,9 +44,23 @@ model SongSet {
   songs Song[]
   user User @relation(fields: [userId], references: [id])
   userId Int
+  status SongSetStatus @default(ON_GOING)
+  type SongSetInviteType @default(PRIVATE)
+  users UsersOnSongSet[]
+  maxUsers Int? @default(0) 
   createdAt DateTime?
   updatedAt DateTime?
   deletedAt DateTime?
+}
+
+model UsersOnSongSet {
+  songSet SongSet @relation(fields: [songSetId], references: [id])
+  songSetId Int
+  user User @relation(fields: [userId], references: [id])
+  userId Int
+  accepted Boolean @default(false)
+
+  @@id([songSetId, userId])
 }
 
 enum SongType {
