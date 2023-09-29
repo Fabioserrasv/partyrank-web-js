@@ -3,10 +3,12 @@ import { useEffect, useState } from "react";
 import { CreateUpdateSongSetForm } from "./forms/createUpdateSongSetForm";
 import { AddSongForm } from "./forms/addSongForm";
 import { Table, TableRow } from "@/app/components/table";
-import { Globe, Mic2, Monitor, X } from "lucide-react";
+import { Globe, Mic2, Monitor, Upload, X } from "lucide-react";
 import toast from "react-hot-toast";
 import { SongFinderModal } from "./modals/songFinderModal";
 import { reverseArray } from "@/lib/utils";
+import { JsonViewModal } from "./modals/jsonViewModal";
+import { Button } from "@/app/components/button/Button";
 
 type ClientCreateSongPageProps = {
   dbSet: SongSet | null;
@@ -14,6 +16,7 @@ type ClientCreateSongPageProps = {
   handleAddSongFormSubmit: ({ }: AddSongFormSchema, songSetId: number) => Promise<number | boolean>;
   handleSongFinderFormSubmit: (data: SongFinderAction) => Promise<SongWeb[]>;
   handleDeleteSong: (id: number) => Promise<boolean>;
+  handleGetSongSet: (id: number, generateJson: boolean) => Promise<SongSet | null>
 }
 
 type SongSetFormatter = {
@@ -52,10 +55,19 @@ const formattedTypes = {
   "INSERT_SONG": "Insert Song"
 }
 
-export function ClientCreateSongPage({ dbSet, handleCreateFormSubmit, handleDeleteSong, handleSongFinderFormSubmit, handleAddSongFormSubmit }: ClientCreateSongPageProps) {
+export function ClientCreateSongPage({
+  dbSet,
+  handleCreateFormSubmit,
+  handleDeleteSong,
+  handleSongFinderFormSubmit,
+  handleAddSongFormSubmit,
+  handleGetSongSet
+}: ClientCreateSongPageProps) {
+
   const [songSet, setSongSet] = useState<SongSetFormatter>(initialValue)
   const [song, setSong] = useState<AddSongFormSchema>(initialSongValue)
   const [songFinderModalOpen, setSongFinderModalOpen] = useState<boolean>(false);
+  const [jsonModalOpen, setJsonModalOpen] = useState<boolean>(false);
 
   const cardTitle = dbSet == null ? "Create new Song set" : "Edit song set"
   const buttonTitle = dbSet == null ? "Create" : "Update";
@@ -72,13 +84,17 @@ export function ClientCreateSongPage({ dbSet, handleCreateFormSubmit, handleDele
     setSongFinderModalOpen(isModalOpen)
   }
 
+  function changeJsonModalOpen(isModalOpen: boolean) {
+    setJsonModalOpen(isModalOpen)
+  }
+
   function updateSongState(song: AddSongFormSchema) {
     setSong(song)
   }
 
   function addSongToSongSetState(song: Song) {
     let newSong = true
-    
+
     const updatedSongs = songSet.songs.map((songOld) => {
       if (songOld.id == song.id) {
         songOld = song
@@ -97,7 +113,7 @@ export function ClientCreateSongPage({ dbSet, handleCreateFormSubmit, handleDele
     })
   }
 
-  function addArrayToSongSet(songs: Song[]){
+  function addArrayToSongSet(songs: Song[]) {
     setSongSet({
       ...songSet,
       songs: [
@@ -160,15 +176,25 @@ export function ClientCreateSongPage({ dbSet, handleCreateFormSubmit, handleDele
           addArrayToSongSet={addArrayToSongSet}
         />
       }
+      {
+        jsonModalOpen &&
+        <JsonViewModal
+          songSetId={songSet.id}
+          closeModal={changeJsonModalOpen}
+          handleGetSongSet={handleGetSongSet}
+        />
+      }
       <div className="infoSection">
-        <h3>{cardTitle}</h3>
+        <div className="titleSection">
+          <h3>{cardTitle}</h3>
+          <Upload className="generateIcon" onClick={() => { setJsonModalOpen(true) }} />
+        </div>
         <CreateUpdateSongSetForm
           songSet={songSet}
           handleCreateFormSubmit={handleCreateFormSubmit}
           updateSetSongSet={updateSetSongSet}
           buttonName={buttonTitle}
         />
-
         {
           songSet.id != 0 &&
           <div className="songFormSection">

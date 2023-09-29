@@ -88,21 +88,24 @@ async function generateVideoObject(data: any) {
   return finalResult
 }
 
+// NEEDS IMPROVEMENT
 async function getVideoTitleFromGoogleDriveLink(url: string) {
   let result = ''
-  await axios.get(url)
-    .then((response) => {
-      const page = response.data
+  if (url.includes("drive.google.com")) {
+    await axios.get(url)
+      .then((response) => {
+        const page = response.data
 
-      const titleRegex = /<title>(.*?)<\/title>/;
-      const matches = page.match(titleRegex);
+        const titleRegex = /<title>(.*?)<\/title>/;
+        const matches = page.match(titleRegex);
 
-      if (matches && matches.length > 1) {
-        result = matches[1].replace(' - Google Drive', '');
-      }
-    })
-    .catch(function (error) {
-      throw error
-    })
+        if (matches && matches.length > 1) {
+          result = matches[1].replace(' - Google Drive', '');
+        }
+      })
+      .catch(function (error) {
+        throw error
+      })
+  }
   return result
 }
