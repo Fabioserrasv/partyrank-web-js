@@ -9,7 +9,6 @@ export async function searchSongFinder(data: SongFinderAction) {
     if (!service) throw new Error("Service not found")
 
     if (data.query != '') {
-      console.log(data)
       const songs = await service.search(data.query, data.songName, data.artistName);
       return songs
     }

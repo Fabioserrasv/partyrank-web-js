@@ -8,6 +8,13 @@ function checkTypeEqual(a: string, b: string) {
   return false;
 }
 
+export function convertType(type: string) : SongType{
+  if (type.includes("Opening")) return "OPENING" as SongType;
+  if (type.includes("Ending")) return "ENDING" as SongType;
+  if (type.includes("Insert")) return "INSERT_SONG" as SongType;
+  return "OPENING" as SongType;
+}
+
 export function getMostPossibleSong(songWebs: SongWeb[], songDb: Song) {
   let result: SongWeb | null = null
   songWebs.forEach((songW) => {
@@ -16,7 +23,6 @@ export function getMostPossibleSong(songWebs: SongWeb[], songDb: Song) {
     if (animeNamePercentage > 0.2) {
       if (checkTypeEqual(songDb.type, songW.type)) {
         let titlePercentage = similarity(songDb.name, songW.title)
-        console.log(titlePercentage)
         if (titlePercentage > 0.40) {
           result = songW
         }

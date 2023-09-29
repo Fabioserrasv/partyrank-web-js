@@ -6,9 +6,10 @@ import { Table, TableRow } from "@/app/components/table";
 import { Globe, Mic2, Monitor, X } from "lucide-react";
 import toast from "react-hot-toast";
 import { SongFinderModal } from "./modals/songFinderModal";
+import { reverseArray } from "@/lib/utils";
 
 type ClientCreateSongPageProps = {
-  dbSet: SongSet | false;
+  dbSet: SongSet | null;
   handleCreateFormSubmit: ({ }: SongSetPostData) => Promise<number | boolean>;
   handleAddSongFormSubmit: ({ }: AddSongFormSchema, songSetId: number) => Promise<number | boolean>;
   handleSongFinderFormSubmit: (data: SongFinderAction) => Promise<SongWeb[]>;
@@ -56,8 +57,8 @@ export function ClientCreateSongPage({ dbSet, handleCreateFormSubmit, handleDele
   const [song, setSong] = useState<AddSongFormSchema>(initialSongValue)
   const [songFinderModalOpen, setSongFinderModalOpen] = useState<boolean>(false);
 
-  const cardTitle = dbSet == false ? "Create new Song set" : "Edit song set"
-  const buttonTitle = dbSet == false ? "Create" : "Update";
+  const cardTitle = dbSet == null ? "Create new Song set" : "Edit song set"
+  const buttonTitle = dbSet == null ? "Create" : "Update";
 
   function updateSetSongSet(name: string, id: number) {
     setSongSet({
@@ -77,6 +78,7 @@ export function ClientCreateSongPage({ dbSet, handleCreateFormSubmit, handleDele
 
   function addSongToSongSetState(song: Song) {
     let newSong = true
+    
     const updatedSongs = songSet.songs.map((songOld) => {
       if (songOld.id == song.id) {
         songOld = song
@@ -92,6 +94,16 @@ export function ClientCreateSongPage({ dbSet, handleCreateFormSubmit, handleDele
     setSongSet({
       ...songSet,
       songs: updatedSongs
+    })
+  }
+
+  function addArrayToSongSet(songs: Song[]){
+    setSongSet({
+      ...songSet,
+      songs: [
+        ...songSet.songs,
+        ...songs
+      ]
     })
   }
 
@@ -125,7 +137,7 @@ export function ClientCreateSongPage({ dbSet, handleCreateFormSubmit, handleDele
   }
 
   useEffect(() => {
-    if (dbSet != false) {
+    if (dbSet != null) {
       const dbSetAsSongSet = dbSet as SongSet
       setSongSet({
         id: dbSetAsSongSet.id,
@@ -145,6 +157,7 @@ export function ClientCreateSongPage({ dbSet, handleCreateFormSubmit, handleDele
           changeSongFinderModalOpen={changeSongFinderModalOpen}
           handleAddSongFormSubmit={handleAddSongFormSubmit}
           handleSongFinderFormSubmit={handleSongFinderFormSubmit}
+          addArrayToSongSet={addArrayToSongSet}
         />
       }
       <div className="infoSection">
@@ -178,7 +191,7 @@ export function ClientCreateSongPage({ dbSet, handleCreateFormSubmit, handleDele
         <div className="songsDiv">
           <Table>
             {
-              (songSet.songs.toReversed()).map(song => {
+              reverseArray(songSet.songs).map(song => {
                 return (
                   <TableRow key={song.id}>
                     <div className='info' onClick={() => { onSongClick(song) }}>

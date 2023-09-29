@@ -58,7 +58,7 @@ export class SongSetService {
     }
   }
 
-  async get(id: number, generateJson: boolean): Promise<SongSet> {
+  async get(id: number, generateJson: boolean): Promise<SongSet | null> {
     try {
       const set = await prisma.songSet.findUnique({
         include: {
@@ -93,9 +93,8 @@ export class SongSetService {
       })
       if (set !== null) {
         return await convertDbSetToModel(set, generateJson)
-      }else{
-        throw new Error('Could not find Song Set')
       }
+      return null
     } catch (error) {
       throw error;
     }

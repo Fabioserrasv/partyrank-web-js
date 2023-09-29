@@ -59,7 +59,6 @@ export function ClientPage({ user, set, handleVoteForm }: VoteClientPageProps) {
       }
     } catch (error) {
       toast.error("Something went wrong")
-      console.log(error)
     }
   }
 

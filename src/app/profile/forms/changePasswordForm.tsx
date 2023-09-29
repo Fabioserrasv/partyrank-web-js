@@ -39,7 +39,6 @@ export function ChangePasswordForm({ handleUpdatePasswordForm, id }: ChangePassw
       ...passInputs,
       [key]: e.target.value
     })
-    console.log(errors)
   }
 
   async function onSubmitChangePasswordForm(data: ChangePasswordSchema) {

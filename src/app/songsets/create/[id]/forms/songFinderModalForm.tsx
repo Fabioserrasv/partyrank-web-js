@@ -24,7 +24,6 @@ export function SongFinderModalForm({  handleSongFinderFormSubmit, populateTable
 
       populateTableSongsWeb(songs);
     } catch (error) {
-      console.log(error);
       toast.error("Something went wrong!")
     }
   }

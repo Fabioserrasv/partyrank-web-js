@@ -6,3 +6,7 @@ export let maskValueToDecimal = (a: string | number) => {
   if (n > 10) return maskValueToDecimal(n / 10)
   return n
 }
+
+export function reverseArray<T>(array: T[]): T[] {
+  return [...array].reverse()
+}

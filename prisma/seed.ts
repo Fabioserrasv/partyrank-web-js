@@ -13,8 +13,6 @@ async function main() {
       createdAt: new Date()
     },
   })
-
-  console.log({ admin })
 }
 main()
   .then(async () => {

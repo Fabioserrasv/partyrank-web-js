@@ -9,6 +9,7 @@ import { SongFinderModalForm } from "../forms/songFinderModalForm";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { AddSongFormSchema } from "../clientPage";
+import { convertType } from "@/repositories/songfinder.repository";
 
 type SongFinderModalProps = {
   songSet: SongSet;
@@ -16,10 +17,10 @@ type SongFinderModalProps = {
   changeSongFinderModalOpen: (isModalOpen: boolean) => void
   handleSongFinderFormSubmit: (data: SongFinderAction) => Promise<SongWeb[]>;
   handleAddSongFormSubmit: ({ }: AddSongFormSchema, songSetId: number) => Promise<number | boolean>;
-
+  addArrayToSongSet: (songs: Song[]) => void
 }
 
-export function SongFinderModal({ changeSongFinderModalOpen, handleSongFinderFormSubmit, addSongToSongSetState,  handleAddSongFormSubmit, songSet }: SongFinderModalProps) {
+export function SongFinderModal({ changeSongFinderModalOpen, handleSongFinderFormSubmit, addSongToSongSetState, handleAddSongFormSubmit, songSet, addArrayToSongSet }: SongFinderModalProps) {
   const [songsFind, setSongsFind] = useState<SongWeb[]>([]);
 
   function populateTableSongsWeb(songs: SongWeb[]) {
@@ -45,6 +46,53 @@ export function SongFinderModal({ changeSongFinderModalOpen, handleSongFinderFor
     } catch (error) {
       toast.error("Something went wrong")
     }
+  }
+
+  function addSongFromSongFinder(song: SongWeb) {
+    onSubmitHandleAddSong({
+      id: 0,
+      anime: song.anime,
+      artist: song.artist,
+      link: song.video?.link || '',
+      name: song.title,
+      type: 'ENDING'
+    })
+  }
+
+  async function addAllSongsFindToSongSet() {
+    let songsToAddToState : Song[] = [];
+    try {
+      for (let i = 0; i < songsFind.length; i++) {
+        const id = await handleAddSongFormSubmit({
+          id: 0,
+          anime: songsFind[i].anime,
+          artist: songsFind[i].artist,
+          link: songsFind[i].video?.link || '',
+          name: songsFind[i].title,
+          type: 'ENDING'
+        }, songSet.id)
+
+        if (id) {
+          songsToAddToState.push({
+            id: Number(id),
+            anime: songsFind[i].anime,
+            artist: songsFind[i].artist,
+            link: songsFind[i].video?.link || '',
+            name: songsFind[i].title,
+            type: convertType(songsFind[i].type),
+            scores: [],
+            songSet: songSet
+          })
+        }
+      }
+
+      addArrayToSongSet(songsToAddToState)
+      toast.success("Songs added successfully")
+      changeSongFinderModalOpen(false)
+    } catch (error) {
+      toast.error("Something went wrong")
+    }
+
   }
 
   return (
@@ -81,14 +129,7 @@ export function SongFinderModal({ changeSongFinderModalOpen, handleSongFinderFor
                     </div>
                   </div>
                   <div className='actions'>
-                    <Plus className="icon" onClick={() => {onSubmitHandleAddSong({
-                      id: 0,
-                      anime: song.anime,
-                      artist: song.artist,
-                      link: song.video?.link || '',
-                      name: song.title,
-                      type: 'ENDING'
-                    })}} />
+                    <Plus className="icon" onClick={() => { addSongFromSongFinder(song) }} />
                     <X className="icon" />
                   </div>
                 </TableRow>
@@ -97,6 +138,14 @@ export function SongFinderModal({ changeSongFinderModalOpen, handleSongFinderFor
           }
         </Table>
       </div>
+      {
+        songsFind.length > 0 &&
+        <Button
+          name="Add all songs"
+          className="buttonAll"
+          onClick={addAllSongsFindToSongSet}
+        />
+      }
     </Modal >
   );
 }

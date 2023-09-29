@@ -57,7 +57,6 @@ export function ChangeUserInfoForm({ handleUpdateUserInfoForm, user }: ChangeAni
       }
 
     } catch (error) {
-      console.log(error)
       toast.error("Username already in use")
     }
   }
