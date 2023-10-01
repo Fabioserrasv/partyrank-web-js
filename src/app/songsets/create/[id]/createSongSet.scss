@@ -11,7 +11,7 @@
 
   .infoSection {
     grid-area: info;
-    height: 750px;
+    height: 95%;
     padding: 1rem;
     border-radius: 1rem;
     margin-top: 20px;
@@ -106,7 +106,7 @@
     padding: 1rem;
     width: 100%;
     overflow: auto;
-    max-height: 750px;
+    height: 100%;
 
     // margin-top: 10px;
     .table {

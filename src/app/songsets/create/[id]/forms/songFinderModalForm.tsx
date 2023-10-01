@@ -7,48 +7,55 @@ import { Search } from "lucide-react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { AddSongFormSchema } from "../clientPage";
+import { useState } from "react";
+import { LoadingComponent } from "@/app/components/loading-component";
 
 type SongFinderModalFormProps = {
   handleSongFinderFormSubmit: (data: SongFinderAction) => Promise<SongWeb[]>;
   populateTableSongsWeb: (songs: SongWeb[]) => void;
 }
 
-export function SongFinderModalForm({  handleSongFinderFormSubmit, populateTableSongsWeb }: SongFinderModalFormProps) {
+export function SongFinderModalForm({ handleSongFinderFormSubmit, populateTableSongsWeb }: SongFinderModalFormProps) {
   const { register, handleSubmit, formState: { errors }, setValue } = useForm<SongFinderAction>({
     resolver: zodResolver(songFinderSchema)
   });
+  const [isLoading, setIsLoadind] = useState<boolean>(false);
 
-  async function onSubmitSongFinderForm(data: SongFinderAction){
+  async function onSubmitSongFinderForm(data: SongFinderAction) {
     try {
+      setIsLoadind(true);
       const songs = await handleSongFinderFormSubmit(data);
 
       populateTableSongsWeb(songs);
     } catch (error) {
       toast.error("Something went wrong!")
+    } finally {
+      setIsLoadind(false);
     }
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmitSongFinderForm)} className="formSongFinder">
+      {isLoading && <LoadingComponent />}
       <div className="inputsSongFinder">
         <Input
           displayName="Anime"
           placeholder="FLCL..."
           {...register('query')}
           errorMessage={errors.query?.message}
-          />
+        />
         <Input
           displayName="Song"
           placeholder="Ride on shooting star..."
           {...register('songName')}
           errorMessage={errors.songName?.message}
-          />
+        />
         <Input
           displayName="Artist"
           placeholder="the pillows..."
           {...register('artistName')}
           errorMessage={errors.artistName?.message}
-          />
+        />
         <Select
           displayName="Service"
           {...register('serviceName')}

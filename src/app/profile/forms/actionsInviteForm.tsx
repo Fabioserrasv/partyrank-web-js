@@ -1,6 +1,8 @@
 'use client'
 import toast from "react-hot-toast";
 import { Check, X } from "lucide-react"
+import { useState } from "react";
+import { LoadingComponent } from "@/app/components/loading-component";
 
 type ActionsInviteProps = {
   invite: UserOn;
@@ -10,9 +12,11 @@ type ActionsInviteProps = {
 }
 
 export function ActionsInvite({ invite, handleAnswerInvite, userId, removeInvite }: ActionsInviteProps) {
+  const [isLoading, setIsLoadind] = useState<boolean>(false);
 
   async function onAnswerInvite(songSetId: number, accept: boolean) {
     try {
+      setIsLoadind(true);
       const response = await handleAnswerInvite(
         songSetId,
         userId,
@@ -24,13 +28,15 @@ export function ActionsInvite({ invite, handleAnswerInvite, userId, removeInvite
 
       toast.success(`Invite ${verb} successfully!`)
     } catch (error) {
-      console.log(error);
       toast.error("Something went wrong!")
+    } finally {
+      setIsLoadind(false);
     }
   }
 
   return (
     <div className='actions'>
+      {isLoading && <LoadingComponent />}
       <Check onClick={() => { onAnswerInvite(invite.songSet.id, true) }} />
       <X onClick={() => { onAnswerInvite(invite.songSet.id, false) }} className="icon" />
     </div>

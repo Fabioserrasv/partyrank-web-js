@@ -1,14 +1,15 @@
 .profilePage {
   padding-left: 1rem;
   display: flex;
+  height: 100%;
 
   .userCard {
-    height: 820px;
+    height: 95%;
     padding: 1rem;
     width: 20%;
     border-radius: 1rem;
-
-
+    margin-top: 20px;
+    
     background-color: $lightSecondBackground;
 
     @include dark {

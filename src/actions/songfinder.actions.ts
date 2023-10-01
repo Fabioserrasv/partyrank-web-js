@@ -8,7 +8,7 @@ export async function searchSongFinder(data: SongFinderAction) {
 
     if (!service) throw new Error("Service not found")
 
-    if (data.query != '') {
+    if (data.query != '' || data.artistName != '' || data.songName != '') {
       const songs = await service.search(data.query, data.songName, data.artistName);
       return songs
     }

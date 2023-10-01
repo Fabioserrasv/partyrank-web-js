@@ -4,10 +4,11 @@ import { Input } from "@/app/components/input"
 import { Select } from "@/app/components/select";
 import { addSongSchema } from "@/app/songsets/validations/songSetValidations";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AddSongFormSchema, initialSongValue } from "../clientPage";
 import toast from "react-hot-toast";
+import { LoadingComponent } from "@/app/components/loading-component";
 
 type AddSongFormProps = {
   songSet: SongSet;
@@ -23,6 +24,7 @@ export function AddSongForm({ handleAddSongFormSubmit, updateSongState, song, ad
   const { register, handleSubmit, formState: { errors }, setValue } = useForm<AddSongFormSchema>({
     resolver: zodResolver(addSongSchema)
   });
+  const [isLoading, setIsLoadind] = useState<boolean>(false);
 
 
   function onAddSongInputChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -36,6 +38,7 @@ export function AddSongForm({ handleAddSongFormSubmit, updateSongState, song, ad
 
   async function onSubmitHandleAddSong(data: AddSongFormSchema) {
     try {
+      setIsLoadind(true);
       data.id = song.id
       const id = await handleAddSongFormSubmit(data, songSet.id)
       if (id) {
@@ -55,13 +58,15 @@ export function AddSongForm({ handleAddSongFormSubmit, updateSongState, song, ad
       }
     } catch (error) {
       toast.error("Something went wrong")
+    } finally {
+      setIsLoadind(false);
     }
   }
 
-  function clearSong(){
+  function clearSong() {
     updateSongState(initialSongValue)
   }
-  
+
   useEffect(() => {
     setValue("anime", song.anime)
     setValue("artist", song.artist)
@@ -72,6 +77,7 @@ export function AddSongForm({ handleAddSongFormSubmit, updateSongState, song, ad
 
   return (
     <form onSubmit={handleSubmit(onSubmitHandleAddSong)} className="formAddSong">
+      {isLoading && <LoadingComponent />}
       <Input
         displayName="Anime"
         placeholder="Mawaru Penguindrum..."

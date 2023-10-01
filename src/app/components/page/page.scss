@@ -8,12 +8,12 @@
   display: grid;
   grid-template-areas: "top top top"
     "center center center"
-    "bottom bottom bottom"
   ;
 
   header {
     grid-area: top;
     text-align: end;
+    height: 7vh;
 
     .icon {
       cursor: pointer;
@@ -29,11 +29,7 @@
     grid-area: center;
     align-self: center;
     justify-self: center;
-
+    height: 93vh;
     width: 100%;
-  }
-
-  footer {
-    grid-area: bottom;
   }
 }

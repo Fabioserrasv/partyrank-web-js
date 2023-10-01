@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { signOut } from "next-auth/react";
+import { LoadingComponent } from "@/app/components/loading-component";
 
 type ChangePasswordFormProps = {
   handleUpdatePasswordForm: ({ oldPass, newPass }: ChangePasswordType, id: number) => Promise<boolean>
@@ -25,6 +26,7 @@ export function ChangePasswordForm({ handleUpdatePasswordForm, id }: ChangePassw
   const { register, handleSubmit, formState: { errors }, setValue } = useForm<ChangePasswordSchema>({
     resolver: zodResolver(changePasswordSchema)
   });
+  const [isLoading, setIsLoadind] = useState<boolean>(false);
 
   const [passInputs, setPassInputs] = useState<ChangePasswordSchema>({
     oldPassword: "",
@@ -43,6 +45,7 @@ export function ChangePasswordForm({ handleUpdatePasswordForm, id }: ChangePassw
 
   async function onSubmitChangePasswordForm(data: ChangePasswordSchema) {
     try {
+      setIsLoadind(true);
       const response = await handleUpdatePasswordForm(
         {
           newPass: data.newPassword,
@@ -51,16 +54,19 @@ export function ChangePasswordForm({ handleUpdatePasswordForm, id }: ChangePassw
         id
       );
 
-      if (response){
+      if (response) {
         toast.success("Password updated successfully.")
         signOut();
       }
     } catch (error) {
       toast.error("Something went wrong.")
+    } finally {
+      setIsLoadind(false);
     }
   }
   return (
     <form onSubmit={handleSubmit(onSubmitChangePasswordForm)} className="formPassword">
+      {isLoading && <LoadingComponent />}
       <Input
         displayName="Old Password"
         placeholder="******"

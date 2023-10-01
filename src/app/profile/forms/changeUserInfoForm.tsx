@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { error } from "console";
+import { LoadingComponent } from "@/app/components/loading-component";
 
 type ChangeAnimeListFormProps = {
   user: User;
@@ -23,26 +24,26 @@ export type ChangeUserInfoFormSchema = {
 type fields = "username" | "animelist"
 
 export function ChangeUserInfoForm({ handleUpdateUserInfoForm, user }: ChangeAnimeListFormProps) {
-  
   const { register, handleSubmit, formState: { errors }, setValue } = useForm<ChangeUserInfoFormSchema>({
     resolver: zodResolver(changeUserInfoSchema)
   });
-  const [userInput, setUserInput] = useState<ChangeUserInfoFormSchema>({username: user.username, animelist: user.animeList})
-  
+  const [userInput, setUserInput] = useState<ChangeUserInfoFormSchema>({ username: user.username, animelist: user.animeList })
+  const [isLoading, setIsLoadind] = useState<boolean>(false);
+
   const { data: session, update } = useSession();
 
   const route = useRouter();
 
   if (!session) return;
-  
+
   async function onSubmitFormUserInfo(data: ChangeUserInfoFormSchema) {
     try {
-
+      setIsLoadind(true);
       const response = await handleUpdateUserInfoForm({
         animelist: data.animelist,
         username: data.username
       }, user.id)
-      
+
       if (response) {
         await update({
           ...session,
@@ -58,6 +59,8 @@ export function ChangeUserInfoForm({ handleUpdateUserInfoForm, user }: ChangeAni
 
     } catch (error) {
       toast.error("Username already in use")
+    } finally {
+      setIsLoadind(false);
     }
   }
 
@@ -72,6 +75,7 @@ export function ChangeUserInfoForm({ handleUpdateUserInfoForm, user }: ChangeAni
 
   return (
     <form onSubmit={handleSubmit(onSubmitFormUserInfo)} className="formAnimeList">
+      {isLoading && <LoadingComponent />}
       <div className="inputs">
         <Input
           displayName="Username"
@@ -80,7 +84,7 @@ export function ChangeUserInfoForm({ handleUpdateUserInfoForm, user }: ChangeAni
           value={userInput.username}
           onChange={onInputChange}
           errorMessage={errors.username?.message}
-          />
+        />
         <Input
           displayName="Anime List Link"
           placeholder="https://myanimelist.net/profile/elonmusk"

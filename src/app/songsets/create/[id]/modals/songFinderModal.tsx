@@ -1,15 +1,14 @@
 'use client'
 import { Button } from "@/app/components/button/Button";
-import { Input } from "@/app/components/input";
 import Modal from "@/app/components/modal";
-import { Select } from "@/app/components/select";
 import { Table, TableRow } from "@/app/components/table";
-import { Globe, Mic2, Monitor, Plus, Search, X } from "lucide-react";
+import { Globe, Mic2, Monitor, Plus, X } from "lucide-react";
 import { SongFinderModalForm } from "../forms/songFinderModalForm";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { AddSongFormSchema } from "../clientPage";
 import { convertType } from "@/repositories/songfinder.repository";
+import { LoadingComponent } from "@/app/components/loading-component";
 
 type SongFinderModalProps = {
   songSet: SongSet;
@@ -21,6 +20,7 @@ type SongFinderModalProps = {
 }
 
 export function SongFinderModal({ changeSongFinderModalOpen, handleSongFinderFormSubmit, addSongToSongSetState, handleAddSongFormSubmit, songSet, addArrayToSongSet }: SongFinderModalProps) {
+  const [isLoading, setIsLoadind] = useState<boolean>(false);
   const [songsFind, setSongsFind] = useState<SongWeb[]>([]);
 
   function populateTableSongsWeb(songs: SongWeb[]) {
@@ -29,6 +29,7 @@ export function SongFinderModal({ changeSongFinderModalOpen, handleSongFinderFor
 
   async function onSubmitHandleAddSong(data: AddSongFormSchema) {
     try {
+      setIsLoadind(true);
       const id = await handleAddSongFormSubmit(data, songSet.id)
       if (id) {
         addSongToSongSetState({
@@ -45,6 +46,8 @@ export function SongFinderModal({ changeSongFinderModalOpen, handleSongFinderFor
       }
     } catch (error) {
       toast.error("Something went wrong")
+    } finally {
+      setIsLoadind(false)
     }
   }
 
@@ -60,8 +63,10 @@ export function SongFinderModal({ changeSongFinderModalOpen, handleSongFinderFor
   }
 
   async function addAllSongsFindToSongSet() {
-    let songsToAddToState : Song[] = [];
+    let songsToAddToState: Song[] = [];
     try {
+      setIsLoadind(true);
+      
       for (let i = 0; i < songsFind.length; i++) {
         const id = await handleAddSongFormSubmit({
           id: 0,
@@ -91,6 +96,8 @@ export function SongFinderModal({ changeSongFinderModalOpen, handleSongFinderFor
       changeSongFinderModalOpen(false)
     } catch (error) {
       toast.error("Something went wrong")
+    } finally {
+      setIsLoadind(false)
     }
 
   }
@@ -146,6 +153,7 @@ export function SongFinderModal({ changeSongFinderModalOpen, handleSongFinderFor
           onClick={addAllSongsFindToSongSet}
         />
       }
+      {isLoading && <LoadingComponent />}
     </Modal >
   );
 }

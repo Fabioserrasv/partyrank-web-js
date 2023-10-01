@@ -1,6 +1,7 @@
 'use client'
 
 import { Button } from "@/app/components/button/Button"
+import { LoadingComponent } from "@/app/components/loading-component"
 import Modal from "@/app/components/modal"
 import { Textarea } from "@/app/components/textarea"
 import { useState } from "react"
@@ -19,6 +20,7 @@ type JsonResult = {
 }
 
 export function JsonViewModal({ songSetId, closeModal, handleGetSongSet }: JsonViewModalProps) {
+  const [isLoading, setIsLoadind] = useState<boolean>(false);
   const [jsonsResult, setJsonsResult] = useState<JsonResult>({
     video: '',
     images: '',
@@ -27,14 +29,15 @@ export function JsonViewModal({ songSetId, closeModal, handleGetSongSet }: JsonV
 
   async function getSongSetWithJson() {
     try {
+      setIsLoadind(true);
       const response = await handleGetSongSet(songSetId, true);
       let videoJson = '';
-
-
+      
+      
       response?.generateVideoObject?.map((v) => {
         videoJson += JSON.stringify(v, undefined, 2)
       })
-
+      
       let imageJson = JSON.stringify(response?.generateImageObject, undefined, 2)
       
       setJsonsResult({
@@ -44,6 +47,8 @@ export function JsonViewModal({ songSetId, closeModal, handleGetSongSet }: JsonV
       })
     } catch (error) {
       toast.error("Something went wrong!")
+    } finally {
+      setIsLoadind(false);
     }
   }
 
@@ -75,11 +80,14 @@ export function JsonViewModal({ songSetId, closeModal, handleGetSongSet }: JsonV
           className="textDesc">
         </Textarea>
       </div>
-      <Button
-        name="Generate Json"
-        className="generateButton"
-        onClick={getSongSetWithJson}
-      />
+      {
+          !isLoading ?
+          <Button
+            name="Generate Json"
+            className="generateButton"
+            onClick={getSongSetWithJson}
+          /> : <LoadingComponent />
+      }
     </Modal>
   )
 }

@@ -18,7 +18,7 @@ export const addSongSchema = z.object({
 })
 
 export const songFinderSchema = z.object({
-  query: z.string().min(1),
+  query: z.string(),
   songName: z.string(),
   artistName: z.string(),
   serviceName: z.string(),

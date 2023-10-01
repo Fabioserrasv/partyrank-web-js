@@ -1,4 +1,4 @@
-$heightNav: 80px;
+$heightNav: 100%;
 
 nav {
   display: flex;
@@ -11,6 +11,7 @@ nav {
 
   padding: .5rem;
 
+  
   @include dark {
     background-color: $darkSecondBackground;
   }
@@ -44,9 +45,9 @@ nav {
 
 
     .pfp {
-      $pfpSize: 60px;
+      $pfpSize: 100%;
       height: $pfpSize;
-      width: $pfpSize;
+      aspect-ratio: 1/1;
       margin-left: 20px;
       border-radius: 1rem;
 

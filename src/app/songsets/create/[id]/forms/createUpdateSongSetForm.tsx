@@ -5,6 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { createSongSetSchema } from "../../../validations/songSetValidations";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { useState } from "react";
+import { LoadingComponent } from "@/app/components/loading-component";
 
 type createUpdateSongSetFormProps = {
   songSet: SongSet;
@@ -17,12 +19,14 @@ export function CreateUpdateSongSetForm({ songSet, handleCreateFormSubmit, updat
   const { register, handleSubmit, formState: { errors }, setValue } = useForm<SongSetPostData>({
     resolver: zodResolver(createSongSetSchema)
   });
+  const [isLoading, setIsLoadind] = useState<boolean>(false);
 
   async function onSubmitHandleCreateSongSet(data: SongSetPostData) {
     try {
+      setIsLoadind(true);
       data.id = songSet.id;
       const id = await handleCreateFormSubmit(data)
-      
+
       const newOrUp = data.id == 0 ? "created" : "updated"
       if (id) {
         updateSetSongSet(songSet.name, Number(id))
@@ -30,6 +34,8 @@ export function CreateUpdateSongSetForm({ songSet, handleCreateFormSubmit, updat
       }
     } catch (error) {
       toast.error("Something went wrong")
+    } finally {
+      setIsLoadind(false);
     }
   }
 
@@ -39,6 +45,7 @@ export function CreateUpdateSongSetForm({ songSet, handleCreateFormSubmit, updat
 
   return (
     <form onSubmit={handleSubmit(onSubmitHandleCreateSongSet)} className="formSongSet">
+      {isLoading && <LoadingComponent />}
       <Input
         displayName="Name"
         placeholder="All Mawaru Penguindrum songs..."
