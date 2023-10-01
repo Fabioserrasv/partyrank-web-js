@@ -27,8 +27,8 @@ export const NavDropdown = forwardRef<HTMLUListElement, NavDropdownProps>(({ isO
         <span>Change Theme</span>
       </li>
 
-      <li className="item">
-        <LogOut onClick={() => { signOut() }} className="icon" />
+      <li className="item" onClick={() => { signOut() }}>
+        <LogOut className="icon" />
         <span>Sign out</span>
       </li>
     </ul>

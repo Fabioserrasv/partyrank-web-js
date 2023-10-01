@@ -1,13 +1,12 @@
 'use client'
 
 import { useForm } from "react-hook-form";
-import { Form } from "../components/form";
-import { Csrf } from "../components/csrf";
-import { Input } from "../components/input";
-import { Button } from "../components/button/Button";
+import { Form } from "../../components/form";
+import { Csrf } from "../../components/csrf";
+import { Input } from "../../components/input";
+import { Button } from "../../components/button/Button";
 import { signIn } from "next-auth/react";
 
-import { useRouter } from 'next/navigation';
 import toast from "react-hot-toast";
 
 type FormLoginDataProps = {
@@ -18,7 +17,7 @@ type FormLoginDataProps = {
 
 export function FormLogin() {
   const { register, handleSubmit } = useForm<FormLoginDataProps>();
-  const router = useRouter();
+
   async function onSubmitLogin(data: FormLoginDataProps) {
     const signInResponse = await signIn("credentials", { ...data, redirect: false })
     

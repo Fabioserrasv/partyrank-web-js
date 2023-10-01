@@ -1,0 +1,68 @@
+$marginBetweenInpuButton: 25px;
+
+.authPage {
+  width: 100%;
+  height: 100%;
+
+  .title {
+    text-align: center;
+
+    h1 {
+      font-size: 4rem;
+    }
+  }
+
+  .cards {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding-bottom: 200px;
+
+    span {
+      display: block;
+      margin-bottom: 10px;
+      font-size: x-large;
+      text-align: center;
+
+      color: $lightTextPrimary;
+
+      @include dark {
+        color: $darkTextPrimary;
+      }
+    }
+
+    .nameInput {
+      margin-bottom: $marginBetweenInpuButton;
+    }
+
+    .buttonSignin {
+      margin-top: $marginBetweenInpuButton;
+    }
+
+    .authLinks {
+      display: flex;
+      justify-content: space-evenly;
+      margin-top: 5px;
+
+      .linkCreate {
+        text-decoration: none;
+
+        &:any-link {
+          color: blue;
+          text-decoration: none;
+        }
+      }
+      
+      .linkForgot {
+        text-decoration: none;
+        &:any-link {
+          color: blue;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+}

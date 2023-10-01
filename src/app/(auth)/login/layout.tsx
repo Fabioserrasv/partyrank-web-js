@@ -1,5 +1,5 @@
 import { Suspense } from "react"
-import { LoadingComponent } from "../components/loading-component"
+import { LoadingComponent } from "../../components/loading-component"
 
 export default function LoginLayout({
   children,

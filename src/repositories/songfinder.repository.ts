@@ -2,12 +2,18 @@ import { similarity } from "@/lib/similiarity";
 import { AnimeThemesService } from "../app/api/song-finder/services/AnimeThemes.service";
 import { AnisongDBService } from "@/app/api/song-finder/services/AnisongDB.service";
 
+/*
+  Check if API responses types of songs are supported
+*/
 function checkTypeEqual(a: string, b: string) {
   if (a === "OPENING" && (b === "OP" || b.includes("Opening"))) return true;
   if (a === "ENDING" && b === "ED" || b.includes("Ending")) return true;
   return false;
 }
 
+/*
+  Convert type of song from string to enum 
+*/
 export function convertType(type: string) : SongType{
   if (type.includes("Opening")) return "OPENING" as SongType;
   if (type.includes("Ending")) return "ENDING" as SongType;

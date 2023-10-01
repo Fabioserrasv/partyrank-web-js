@@ -4,6 +4,9 @@ export const PROFILE_PICTURE_PERMITED_EXTENSIONS = [
   "png"
 ]
 
+/*
+  Convert relation of User x SongSet to Model defined on src/models
+*/
 function convertDbUsersOn(data: any): UserOn{
   return {
     songSet: data.songSet,
@@ -12,6 +15,9 @@ function convertDbUsersOn(data: any): UserOn{
   }
 }
 
+/*
+  Convert a user from database to User Model defined on src/models
+*/
 export function convertDbUserToModel(dbUser: any): User {
   return {
     id: dbUser.id,

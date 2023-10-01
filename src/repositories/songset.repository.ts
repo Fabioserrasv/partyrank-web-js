@@ -1,20 +1,9 @@
 import axios from "axios"
+import { convertDbSongToModel } from "./song.repository"
 
-export function convertDbSongToModel(data: any): Song {
-  return {
-    id: data.id,
-    songSet: data.songSet,
-    anime: data.anime,
-    artist: data.artist,
-    name: data.name,
-    link: data.link,
-    type: data.type,
-    scores: data.scores,
-    createdAt: data.createdAt,
-    updatedAt: data.updatedAt
-  }
-}
-
+/*
+  Convert relation of User x SongSet to Model defined on src/models
+*/
 function convertDbUsersOn(data: any): UserOn{
   return {
     songSet: data,
@@ -23,6 +12,9 @@ function convertDbUsersOn(data: any): UserOn{
   }
 }
 
+/*
+  Convert a songset from database to SongSet Model defined on src/models
+*/
 export async function convertDbSetToModel(data: any, generateJson: boolean = false): Promise<SongSet> {
   return {
     id: data.id,
@@ -37,6 +29,9 @@ export async function convertDbSetToModel(data: any, generateJson: boolean = fal
   }
 }
 
+/*
+  Outputs the object of JSON template (:JsonToGenerateImages) for generating the images
+*/
 function generateImageObjectConverter(data: any) {
   let finalResult: JsonToGenerateImages = {
     title: data.name,
@@ -73,6 +68,9 @@ function generateImageObjectConverter(data: any) {
   return finalResult
 }
 
+/*
+  Outputs the object of JSON template (:JsonToGenerateVideo) for generating the video
+*/
 async function generateVideoObject(data: any) {
   const finalResult: JsonToGenerateVideo[] = []
   const times = data.songs.length
@@ -97,7 +95,9 @@ async function generateVideoObject(data: any) {
   return finalResult
 }
 
-// NEEDS IMPROVEMENT
+/*
+  Get title of the video from Google Drive link
+*/
 async function getVideoTitleFromGoogleDriveLink(url: string) {
   let result = ''
   if (url.includes("drive.google.com")) {

@@ -1,0 +1,14 @@
+.formRegister{
+  .inputPass{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    .inputGroup{
+      width: 48%;
+    }
+  }
+
+  .buttonSignup{
+    margin-top: 25px;
+  }
+}

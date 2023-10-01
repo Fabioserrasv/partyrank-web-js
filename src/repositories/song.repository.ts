@@ -1,4 +1,7 @@
-export function convertDbSongToModel(data: any) {
+/*
+  Convert a song from database to Song Model defined on src/models
+*/
+export function convertDbSongToModel(data: any): Song {
   return {
     id: data.id,
     songSet: data.songSet,
@@ -13,6 +16,9 @@ export function convertDbSongToModel(data: any) {
   }
 }
 
+/*
+  Convert type of song from string to enum 
+*/
 export function convertType(type: string): SongType {
   enum SongType {
     OPENING = "OPENING",
