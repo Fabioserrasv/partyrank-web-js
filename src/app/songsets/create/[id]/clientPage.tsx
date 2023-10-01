@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { CreateUpdateSongSetForm } from "./forms/createUpdateSongSetForm";
 import { AddSongForm } from "./forms/addSongForm";
-import { Music, Upload, Users } from "lucide-react";
+import { Music, Search, Upload, Users } from "lucide-react";
 import toast from "react-hot-toast";
 import { SongFinderModal } from "./modals/songFinderModal";
 import { JsonViewModal } from "./modals/jsonViewModal";
@@ -205,7 +205,9 @@ export function ClientCreateSongPage({
           <div className="songFormSection">
             <div className="sectionTitle">
               <h3>Manage song</h3>
-              <span onClick={() => { setSongFinderModalOpen(true) }}>Search on Song Finder</span>
+              <span onClick={() => { setSongFinderModalOpen(true) }}>
+                Search on Song Finder
+              </span>
             </div>
             <AddSongForm
               songSet={songSet}

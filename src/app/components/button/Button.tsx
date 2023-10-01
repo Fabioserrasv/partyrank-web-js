@@ -4,10 +4,11 @@ import './button.scss';
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   name?: string;
   children?: React.ReactNode
+  className?: string;
 }
-export function Button({ name, children, ...rest }: ButtonProps) {
+export function Button({ name, children, className = '', ...rest }: ButtonProps) {
   return(
-    <button {...rest}>
+    <button {...rest} className={`buttonComponent ${className}`}>
       {
         name ? name : <></>
       }

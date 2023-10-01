@@ -1,14 +1,12 @@
 'use client'
 import { Button } from "@/app/components/button/Button";
 import Modal from "@/app/components/modal";
-import { Table, TableRow } from "@/app/components/table";
-import { Globe, Mic2, Monitor, Plus, X } from "lucide-react";
-import { SongFinderModalForm } from "../forms/songFinderModalForm";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { AddSongFormSchema } from "../clientPage";
 import { convertType } from "@/repositories/songfinder.repository";
 import { LoadingComponent } from "@/app/components/loading-component";
+import SongFinderComponent from "@/app/components/songfinder";
 
 type SongFinderModalProps = {
   songSet: SongSet;
@@ -66,7 +64,7 @@ export function SongFinderModal({ changeSongFinderModalOpen, handleSongFinderFor
     let songsToAddToState: Song[] = [];
     try {
       setIsLoadind(true);
-      
+
       for (let i = 0; i < songsFind.length; i++) {
         const id = await handleAddSongFormSubmit({
           id: 0,
@@ -108,48 +106,18 @@ export function SongFinderModal({ changeSongFinderModalOpen, handleSongFinderFor
       className="lg songFinderModal"
       closeModal={changeSongFinderModalOpen}
     >
-      <SongFinderModalForm
+      <SongFinderComponent
+        songsFind={songsFind}
         populateTableSongsWeb={populateTableSongsWeb}
         handleSongFinderFormSubmit={handleSongFinderFormSubmit}
+        actions={true}
+        addSongFromSongFinder={addSongFromSongFinder}
       />
-      <div className="resultSongFinder">
-        <Table>
-          {
-            songsFind.map((song) => {
-              return (
-                <TableRow>
-                  <div className='info'>
-                    <span>{`${song.artist} - ${song.title}`}</span>
-                    <div className="extraInfo">
-                      <span>
-                        <Monitor />
-                        {song.anime}
-                      </span>
-                      <span>
-                        <Mic2 />
-                        {song.type}
-                      </span>
-                      <span>
-                        <Globe />
-                        {song.video?.link}
-                      </span>
-                    </div>
-                  </div>
-                  <div className='actions'>
-                    <Plus className="icon" onClick={() => { addSongFromSongFinder(song) }} />
-                    <X className="icon" />
-                  </div>
-                </TableRow>
-              )
-            })
-          }
-        </Table>
-      </div>
+
       {
         songsFind.length > 0 &&
         <Button
           name="Add all songs"
-          className="buttonAll"
           onClick={addAllSongsFindToSongSet}
         />
       }

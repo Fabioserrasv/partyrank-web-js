@@ -27,7 +27,7 @@ export function TablePaginated({ itemsPerPage, sets }: PaginatedItemsProps) {
   return (
     <>
       <Table>
-        {currentItems ? currentItems.map((s) => {
+        {currentItems && currentItems.length > 0 ? currentItems.map((s) => {
           return (
             <TableRow key={s.id}>
               <div className='info'>
@@ -57,7 +57,7 @@ export function TablePaginated({ itemsPerPage, sets }: PaginatedItemsProps) {
               </div>
             </TableRow>
           )
-        }) : <></>}
+        }) : <div>No Songs Set Found</div>}
       </Table>
       <ReactPaginate
         className='pagination'

@@ -1,10 +1,14 @@
-button{
-  
+.buttonComponent{
   background-color: $primaryColor;
   color: $darkTextPrimary;
+
   @include dark{
     background-color: $secondaryColor;
-    color: $lightTextPrimary;
+    color: #333333;
+    
+    svg > *{
+      color: #333333;
+    }
   }
 
   height: 35px;

@@ -6,6 +6,7 @@ import { headers } from "next/headers";
 import { NavItem } from "./navDropdown/navItem";
 import Link from "next/link";
 import { NavUser } from "./navUser/navUser";
+import { Button } from "../button/Button";
 type NavProps = {
   user: User;
 }
@@ -33,6 +34,12 @@ export function Nav({ user }: NavProps) {
           <Users />
           <span>Users</span>
         </NavItem>
+      </Link>
+
+      <Link className="buttonCreate" href={"/songsets/create/0"}>
+        <Button
+          name="New song set"
+        />
       </Link>
 
       <NavUser user={user} />

@@ -1,3 +1,4 @@
+'use client'
 import { Button } from "@/app/components/button/Button";
 import { Input } from "@/app/components/input";
 import { Select } from "@/app/components/select";
@@ -6,16 +7,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Search } from "lucide-react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { AddSongFormSchema } from "../clientPage";
 import { useState } from "react";
 import { LoadingComponent } from "@/app/components/loading-component";
+import './songfindercomponent.scss';
 
-type SongFinderModalFormProps = {
+type SongFinderFormProps = {
   handleSongFinderFormSubmit: (data: SongFinderAction) => Promise<SongWeb[]>;
-  populateTableSongsWeb: (songs: SongWeb[]) => void;
+  populateTableSongsWeb?: (songs: SongWeb[]) => void;
 }
 
-export function SongFinderModalForm({ handleSongFinderFormSubmit, populateTableSongsWeb }: SongFinderModalFormProps) {
+export function SongFinderForm({ handleSongFinderFormSubmit, populateTableSongsWeb }: SongFinderFormProps) {
   const { register, handleSubmit, formState: { errors }, setValue } = useForm<SongFinderAction>({
     resolver: zodResolver(songFinderSchema)
   });
@@ -26,7 +27,10 @@ export function SongFinderModalForm({ handleSongFinderFormSubmit, populateTableS
       setIsLoadind(true);
       const songs = await handleSongFinderFormSubmit(data);
 
-      populateTableSongsWeb(songs);
+      if( populateTableSongsWeb){
+        populateTableSongsWeb(songs);
+      }
+      
     } catch (error) {
       toast.error("Something went wrong!")
     } finally {
