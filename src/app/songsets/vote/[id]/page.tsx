@@ -1,9 +1,10 @@
 import { VoteClientPage } from './clientPage';
 import { getServerSession } from 'next-auth';
 import { options } from '@/app/api/auth/[...nextauth]/options';
-import './vote.scss';
 import { getSongSet } from '@/actions/songset.actions';
 import { redirect } from 'next/navigation';
+import { checkIsAllowed } from '@/handlers/songset.handlers';
+import './vote.scss';
 
 type VotePageProps = {
   params: {
@@ -14,30 +15,9 @@ type VotePageProps = {
 export default async function Vote({ params }: VotePageProps) {
   const session = await getServerSession(options);
   const set = await getSongSet(Number(params.id));
-  if (!session) return;
+  if (session == null || set == null) redirect("/songsets");
 
-  if (!set) {
-    window.location.href = "/songsets"
-    return
-  };
-
-  /*
-    NEED TO CREATE CONTEXT TO CHECK ALLOWED USER
-  */
-
-  let allowed = false
-
-  if (set.user?.id == session.user.id) {
-    allowed = true;
-  }
-
-  if (!allowed) {
-    set.usersOn?.map((relationUser) => {
-      if (relationUser.user.id == session.user.id) {
-        allowed = true;
-      }
-    })
-  }
+  const allowed = await checkIsAllowed(params.id);
 
   if (!allowed) {
     redirect("/songsets")

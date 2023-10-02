@@ -6,10 +6,11 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { songSetUpdateSchema } from "@/app/songsets/validations/songSetValidations";
 import { handleUpdateSongSet } from "@/handlers/songset.handlers";
+import { Dispatch, SetStateAction } from "react";
 
 type SongSetOptionsFormProps = {
   songSet: SongSet;
-  updateNewSongSet: (newSongSet: SongSet) => void
+  setSongSet: Dispatch<SetStateAction<SongSet>>
 }
 
 const typeOptions = [{ value: "PRIVATE", display: "Private" }, { value: "PUBLIC", display: "Public" }]
@@ -28,7 +29,7 @@ const scoreSystemOptions = [
 
 type fields = "type" | "status"
 
-export function SongSetOptionsForm({updateNewSongSet, songSet}: SongSetOptionsFormProps) {
+export function SongSetOptionsForm({setSongSet, songSet}: SongSetOptionsFormProps) {
   const { register, handleSubmit, formState: { errors }, setValue } = useForm<SongSetPostData>({
     resolver: zodResolver(songSetUpdateSchema)
   });
@@ -38,7 +39,7 @@ export function SongSetOptionsForm({updateNewSongSet, songSet}: SongSetOptionsFo
       data.name = songSet.name;
       const newSet = await handleUpdateSongSet(data, songSet.id)
 
-      updateNewSongSet(newSet)
+      setSongSet(newSet)
       toast.success("SongSet updated successfully")
     } catch (error) {
       toast.error("Something went wrong!")
@@ -49,7 +50,7 @@ export function SongSetOptionsForm({updateNewSongSet, songSet}: SongSetOptionsFo
     const key: fields = e.target.name as fields
 
     setValue(key, e.target.value as (SongSetType | SongSetStatus ))
-    updateNewSongSet({
+    setSongSet({
       ...songSet,
       [key]: e.target.value
     })

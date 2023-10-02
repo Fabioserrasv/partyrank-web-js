@@ -1,6 +1,6 @@
 import './createSongSet.scss';
 import { ClientCreateSongPage } from "./clientPage";
-import { handleGetSongSet } from "@/handlers/songset.handlers";
+import { checkIsAllowed, handleGetSongSet } from "@/handlers/songset.handlers";
 import { getServerSession } from 'next-auth';
 import { options } from '@/app/api/auth/[...nextauth]/options';
 import { redirect } from 'next/navigation';
@@ -14,26 +14,14 @@ type CreateSongSetProps = {
 export default async function CreateSongSet({ params }: CreateSongSetProps) {
   const set = await handleGetSongSet(params.id);
   const session = await getServerSession(options)
-  const user = session?.user!
+  const user = session?.user
+  if (session == null || user == undefined) redirect("/songsets");
 
+  /*
+    If not a creation of a new song set, check if it is allowed to join.
+  */
   if (params.id != 0) {
-    if (!set) {
-      redirect("/songsets")
-    };
-
-    let allowed = false
-
-    if (set.user?.id == user.id) {
-      allowed = true;
-    }
-
-    if (!allowed) {
-      set.usersOn?.map((relationUser) => {
-        if (relationUser.user.id == user.id) {
-          allowed = true;
-        }
-      })
-    }
+    const allowed = await checkIsAllowed(params.id);
 
     if (!allowed) {
       redirect("/songsets")

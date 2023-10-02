@@ -1,6 +1,8 @@
 "use server"
 import { answerUserToPartyRank, createSongSet, getAllSongSets, getSongSet, inviteUserToPartyRank, updateSongSet } from "@/actions/songset.actions";
 import { getUserByUsername } from "@/actions/user.actions";
+import { options } from "@/app/api/auth/[...nextauth]/options";
+import { getServerSession } from "next-auth";
 
 export async function handleCreateSongSetFormSubmit(data: SongSetPostData) {
   try {
@@ -74,6 +76,34 @@ export async function handleJoinPublicSongSet(songSetId: number, userId: number)
     await inviteUserToPartyRank(songSetId, userId);
     return await answerUserToPartyRank(songSetId, userId, true)
 
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function checkIsAllowed(id: number){
+  try {
+    const set = await getSongSet(id);
+    const session = await getServerSession(options);
+    let allowed = false
+
+    if (!set || !session) {
+      return allowed
+    };
+  
+    if (set.user?.id == session.user.id) {
+      allowed = true;
+    }
+  
+    if (!allowed) {
+      set.usersOn?.map((relationUser) => {
+        if (relationUser.user.id == session.user.id) {
+          allowed = true;
+        }
+      })
+    }
+    
+    return allowed
   } catch (error) {
     throw error;
   }

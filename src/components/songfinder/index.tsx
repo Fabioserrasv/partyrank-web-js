@@ -22,9 +22,9 @@ export default function SongFinderComponent({ actions, addSongFromSongFinder, po
       <div className="result">
         <Table>
           {
-            songsFind.map((song) => {
+            songsFind.map((song, index) => {
               return (
-                <TableRow>
+                <TableRow key={`${song.title}${index}`}>
                   <div className='info'>
                     <span>{`${song.artist} - ${song.title}`}</span>
                     <div className="extraInfo">

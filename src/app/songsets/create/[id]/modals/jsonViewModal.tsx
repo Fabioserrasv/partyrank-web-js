@@ -5,12 +5,12 @@ import { LoadingComponent } from "@/components/loading-component"
 import Modal from "@/components/modal"
 import { Textarea } from "@/components/textarea"
 import { handleGetSongSet } from "@/handlers/songset.handlers"
-import { useState } from "react"
+import { Dispatch, SetStateAction, useState } from "react"
 import toast from "react-hot-toast"
 
 type JsonViewModalProps = {
   songSetId: number;
-  closeModal: (isModalOpen: boolean) => void;
+  closeModal: Dispatch<SetStateAction<boolean>>
 }
 
 type JsonResult = {
@@ -74,7 +74,7 @@ export function JsonViewModal({ songSetId, closeModal }: JsonViewModalProps) {
         </Textarea>
 
         <Textarea
-          displayName="JSON Description"
+          displayName="Video Description"
           name="jsondescription"
           content={jsonsResult.description}
           className="textDesc">

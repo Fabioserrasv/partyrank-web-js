@@ -1,23 +1,35 @@
 'use client'
 import { Button } from "@/components/button/Button";
 import Modal from "@/components/modal";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import toast from "react-hot-toast";
 import { AddSongFormSchema } from "../clientPage";
 import { convertType } from "@/repositories/songfinder.repository";
 import { LoadingComponent } from "@/components/loading-component";
 import SongFinderComponent from "@/components/songfinder";
+import { handleAddSongFormSubmit } from "@/handlers/song.handlers";
 
 type SongFinderModalProps = {
   songSet: SongSet;
   addSongToSongSetState: (song: Song) => void;
-  changeSongFinderModalOpen: (isModalOpen: boolean) => void
-  addArrayToSongSet: (songs: Song[]) => void
+  changeSongFinderModalOpen: Dispatch<SetStateAction<boolean>>
+  setSongSet: Dispatch<SetStateAction<SongSet>>;
+
 }
 
-export function SongFinderModal({ changeSongFinderModalOpen, addSongToSongSetState, songSet, addArrayToSongSet }: SongFinderModalProps) {
+export function SongFinderModal({ changeSongFinderModalOpen, addSongToSongSetState, songSet, setSongSet }: SongFinderModalProps) {
   const [isLoading, setIsLoadind] = useState<boolean>(false);
   const [songsFind, setSongsFind] = useState<SongWeb[]>([]);
+
+  function addArrayToSongSet(songs: Song[]) {
+    setSongSet({
+      ...songSet,
+      songs: [
+        ...songSet.songs!,
+        ...songs
+      ]
+    })
+  }
 
   function populateTableSongsWeb(songs: SongWeb[]) {
     setSongsFind(songs);

@@ -9,6 +9,7 @@ import { JsonViewModal } from "./modals/jsonViewModal";
 import { UsersTab } from "./tabs/usersTab";
 import { SongsTab } from "./tabs/songsTab";
 import { handleDeleteSong } from "@/handlers/song.handlers";
+import { SongSetTabs } from "@/components/songset-tabs";
 
 type ClientCreateSongPageProps = {
   dbSet: SongSet | null;
@@ -23,6 +24,8 @@ export type AddSongFormSchema = {
   link: string;
   type: SongType;
 }
+
+type tabs = "users" | "songs"
 
 const initialValue = {
   id: 0,
@@ -42,13 +45,7 @@ export const initialSongValue: AddSongFormSchema = {
   type: 'OPENING' as SongType
 }
 
-type tabs = "users" | "songs"
-
-export function ClientCreateSongPage({
-  dbSet,
-  user
-}: ClientCreateSongPageProps) {
-
+export function ClientCreateSongPage({ dbSet, user }: ClientCreateSongPageProps) {
   const [songSet, setSongSet] = useState<SongSet>(initialValue)
   const [song, setSong] = useState<AddSongFormSchema>(initialSongValue)
   const [songFinderModalOpen, setSongFinderModalOpen] = useState<boolean>(false);
@@ -58,31 +55,6 @@ export function ClientCreateSongPage({
 
   const cardTitle = dbSet == null ? "Create new Song set" : "Edit song set"
   const buttonTitle = dbSet == null ? "Create" : "Update";
-
-  function updateSetSongSet(name: string, id: number) {
-    setSongSet({
-      ...songSet,
-      name: name,
-      user: user,
-      id: Number(id)
-    })
-  }
-
-  function updateNewSongSet(newSongSet: SongSet) {
-    setSongSet(newSongSet)
-  }
-  
-  function changeSongFinderModalOpen(isModalOpen: boolean) {
-    setSongFinderModalOpen(isModalOpen)
-  }
-
-  function changeJsonModalOpen(isModalOpen: boolean) {
-    setJsonModalOpen(isModalOpen)
-  }
-
-  function updateSongState(song: AddSongFormSchema) {
-    setSong(song)
-  }
 
   function addSongToSongSetState(song: Song) {
     let newSong = true
@@ -102,16 +74,6 @@ export function ClientCreateSongPage({
     setSongSet({
       ...songSet,
       songs: updatedSongs
-    })
-  }
-
-  function addArrayToSongSet(songs: Song[]) {
-    setSongSet({
-      ...songSet,
-      songs: [
-        ...songSet.songs!,
-        ...songs
-      ]
     })
   }
 
@@ -149,11 +111,11 @@ export function ClientCreateSongPage({
       const dbSetAsSongSet = dbSet as SongSet
       setSongSet(dbSetAsSongSet)
     }
-  }, [dbSet]) 
+  }, [dbSet])
 
   useEffect(() => {
     setIsSetCreator(Boolean(songSet.id && songSet.id != 0 && songSet.user?.id == user.id))
-  }, [songSet]) 
+  }, [songSet])
 
   return (
     <>
@@ -162,15 +124,15 @@ export function ClientCreateSongPage({
         <SongFinderModal
           songSet={songSet}
           addSongToSongSetState={addSongToSongSetState}
-          changeSongFinderModalOpen={changeSongFinderModalOpen}
-          addArrayToSongSet={addArrayToSongSet}
+          changeSongFinderModalOpen={setSongFinderModalOpen}
+          setSongSet={setSongSet}
         />
       }
       {
         jsonModalOpen &&
         <JsonViewModal
           songSetId={songSet.id}
-          closeModal={changeJsonModalOpen}
+          closeModal={setJsonModalOpen}
         />
       }
       <div className="infoSection">
@@ -179,18 +141,15 @@ export function ClientCreateSongPage({
 
           {
             isSetCreator &&
-            <div className="tabs">
-              <Upload className="generateIcon" onClick={() => { setJsonModalOpen(true) }} />
-              <Users className={tab == "users" ? "active" : ""} onClick={() => { setTab("users") }} />
-              <Music className={tab == "songs" ? "active" : ""} onClick={() => { setTab("songs") }} />
-            </div>
+            <SongSetTabs setJsonModalOpen={setJsonModalOpen} tab={tab} setTab={setTab} />
           }
         </div>
         {
           (songSet.id == 0 || isSetCreator) &&
           <CreateUpdateSongSetForm
             songSet={songSet}
-            updateSetSongSet={updateSetSongSet}
+            setSongSet={setSongSet}
+            user={user}
             buttonName={buttonTitle}
           />
         }
@@ -208,7 +167,7 @@ export function ClientCreateSongPage({
                   songSet={songSet}
                   addSongToSongSetState={addSongToSongSetState}
                   song={song}
-                  updateSongState={updateSongState}
+                  updateSongState={setSong}
                 />
               </div>
             </> :
@@ -222,7 +181,7 @@ export function ClientCreateSongPage({
           case 'users':
             return <UsersTab
               songSet={songSet}
-              updateNewSongSet={updateNewSongSet}
+              setSongSet={setSongSet}
             />
           case 'songs':
             return <SongsTab

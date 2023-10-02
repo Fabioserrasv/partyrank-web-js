@@ -4,22 +4,32 @@ import { Input } from "@/components/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { LoadingComponent } from "@/components/loading-component";
 import { createSongSetSchema } from "@/app/songsets/validations/songSetValidations";
 import { handleCreateSongSetFormSubmit } from "@/handlers/songset.handlers";
 
 type createUpdateSongSetFormProps = {
   songSet: SongSet;
-  updateSetSongSet: (name: string, id: number) => void;
+  user: User;
+  setSongSet: Dispatch<SetStateAction<SongSet>>;
   buttonName: string;
 }
 
-export function CreateUpdateSongSetForm({ songSet, updateSetSongSet, buttonName }: createUpdateSongSetFormProps) {
+export function CreateUpdateSongSetForm({ songSet, user, setSongSet, buttonName }: createUpdateSongSetFormProps) {
   const { register, handleSubmit, formState: { errors }, setValue } = useForm<SongSetPostData>({
     resolver: zodResolver(createSongSetSchema)
   });
   const [isLoading, setIsLoadind] = useState<boolean>(false);
+
+  function updateSetSongSet(name: string, id: number) {
+    setSongSet({
+      ...songSet,
+      name: name,
+      user: user,
+      id: Number(id)
+    })
+  }
 
   async function onSubmitHandleCreateSongSet(data: SongSetPostData) {
     try {

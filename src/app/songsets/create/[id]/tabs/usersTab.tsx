@@ -2,17 +2,17 @@
 import { Table, TableRow } from "@/components/table";
 import { Check, Globe, X } from "lucide-react";
 import { InviteUserForm } from "../forms/inviteUserForm";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { SongSetOptionsForm } from "../forms/songSetOptionsForm";
 import toast from "react-hot-toast";
 import { handleAnswerInvite } from "@/handlers/songset.handlers";
 
 type UsersTabProps = {
   songSet: SongSet | null;
-  updateNewSongSet: (newSongSet: SongSet) => void
+  setSongSet: Dispatch<SetStateAction<SongSet>>
 }
 
-export function UsersTab({ songSet, updateNewSongSet }: UsersTabProps) {
+export function UsersTab({ songSet, setSongSet }: UsersTabProps) {
   if (!songSet) return
   const [invites, setInvites] = useState<UserOn[]>(songSet.usersOn || []);
 
@@ -52,7 +52,7 @@ export function UsersTab({ songSet, updateNewSongSet }: UsersTabProps) {
 
         <SongSetOptionsForm
           songSet={songSet}
-          updateNewSongSet={updateNewSongSet}
+          setSongSet={setSongSet}
         />
 
       </div>
