@@ -4,15 +4,15 @@ import { Input } from "@/components/input"
 import { Select } from "@/components/select";
 import { addSongSchema } from "@/app/songsets/validations/songSetValidations";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AddSongFormSchema, initialSongValue } from "../clientPage";
 import toast from "react-hot-toast";
 import { LoadingComponent } from "@/components/loading-component";
+import { handleAddSongFormSubmit } from "@/handlers/song.handlers";
 
 type AddSongFormProps = {
   songSet: SongSet;
-  handleAddSongFormSubmit: ({ }: AddSongFormSchema, songSetId: number) => Promise<number | boolean>;
   addSongToSongSetState: (song: Song) => void;
   song: AddSongFormSchema;
   updateSongState: (song: AddSongFormSchema) => void;
@@ -20,12 +20,11 @@ type AddSongFormProps = {
 
 type fields = "name" | "anime" | "artist" | "name" | "type"
 
-export function AddSongForm({ handleAddSongFormSubmit, updateSongState, song, addSongToSongSetState, songSet }: AddSongFormProps) {
+export function AddSongForm({ updateSongState, song, addSongToSongSetState, songSet }: AddSongFormProps) {
   const { register, handleSubmit, formState: { errors }, setValue } = useForm<AddSongFormSchema>({
     resolver: zodResolver(addSongSchema)
   });
   const [isLoading, setIsLoadind] = useState<boolean>(false);
-
 
   function onAddSongInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     const key: fields = e.target.name as fields

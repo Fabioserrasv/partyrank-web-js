@@ -4,13 +4,13 @@ import { Button } from "@/components/button/Button"
 import { LoadingComponent } from "@/components/loading-component"
 import Modal from "@/components/modal"
 import { Textarea } from "@/components/textarea"
+import { handleGetSongSet } from "@/handlers/songset.handlers"
 import { useState } from "react"
 import toast from "react-hot-toast"
 
 type JsonViewModalProps = {
   songSetId: number;
   closeModal: (isModalOpen: boolean) => void;
-  handleGetSongSet: (id: number, generateJson: boolean) => Promise<SongSet | null>
 }
 
 type JsonResult = {
@@ -19,7 +19,7 @@ type JsonResult = {
   description: string;
 }
 
-export function JsonViewModal({ songSetId, closeModal, handleGetSongSet }: JsonViewModalProps) {
+export function JsonViewModal({ songSetId, closeModal }: JsonViewModalProps) {
   const [isLoading, setIsLoadind] = useState<boolean>(false);
   const [jsonsResult, setJsonsResult] = useState<JsonResult>({
     video: '',

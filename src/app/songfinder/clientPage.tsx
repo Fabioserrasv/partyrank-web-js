@@ -3,13 +3,10 @@ import { useState } from "react";
 import SongFinderComponent from "@/components/songfinder";
 
 type SongFinderClientPageProps = {
-  handleSongFinderFormSubmit: (data: SongFinderAction) => Promise<SongWeb[]>;
   populateTableSongsWeb?: (songs: SongWeb[]) => void;
 }
 
-export function SongFinderClientPage({
-  handleSongFinderFormSubmit
-}: SongFinderClientPageProps) {
+export function SongFinderClientPage({ }: SongFinderClientPageProps) {
   const [songsFind, setSongsFind] = useState<SongWeb[]>([]);
 
   function populateTableSongsWeb(songs: SongWeb[]) {
@@ -19,7 +16,6 @@ export function SongFinderClientPage({
   return (
     <SongFinderComponent
       songsFind={songsFind}
-      handleSongFinderFormSubmit={handleSongFinderFormSubmit}
       populateTableSongsWeb={populateTableSongsWeb}
       actions={false}
     />

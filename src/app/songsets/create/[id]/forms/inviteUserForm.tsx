@@ -14,11 +14,10 @@ type InviteUserSchema = {
 
 type InviteUserFormProps = {
   songSetId: number;
-  handleInviteUser: (songSetId: number, username: string) => Promise<Boolean>
   addInvite: (invite: UserOn) => void
 }
 
-export function InviteUserForm({ songSetId, handleInviteUser, addInvite }: InviteUserFormProps) {
+export function InviteUserForm({ songSetId, addInvite }: InviteUserFormProps) {
   const { register, handleSubmit, formState: { errors }, setValue } = useForm<InviteUserSchema>({
     resolver: zodResolver(inviteUserSchema)
   });
@@ -37,6 +36,7 @@ export function InviteUserForm({ songSetId, handleInviteUser, addInvite }: Invit
             id: songSetId,
             name: "",
             type: 'PRIVATE' as SongSetType,
+            scoreSystem: "SCORING" as SongSetScoreSystemType,
             status: 'ON_GOING' as SongSetStatus,
             songs: []
           },

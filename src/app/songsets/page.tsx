@@ -13,8 +13,6 @@ export default async function SongSets() {
     <div className="songSetPage">
       <TableWithFilter
         user={user}
-        search={handleGetAllSongSets}
-        handleJoinPublicSongSet={handleJoinPublicSongSet}
         initialSets={sets}
       />
     </div>

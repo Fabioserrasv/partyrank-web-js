@@ -6,10 +6,9 @@ import { useState } from "react"
 
 type InvitesSectionProps = {
   dbUser: User;
-  handleAnswerInvite: (songSetId: number, userId: number, accept: boolean) => Promise<Boolean>
 }
 
-export function InvitesSection({ dbUser, handleAnswerInvite }: InvitesSectionProps) {
+export function InvitesSection({ dbUser }: InvitesSectionProps) {
   const [invites, setInvites] = useState<UserOn[]>(dbUser.invites ?? []);
 
   function removeInvite(invite: UserOn){
@@ -25,6 +24,7 @@ export function InvitesSection({ dbUser, handleAnswerInvite }: InvitesSectionPro
         {
           invites.length > 0 &&
           invites.map((invite) => {
+            if (invite.accepted === true) return <></>
             return (
               <TableRow key={invite.songSet.id}>
                 <div className='info'>
@@ -39,7 +39,6 @@ export function InvitesSection({ dbUser, handleAnswerInvite }: InvitesSectionPro
                 <ActionsInvite
                   invite={invite}
                   userId={dbUser.id}
-                  handleAnswerInvite={handleAnswerInvite}
                   removeInvite={removeInvite}
                 />
               </TableRow>

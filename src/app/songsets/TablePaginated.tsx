@@ -8,19 +8,19 @@ import Link from 'next/link';
 import { convertSongSetScoreSystemToString, convertSongSetTypeToString } from '@/repositories/songset.repository';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import { handleJoinPublicSongSet } from '@/handlers/songset.handlers';
 
 type PaginatedItemsProps = {
   itemsPerPage: number;
   sets: SongSet[];
   user: User;
-  handleJoinPublicSongSet: (songSetId: number, userId: number) => Promise<Boolean>
 }
 
 type handlePageClickProps = {
   selected: number;
 }
 
-export function TablePaginated({ itemsPerPage, sets, handleJoinPublicSongSet, user }: PaginatedItemsProps) {
+export function TablePaginated({ itemsPerPage, sets, user }: PaginatedItemsProps) {
   const [itemOffset, setItemOffset] = useState(0);
   const endOffset = itemOffset + itemsPerPage;
   const currentItems = sets.slice(itemOffset, endOffset);

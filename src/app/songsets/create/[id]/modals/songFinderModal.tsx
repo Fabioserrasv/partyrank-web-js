@@ -12,12 +12,10 @@ type SongFinderModalProps = {
   songSet: SongSet;
   addSongToSongSetState: (song: Song) => void;
   changeSongFinderModalOpen: (isModalOpen: boolean) => void
-  handleSongFinderFormSubmit: (data: SongFinderAction) => Promise<SongWeb[]>;
-  handleAddSongFormSubmit: ({ }: AddSongFormSchema, songSetId: number) => Promise<number | boolean>;
   addArrayToSongSet: (songs: Song[]) => void
 }
 
-export function SongFinderModal({ changeSongFinderModalOpen, handleSongFinderFormSubmit, addSongToSongSetState, handleAddSongFormSubmit, songSet, addArrayToSongSet }: SongFinderModalProps) {
+export function SongFinderModal({ changeSongFinderModalOpen, addSongToSongSetState, songSet, addArrayToSongSet }: SongFinderModalProps) {
   const [isLoading, setIsLoadind] = useState<boolean>(false);
   const [songsFind, setSongsFind] = useState<SongWeb[]>([]);
 
@@ -109,7 +107,6 @@ export function SongFinderModal({ changeSongFinderModalOpen, handleSongFinderFor
       <SongFinderComponent
         songsFind={songsFind}
         populateTableSongsWeb={populateTableSongsWeb}
-        handleSongFinderFormSubmit={handleSongFinderFormSubmit}
         actions={true}
         addSongFromSongFinder={addSongFromSongFinder}
       />

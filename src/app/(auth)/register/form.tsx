@@ -7,16 +7,16 @@ import { Button } from "@/components/button/Button";
 import toast from "react-hot-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "../validations/authValidations";
+import { handleCreateUserForm } from "@/handlers/user.handlers";
 
 type FormRegisterProps = {
-  handleCreateUserForm: (data: UserPostData) => Promise<User>
 }
 
 type UserRegister = UserPostData & {
   repassword: string
 }
 
-export function FormRegister({ handleCreateUserForm }: FormRegisterProps) {
+export function FormRegister({  }: FormRegisterProps) {
   const { register, handleSubmit, formState: { errors }, setValue } = useForm<UserRegister>({
     resolver: zodResolver(registerSchema)
   });

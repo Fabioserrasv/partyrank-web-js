@@ -8,9 +8,9 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { signOut } from "next-auth/react";
 import { LoadingComponent } from "@/components/loading-component";
+import { handleUpdatePasswordForm } from "@/handlers/user.handlers";
 
 type ChangePasswordFormProps = {
-  handleUpdatePasswordForm: ({ oldPass, newPass }: ChangePasswordType, id: number) => Promise<boolean>
   id: number;
 }
 
@@ -22,7 +22,7 @@ export type ChangePasswordSchema = {
 
 type fields = "oldPassword" | "newPassword" | "renewPassword"
 
-export function ChangePasswordForm({ handleUpdatePasswordForm, id }: ChangePasswordFormProps) {
+export function ChangePasswordForm({ id }: ChangePasswordFormProps) {
   const { register, handleSubmit, formState: { errors }, setValue } = useForm<ChangePasswordSchema>({
     resolver: zodResolver(changePasswordSchema)
   });

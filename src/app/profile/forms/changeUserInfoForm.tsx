@@ -8,12 +8,11 @@ import { changeUserInfoSchema } from "./validations/profileValidations";
 import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { error } from "console";
 import { LoadingComponent } from "@/components/loading-component";
+import { handleUpdateUserInfoForm } from "@/handlers/user.handlers";
 
 type ChangeAnimeListFormProps = {
   user: User;
-  handleUpdateUserInfoForm: (data: ChangeUserInfoFormSchema, id: number) => Promise<boolean>
 }
 
 export type ChangeUserInfoFormSchema = {
@@ -23,7 +22,7 @@ export type ChangeUserInfoFormSchema = {
 
 type fields = "username" | "animelist"
 
-export function ChangeUserInfoForm({ handleUpdateUserInfoForm, user }: ChangeAnimeListFormProps) {
+export function ChangeUserInfoForm({ user }: ChangeAnimeListFormProps) {
   const { register, handleSubmit, formState: { errors }, setValue } = useForm<ChangeUserInfoFormSchema>({
     resolver: zodResolver(changeUserInfoSchema)
   });

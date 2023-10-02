@@ -3,15 +3,15 @@ import toast from "react-hot-toast";
 import { Check, X } from "lucide-react"
 import { useState } from "react";
 import { LoadingComponent } from "@/components/loading-component";
+import { handleAnswerInvite } from "@/handlers/songset.handlers";
 
 type ActionsInviteProps = {
   invite: UserOn;
   userId: number;
-  handleAnswerInvite: (songSetId: number, userId: number, accept: boolean) => Promise<Boolean>
   removeInvite: (invite: UserOn) => void
 }
 
-export function ActionsInvite({ invite, handleAnswerInvite, userId, removeInvite }: ActionsInviteProps) {
+export function ActionsInvite({ invite, userId, removeInvite }: ActionsInviteProps) {
   const [isLoading, setIsLoadind] = useState<boolean>(false);
 
   async function onAnswerInvite(songSetId: number, accept: boolean) {

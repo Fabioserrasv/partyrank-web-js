@@ -24,17 +24,14 @@ export default async function Profile() {
 
         <ChangeUserInfoForm
           user={user}
-          handleUpdateUserInfoForm={handleUpdateUserInfoForm}
         />
 
         <ChangePasswordForm
-          handleUpdatePasswordForm={handleUpdatePasswordForm}
           id={user.id}
         />
       </div>
       <InvitesSection
         dbUser={dbUser}
-        handleAnswerInvite={handleAnswerInvite}
       />
 
     </div>

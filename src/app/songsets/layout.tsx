@@ -8,9 +8,9 @@ export default function SongsetsLayout({
 }) {
   return (
     <>
-    <Suspense fallback={<LoadingComponent />}>
-      {children}
-    </Suspense>
+      <Suspense fallback={<LoadingComponent />}>
+          {children}
+      </Suspense>
     </>
   )
 }

@@ -1,9 +1,8 @@
+"use server"
 import { createUser, getUser, updateUserInfo, updateUserPassword } from "@/actions/user.actions"
 import { ChangeUserInfoFormSchema } from "@/app/profile/forms/changeUserInfoForm"
 
 export async function handleCreateUserForm(data: UserPostData): Promise<User> {
-  "use server"
-
   try {
     data.animeList = ''
     return await createUser(data);
@@ -13,8 +12,6 @@ export async function handleCreateUserForm(data: UserPostData): Promise<User> {
 }
 
 export async function handleUpdateUserInfoForm(data: ChangeUserInfoFormSchema, id: number) {
-  "use server"
-
   try {
     await updateUserInfo({
       animeList: data.animelist,
@@ -28,8 +25,6 @@ export async function handleUpdateUserInfoForm(data: ChangeUserInfoFormSchema, i
 }
 
 export async function handleGetUser(id: number) {
-  "use server"
-
   try {
     return await getUser(id);
   } catch (error) {
@@ -39,8 +34,6 @@ export async function handleGetUser(id: number) {
 
 
 export async function handleUpdatePasswordForm({ oldPass, newPass }: ChangePasswordType, id: number) {
-  "use server"
-
   try {
     const response = await updateUserPassword({
       oldPass,

@@ -5,9 +5,7 @@ import './songfinder.scss'
 export default function SongFinder() {
   return (
     <div className="songFinderPage">
-      <SongFinderClientPage
-        handleSongFinderFormSubmit={handleSongFinderFormSubmit}
-      />
+      <SongFinderClientPage />
     </div>
   )
 }

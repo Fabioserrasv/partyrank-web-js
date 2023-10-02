@@ -8,18 +8,11 @@ import { SongFinderModal } from "./modals/songFinderModal";
 import { JsonViewModal } from "./modals/jsonViewModal";
 import { UsersTab } from "./tabs/usersTab";
 import { SongsTab } from "./tabs/songsTab";
+import { handleDeleteSong } from "@/handlers/song.handlers";
 
 type ClientCreateSongPageProps = {
   dbSet: SongSet | null;
   user: User;
-  handleCreateFormSubmit: ({ }: SongSetPostData) => Promise<number | boolean>;
-  handleAddSongFormSubmit: ({ }: AddSongFormSchema, songSetId: number) => Promise<number | boolean>;
-  handleSongFinderFormSubmit: (data: SongFinderAction) => Promise<SongWeb[]>;
-  handleDeleteSong: (id: number) => Promise<boolean>;
-  handleGetSongSet: (id: number, generateJson: boolean) => Promise<SongSet | null>
-  handleInviteUser: (songSetId: number, username: string) => Promise<Boolean>
-  handleUpdateSongSet:(set: SongSetPostData, id: number) => Promise<SongSet>
-  handleAnswerInvite:(songSetId: number, userId: number, accept: boolean) => Promise<Boolean>
 }
 
 export type AddSongFormSchema = {
@@ -53,15 +46,7 @@ type tabs = "users" | "songs"
 
 export function ClientCreateSongPage({
   dbSet,
-  user,
-  handleCreateFormSubmit,
-  handleDeleteSong,
-  handleSongFinderFormSubmit,
-  handleAddSongFormSubmit,
-  handleGetSongSet,
-  handleInviteUser,
-  handleUpdateSongSet,
-  handleAnswerInvite
+  user
 }: ClientCreateSongPageProps) {
 
   const [songSet, setSongSet] = useState<SongSet>(initialValue)
@@ -178,8 +163,6 @@ export function ClientCreateSongPage({
           songSet={songSet}
           addSongToSongSetState={addSongToSongSetState}
           changeSongFinderModalOpen={changeSongFinderModalOpen}
-          handleAddSongFormSubmit={handleAddSongFormSubmit}
-          handleSongFinderFormSubmit={handleSongFinderFormSubmit}
           addArrayToSongSet={addArrayToSongSet}
         />
       }
@@ -188,7 +171,6 @@ export function ClientCreateSongPage({
         <JsonViewModal
           songSetId={songSet.id}
           closeModal={changeJsonModalOpen}
-          handleGetSongSet={handleGetSongSet}
         />
       }
       <div className="infoSection">
@@ -208,7 +190,6 @@ export function ClientCreateSongPage({
           (songSet.id == 0 || isSetCreator) &&
           <CreateUpdateSongSetForm
             songSet={songSet}
-            handleCreateFormSubmit={handleCreateFormSubmit}
             updateSetSongSet={updateSetSongSet}
             buttonName={buttonTitle}
           />
@@ -225,7 +206,6 @@ export function ClientCreateSongPage({
                 </div>
                 <AddSongForm
                   songSet={songSet}
-                  handleAddSongFormSubmit={handleAddSongFormSubmit}
                   addSongToSongSetState={addSongToSongSetState}
                   song={song}
                   updateSongState={updateSongState}
@@ -242,10 +222,7 @@ export function ClientCreateSongPage({
           case 'users':
             return <UsersTab
               songSet={songSet}
-              handleUpdateSongSet={handleUpdateSongSet}
-              handleInviteUser={handleInviteUser}
               updateNewSongSet={updateNewSongSet}
-              handleAnswerInvite={handleAnswerInvite}
             />
           case 'songs':
             return <SongsTab

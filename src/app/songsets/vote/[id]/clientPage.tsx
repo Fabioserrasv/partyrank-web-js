@@ -9,11 +9,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { maskValueToDecimal } from "@/lib/utils";
 import toast from "react-hot-toast";
 import { scoreVoteSchema } from "@/app/songsets/validations/songSetValidations";
+import { handleScoreFormSubmit } from "@/handlers/score.handlers";
 
 type VoteClientPageProps = {
   user: User;
   set: SongSet;
-  handleVoteForm: ({ }: FormVote) => Promise<number | boolean>;
 }
 
 export type FormVote = {
@@ -22,7 +22,7 @@ export type FormVote = {
   timeStamp: number | string;
 }
 
-export function ClientPage({ user, set, handleVoteForm }: VoteClientPageProps) {
+export function VoteClientPage({ user, set }: VoteClientPageProps) {
   if (!set.songs || set.songs.length == 0) {
     toast.error("No songs found")
     const route = useRouter()
@@ -41,7 +41,7 @@ export function ClientPage({ user, set, handleVoteForm }: VoteClientPageProps) {
   async function handleFormSubmit(data: FormVote) {
     try {
       data.id = selectedSong.id
-      const id = await handleVoteForm(data)
+      const id = await handleScoreFormSubmit(data)
 
       if (id) {
         setSessionDataSong(selectedSong, id as number, {

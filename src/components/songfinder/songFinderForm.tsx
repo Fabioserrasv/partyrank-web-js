@@ -9,14 +9,14 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import { LoadingComponent } from "@/components/loading-component";
+import { handleSongFinderFormSubmit } from "@/handlers/songfinder.handlers";
 import './songfindercomponent.scss';
 
 type SongFinderFormProps = {
-  handleSongFinderFormSubmit: (data: SongFinderAction) => Promise<SongWeb[]>;
   populateTableSongsWeb?: (songs: SongWeb[]) => void;
 }
 
-export function SongFinderForm({ handleSongFinderFormSubmit, populateTableSongsWeb }: SongFinderFormProps) {
+export function SongFinderForm({ populateTableSongsWeb }: SongFinderFormProps) {
   const { register, handleSubmit, formState: { errors }, setValue } = useForm<SongFinderAction>({
     resolver: zodResolver(songFinderSchema)
   });

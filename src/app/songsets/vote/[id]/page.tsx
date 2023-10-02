@@ -1,9 +1,8 @@
-import { ClientPage } from './clientPage';
+import { VoteClientPage } from './clientPage';
 import { getServerSession } from 'next-auth';
 import { options } from '@/app/api/auth/[...nextauth]/options';
 import './vote.scss';
 import { getSongSet } from '@/actions/songset.actions';
-import { handleScoreFormSubmit } from '@/handlers/score.handlers';
 import { redirect } from 'next/navigation';
 
 type VotePageProps = {
@@ -46,10 +45,9 @@ export default async function Vote({ params }: VotePageProps) {
 
   return (
     <div className="votePage">
-      <ClientPage
+      <VoteClientPage
         user={session.user}
         set={set}
-        handleVoteForm={handleScoreFormSubmit}
       />
     </div>
   )

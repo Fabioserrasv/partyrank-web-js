@@ -5,10 +5,10 @@ import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { songSetUpdateSchema } from "@/app/songsets/validations/songSetValidations";
+import { handleUpdateSongSet } from "@/handlers/songset.handlers";
 
 type SongSetOptionsFormProps = {
   songSet: SongSet;
-  handleUpdateSongSet:(set: SongSetPostData, id: number) => Promise<SongSet>
   updateNewSongSet: (newSongSet: SongSet) => void
 }
 
@@ -28,7 +28,7 @@ const scoreSystemOptions = [
 
 type fields = "type" | "status"
 
-export function SongSetOptionsForm({handleUpdateSongSet, updateNewSongSet, songSet}: SongSetOptionsFormProps) {
+export function SongSetOptionsForm({updateNewSongSet, songSet}: SongSetOptionsFormProps) {
   const { register, handleSubmit, formState: { errors }, setValue } = useForm<SongSetPostData>({
     resolver: zodResolver(songSetUpdateSchema)
   });

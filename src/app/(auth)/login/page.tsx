@@ -1,9 +1,9 @@
-import { Card } from '../../components/card';
 import { FormLogin } from './form';
 import { redirect } from 'next/navigation';
 import { getServerSession } from "next-auth/next"
 import { RedirectType } from 'next/dist/client/components/redirect';
 import Link from 'next/link';
+import { Card } from '@/components/card';
 
 export default async function Login() {
   const session = await getServerSession();

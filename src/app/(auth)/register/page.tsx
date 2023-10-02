@@ -6,9 +6,7 @@ import { handleCreateUserForm } from "@/handlers/user.handlers";
 export default function Register() {
   return (
     <Card size="sm">
-      <FormRegister 
-        handleCreateUserForm={handleCreateUserForm}
-      />
+      <FormRegister />
     </Card>
   )
 }

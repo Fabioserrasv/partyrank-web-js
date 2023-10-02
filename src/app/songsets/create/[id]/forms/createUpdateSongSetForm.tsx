@@ -7,15 +7,15 @@ import toast from "react-hot-toast";
 import { useState } from "react";
 import { LoadingComponent } from "@/components/loading-component";
 import { createSongSetSchema } from "@/app/songsets/validations/songSetValidations";
+import { handleCreateSongSetFormSubmit } from "@/handlers/songset.handlers";
 
 type createUpdateSongSetFormProps = {
   songSet: SongSet;
   updateSetSongSet: (name: string, id: number) => void;
-  handleCreateFormSubmit: ({ }: SongSetPostData) => Promise<number | boolean>;
   buttonName: string;
 }
 
-export function CreateUpdateSongSetForm({ songSet, handleCreateFormSubmit, updateSetSongSet, buttonName }: createUpdateSongSetFormProps) {
+export function CreateUpdateSongSetForm({ songSet, updateSetSongSet, buttonName }: createUpdateSongSetFormProps) {
   const { register, handleSubmit, formState: { errors }, setValue } = useForm<SongSetPostData>({
     resolver: zodResolver(createSongSetSchema)
   });
@@ -25,7 +25,7 @@ export function CreateUpdateSongSetForm({ songSet, handleCreateFormSubmit, updat
     try {
       setIsLoadind(true);
       data.id = songSet.id;
-      const id = await handleCreateFormSubmit(data)
+      const id = await handleCreateSongSetFormSubmit(data)
 
       const newOrUp = data.id == 0 ? "created" : "updated"
       if (id) {

@@ -5,16 +5,14 @@ import { InviteUserForm } from "../forms/inviteUserForm";
 import { useState } from "react";
 import { SongSetOptionsForm } from "../forms/songSetOptionsForm";
 import toast from "react-hot-toast";
+import { handleAnswerInvite } from "@/handlers/songset.handlers";
 
 type UsersTabProps = {
   songSet: SongSet | null;
-  handleInviteUser: (songSetId: number, username: string) => Promise<Boolean>
-  handleUpdateSongSet: (set: SongSetPostData, id: number) => Promise<SongSet>
   updateNewSongSet: (newSongSet: SongSet) => void
-  handleAnswerInvite: (songSetId: number, userId: number, accept: boolean) => Promise<Boolean>
 }
 
-export function UsersTab({ songSet, handleInviteUser, handleUpdateSongSet, updateNewSongSet, handleAnswerInvite }: UsersTabProps) {
+export function UsersTab({ songSet, updateNewSongSet }: UsersTabProps) {
   if (!songSet) return
   const [invites, setInvites] = useState<UserOn[]>(songSet.usersOn || []);
 
@@ -49,13 +47,11 @@ export function UsersTab({ songSet, handleInviteUser, handleUpdateSongSet, updat
       <div className="songsetoptionsforms">
         <InviteUserForm
           songSetId={songSet.id}
-          handleInviteUser={handleInviteUser}
           addInvite={addInvite}
         />
 
         <SongSetOptionsForm
           songSet={songSet}
-          handleUpdateSongSet={handleUpdateSongSet}
           updateNewSongSet={updateNewSongSet}
         />
 
