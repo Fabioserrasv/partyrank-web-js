@@ -1,6 +1,6 @@
 'use client'
 import { useState } from "react";
-import SongFinderComponent from "../components/songfinder";
+import SongFinderComponent from "@/components/songfinder";
 
 type SongFinderClientPageProps = {
   handleSongFinderFormSubmit: (data: SongFinderAction) => Promise<SongWeb[]>;

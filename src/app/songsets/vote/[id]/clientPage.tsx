@@ -1,14 +1,14 @@
 'use client'
-import { Button } from "@/app/components/button/Button";
-import { Input } from "@/app/components/input"
-import { Table, TableRow } from "@/app/components/table"
+import { Button } from "@/components/button/Button";
+import { Input } from "@/components/input"
+import { Table, TableRow } from "@/components/table"
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { scoreVoteSchema } from "../../validations/songSetValidations";
 import { maskValueToDecimal } from "@/lib/utils";
 import toast from "react-hot-toast";
+import { scoreVoteSchema } from "@/app/songsets/validations/songSetValidations";
 
 type VoteClientPageProps = {
   user: User;

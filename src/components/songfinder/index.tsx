@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Globe, Mic2, Monitor, Plus, X } from "lucide-react";
 import Link from "next/link";
-import { SongFinderForm } from "@/app/components/songfinder/songFinderForm";
+import { SongFinderForm } from "@/components/songfinder/songFinderForm";
 import { Table, TableRow } from "../table";
 
 type SongFinderClientPageProps = {

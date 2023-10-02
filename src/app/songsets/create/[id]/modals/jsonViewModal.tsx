@@ -1,9 +1,9 @@
 'use client'
 
-import { Button } from "@/app/components/button/Button"
-import { LoadingComponent } from "@/app/components/loading-component"
-import Modal from "@/app/components/modal"
-import { Textarea } from "@/app/components/textarea"
+import { Button } from "@/components/button/Button"
+import { LoadingComponent } from "@/components/loading-component"
+import Modal from "@/components/modal"
+import { Textarea } from "@/components/textarea"
 import { useState } from "react"
 import toast from "react-hot-toast"
 

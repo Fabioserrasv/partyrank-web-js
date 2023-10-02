@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { CreateUpdateSongSetForm } from "./forms/createUpdateSongSetForm";
 import { AddSongForm } from "./forms/addSongForm";
-import { Music, Search, Upload, Users } from "lucide-react";
+import { Music, Upload, Users } from "lucide-react";
 import toast from "react-hot-toast";
 import { SongFinderModal } from "./modals/songFinderModal";
 import { JsonViewModal } from "./modals/jsonViewModal";

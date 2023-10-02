@@ -1,14 +1,14 @@
 'use client'
-import { Button } from "@/app/components/button/Button";
-import { Input } from "@/app/components/input";
-import { Select } from "@/app/components/select";
+import { Button } from "@/components/button/Button";
+import { Input } from "@/components/input";
+import { Select } from "@/components/select";
 import { songFinderSchema } from "@/app/songsets/validations/songSetValidations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Search } from "lucide-react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useState } from "react";
-import { LoadingComponent } from "@/app/components/loading-component";
+import { LoadingComponent } from "@/components/loading-component";
 import './songfindercomponent.scss';
 
 type SongFinderFormProps = {

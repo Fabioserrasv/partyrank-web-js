@@ -2,7 +2,7 @@
 import { Suspense } from 'react';
 import './auth.scss';
 import { usePathname } from "next/navigation";
-import { LoadingComponent } from '../components/loading-component';
+import { LoadingComponent } from '@/components/loading-component';
 
 export default function RegisterLayout({
   children,

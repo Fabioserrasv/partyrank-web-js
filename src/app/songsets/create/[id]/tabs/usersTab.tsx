@@ -1,5 +1,5 @@
 'use client'
-import { Table, TableRow } from "@/app/components/table";
+import { Table, TableRow } from "@/components/table";
 import { Check, Globe, X } from "lucide-react";
 import { InviteUserForm } from "../forms/inviteUserForm";
 import { useState } from "react";

@@ -1,10 +1,10 @@
 'use client'
 import Link from "next/link";
-import { Button } from "../components/button/Button";
-import { Input } from "../components/input"
+import { Input } from "@/components/input"
 import { TablePaginated } from "./TablePaginated"
 import { useState } from 'react';
 import { Search } from "lucide-react";
+import { Button } from "@/components/button/Button";
 
 type InputFilterProps = {
   initialSets: SongSet[];

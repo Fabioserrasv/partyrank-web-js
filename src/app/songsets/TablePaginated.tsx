@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ReactPaginate from 'react-paginate';
-import { Table, TableRow } from '../components/table';
+import { Table, TableRow } from '@/components/table';
 import { Calendar, FolderEdit, Music, Play, User } from 'lucide-react';
 import moment from 'moment';
 import Link from 'next/link';

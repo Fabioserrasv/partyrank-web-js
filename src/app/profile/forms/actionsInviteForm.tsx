@@ -2,7 +2,7 @@
 import toast from "react-hot-toast";
 import { Check, X } from "lucide-react"
 import { useState } from "react";
-import { LoadingComponent } from "@/app/components/loading-component";
+import { LoadingComponent } from "@/components/loading-component";
 
 type ActionsInviteProps = {
   invite: UserOn;

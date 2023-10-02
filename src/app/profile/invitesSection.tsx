@@ -1,6 +1,6 @@
 'use client'
 import { User } from "lucide-react"
-import { Table, TableRow } from "../components/table"
+import { Table, TableRow } from "@/components/table"
 import { ActionsInvite } from "./forms/actionsInviteForm"
 import { useState } from "react"
 

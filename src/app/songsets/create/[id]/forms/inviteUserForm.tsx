@@ -1,7 +1,7 @@
 'use client'
-import { Button } from "@/app/components/button/Button";
-import { Input } from "@/app/components/input";
-import { LoadingComponent } from "@/app/components/loading-component";
+import { Button } from "@/components/button/Button";
+import { Input } from "@/components/input";
+import { LoadingComponent } from "@/components/loading-component";
 import { inviteUserSchema } from "@/app/songsets/validations/songSetValidations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";

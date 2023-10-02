@@ -1,9 +1,9 @@
 'use client'
 
 import { useForm } from "react-hook-form";
-import { Form } from "../../components/form";
-import { Input } from "../../components/input";
-import { Button } from "../../components/button/Button";
+import { Form } from "@/components/form";
+import { Input } from "@/components/input";
+import { Button } from "@/components/button/Button";
 import toast from "react-hot-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "../validations/authValidations";

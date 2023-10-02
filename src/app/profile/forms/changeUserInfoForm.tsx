@@ -1,15 +1,15 @@
 'use client'
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { Button } from "@/app/components/button/Button";
-import { Input } from "@/app/components/input";
+import { Button } from "@/components/button/Button";
+import { Input } from "@/components/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { changeUserInfoSchema } from "./validations/profileValidations";
 import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { error } from "console";
-import { LoadingComponent } from "@/app/components/loading-component";
+import { LoadingComponent } from "@/components/loading-component";
 
 type ChangeAnimeListFormProps = {
   user: User;

@@ -1,12 +1,12 @@
 'use client'
-import { Button } from "@/app/components/button/Button";
-import Modal from "@/app/components/modal";
+import { Button } from "@/components/button/Button";
+import Modal from "@/components/modal";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { AddSongFormSchema } from "../clientPage";
 import { convertType } from "@/repositories/songfinder.repository";
-import { LoadingComponent } from "@/app/components/loading-component";
-import SongFinderComponent from "@/app/components/songfinder";
+import { LoadingComponent } from "@/components/loading-component";
+import SongFinderComponent from "@/components/songfinder";
 
 type SongFinderModalProps = {
   songSet: SongSet;

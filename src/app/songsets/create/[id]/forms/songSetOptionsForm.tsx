@@ -1,6 +1,6 @@
 'use client'
-import { Button } from "@/app/components/button/Button";
-import { Select } from "@/app/components/select";
+import { Button } from "@/components/button/Button";
+import { Select } from "@/components/select";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";

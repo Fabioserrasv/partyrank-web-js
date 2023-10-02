@@ -1,4 +1,4 @@
-import { Table, TableRow } from "@/app/components/table";
+import { Table, TableRow } from "@/components/table";
 import { reverseArray } from "@/lib/utils";
 import { Globe, Mic2, Monitor, X } from "lucide-react";
 

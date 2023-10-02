@@ -2,12 +2,10 @@ import type { Metadata } from 'next'
 import { Roboto } from 'next/font/google'
 import { ThemeProvider } from '../context/ThemeContext'
 import '../styles/layout.scss';
-import { Page } from './components/page';
 import AuthProvider from '../context/AuthProvider';
 import { getServerSession } from 'next-auth';
 import { options } from './api/auth/[...nextauth]/options';
-import { Suspense } from 'react';
-import { LoadingComponent } from './components/loading-component';
+import { Page } from '@/components/page';
 
 const roboto = Roboto({
   weight: '400',

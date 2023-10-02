@@ -1,10 +1,10 @@
 'use client'
 
 import { useForm } from "react-hook-form";
-import { Form } from "../../components/form";
-import { Csrf } from "../../components/csrf";
-import { Input } from "../../components/input";
-import { Button } from "../../components/button/Button";
+import { Form } from "@/components/form";
+import { Csrf } from "@/components/csrf";
+import { Input } from "@/components/input";
+import { Button } from "@/components/button/Button";
 import { signIn } from "next-auth/react";
 
 import toast from "react-hot-toast";

@@ -1,14 +1,14 @@
 'use client'
-import { Button } from "@/app/components/button/Button";
-import { Input } from "@/app/components/input"
-import { Select } from "@/app/components/select";
+import { Button } from "@/components/button/Button";
+import { Input } from "@/components/input"
+import { Select } from "@/components/select";
 import { addSongSchema } from "@/app/songsets/validations/songSetValidations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AddSongFormSchema, initialSongValue } from "../clientPage";
 import toast from "react-hot-toast";
-import { LoadingComponent } from "@/app/components/loading-component";
+import { LoadingComponent } from "@/components/loading-component";
 
 type AddSongFormProps = {
   songSet: SongSet;
