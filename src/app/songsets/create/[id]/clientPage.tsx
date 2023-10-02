@@ -19,6 +19,7 @@ type ClientCreateSongPageProps = {
   handleGetSongSet: (id: number, generateJson: boolean) => Promise<SongSet | null>
   handleInviteUser: (songSetId: number, username: string) => Promise<Boolean>
   handleUpdateSongSet:(set: SongSetPostData, id: number) => Promise<SongSet>
+  handleAnswerInvite:(songSetId: number, userId: number, accept: boolean) => Promise<Boolean>
 }
 
 export type AddSongFormSchema = {
@@ -58,7 +59,8 @@ export function ClientCreateSongPage({
   handleAddSongFormSubmit,
   handleGetSongSet,
   handleInviteUser,
-  handleUpdateSongSet
+  handleUpdateSongSet,
+  handleAnswerInvite
 }: ClientCreateSongPageProps) {
 
   const [songSet, setSongSet] = useState<SongSet>(initialValue)
@@ -250,6 +252,7 @@ export function ClientCreateSongPage({
               handleUpdateSongSet={handleUpdateSongSet}
               handleInviteUser={handleInviteUser}
               updateNewSongSet={updateNewSongSet}
+              handleAnswerInvite={handleAnswerInvite}
             />
           case 'songs':
             return <SongsTab

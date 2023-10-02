@@ -1,6 +1,6 @@
 import './createSongSet.scss';
 import { ClientCreateSongPage } from "./clientPage";
-import { handleCreateSongSetFormSubmit, handleGetSongSet, handleInviteUser, handleUpdateSongSet } from "@/handlers/songset.handlers";
+import { handleAnswerInvite, handleCreateSongSetFormSubmit, handleGetSongSet, handleInviteUser, handleUpdateSongSet } from "@/handlers/songset.handlers";
 import { handleAddSongFormSubmit, handleDeleteSong } from "@/handlers/song.handlers";
 import { handleSongFinderFormSubmit } from '@/handlers/songfinder.handlers';
 import { getServerSession } from 'next-auth';
@@ -29,6 +29,7 @@ export default async function CreateSongSet({ params }: CreateSongSetProps) {
           handleGetSongSet={handleGetSongSet}
           handleInviteUser={handleInviteUser}
           handleUpdateSongSet={handleUpdateSongSet}
+          handleAnswerInvite={handleAnswerInvite}
         />
     </div>
   )
