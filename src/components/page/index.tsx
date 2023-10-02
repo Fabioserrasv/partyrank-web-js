@@ -1,6 +1,5 @@
 import { ReactNode, Suspense } from "react";
 import './page.scss';
-import { useTheme } from "../../../context/ThemeContext";
 import { getServerSession } from "next-auth";
 import { Nav } from "../nav";
 import { options } from "@/app/api/auth/[...nextauth]/options";

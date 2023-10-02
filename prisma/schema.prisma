@@ -39,6 +39,12 @@ enum SongSetInviteType {
   PUBLIC
 }
 
+enum SongSetScoreSystemType {
+  RANKING
+  SCORING
+  SCORING_AVERAGE
+}
+
 model SongSet {
   id Int @id @default(autoincrement())
   name String
@@ -47,6 +53,7 @@ model SongSet {
   userId Int
   status SongSetStatus @default(ON_GOING)
   type SongSetInviteType @default(PRIVATE)
+  scoreSystem SongSetScoreSystemType @default(SCORING_AVERAGE)
   users UsersOnSongSet[]
   maxUsers Int? @default(0) 
   createdAt DateTime?

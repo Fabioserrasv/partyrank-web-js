@@ -1,57 +1,88 @@
+'use client'
 import React, { useState } from 'react';
 import ReactPaginate from 'react-paginate';
 import { Table, TableRow } from '@/components/table';
-import { Calendar, FolderEdit, Music, Play, User } from 'lucide-react';
+import { AlignEndHorizontal, Calendar, DoorClosed, FolderEdit, Lock, Music, Play, User } from 'lucide-react';
 import moment from 'moment';
 import Link from 'next/link';
+import { convertSongSetScoreSystemToString, convertSongSetTypeToString } from '@/repositories/songset.repository';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
-// Example items, to simulate fetching from another resources.
-type PaginatedItemsProps = { itemsPerPage: number; sets: SongSet[] }
+type PaginatedItemsProps = {
+  itemsPerPage: number;
+  sets: SongSet[];
+  user: User;
+  handleJoinPublicSongSet: (songSetId: number, userId: number) => Promise<Boolean>
+}
 
 type handlePageClickProps = {
   selected: number;
 }
 
-export function TablePaginated({ itemsPerPage, sets }: PaginatedItemsProps) {
+export function TablePaginated({ itemsPerPage, sets, handleJoinPublicSongSet, user }: PaginatedItemsProps) {
   const [itemOffset, setItemOffset] = useState(0);
   const endOffset = itemOffset + itemsPerPage;
   const currentItems = sets.slice(itemOffset, endOffset);
   const pageCount = Math.ceil(sets.length / itemsPerPage);
-
-
+  const { push } = useRouter();
   const handlePageClick = ({ selected }: handlePageClickProps) => {
     const newOffset = (selected * itemsPerPage) % sets.length;
     setItemOffset(newOffset);
   };
 
+  async function onJoinPublicSongSet(songSet: SongSet) {
+    try {
+      const response = await handleJoinPublicSongSet(songSet.id, user.id)
+      if (response) {
+        toast.success("Joined song set successfully!")
+        push(`/songsets/create/${songSet.id}`)
+      }
+    } catch (error) {
+      toast.error("Something went wrong!")
+    }
+  }
+
   return (
     <>
       <Table>
-        {currentItems && currentItems.length > 0 ? currentItems.map((s) => {
+        {currentItems && currentItems.length > 0 ? currentItems.map((item) => {
           return (
-            <TableRow key={s.id}>
+            <TableRow key={item.id}>
               <div className='info'>
-                <span>{s.name}</span>
+                <span>{item.name}</span>
                 <div className='extraInfo'>
                   <span>
                     <Music />
-                    Songs: {s.songs?.length}
+                    Songs: {item.songs?.length}
                   </span>
                   <span>
                     <User />
-                    {s.user?.username}
+                    {item.user?.username}
+                  </span>
+                  <span>
+                    <Lock />
+                    {convertSongSetTypeToString(item.type)}
+                  </span>
+                  <span>
+                    <AlignEndHorizontal />
+                    {convertSongSetScoreSystemToString(item.scoreSystem)}
                   </span>
                   <span>
                     <Calendar />
-                    {moment(s.createdAt).format('DD/MM/YYYY')}
+                    {moment(item.createdAt).format('DD/MM/YYYY')}
                   </span>
                 </div>
               </div>
               <div className='actions'>
-                <Link href={`/songsets/create/${s.id}`}>
+                {/* {
+                  item.type == "PUBLIC" &&
+                  <DoorClosed onClick={() => { onJoinPublicSongSet(item) }} />
+                } */}
+                <Link href={`/songsets/create/${item.id}`}>
                   <FolderEdit />
                 </Link>
-                <Link href={`/songsets/vote/${s.id}`}>
+                <Link href={`/songsets/vote/${item.id}`}>
                   <Play />
                 </Link>
               </div>

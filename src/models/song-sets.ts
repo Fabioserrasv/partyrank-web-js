@@ -3,10 +3,12 @@ type SongSetPostData = {
   name: string;
   status?: SongSetStatus;
   type?: SongSetType;
+  scoreSystem?: SongSetScoreSystemType;
 }
 
 type SongSetStatus = "RECRUITING" | "ON_GOING" | "PROCESSING" | "FINISHED" | "PAUSED"
 type SongSetType = "PRIVATE" | "PUBLIC"
+type SongSetScoreSystemType = "RANKING" | "SCORING" | "SCORING_AVERAGE"
 
 type SongSet = {
   id: number;
@@ -14,6 +16,7 @@ type SongSet = {
   songs: Song[];
   type: SongSetType;
   status: SongSetStatus;
+  scoreSystem: SongSetScoreSystemType;
   user?: User;
   usersOn?: UserOn[];
   generateImageObject?: JsonToGenerateImages;

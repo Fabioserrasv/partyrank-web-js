@@ -79,3 +79,15 @@ export async function handleAnswerInvite(songSetId: number, userId: number, acce
     throw error;
   }
 }
+
+export async function handleJoinPublicSongSet(songSetId: number, userId: number) {
+  "use server"
+
+  try {
+    await inviteUserToPartyRank(songSetId, userId);
+    return await answerUserToPartyRank(songSetId, userId, true)
+    
+  } catch (error) {
+    throw error;
+  }
+}

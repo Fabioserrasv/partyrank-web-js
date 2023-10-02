@@ -41,6 +41,18 @@ export class SongSetService {
               username: true,
               id: true
             }
+          },
+          users: {
+            select: {
+              accepted: true,
+              user: {
+                select: {
+                  id: true,
+                  username: true,
+                  animeList: true
+                }
+              }
+            }
           }
         },
         where: {
@@ -143,7 +155,11 @@ export class SongSetService {
               }
             }
           },
-          songs: true
+          songs: {
+            where: {
+              deletedAt: null
+            }
+          }
         },
         where: {
           id: id
@@ -152,6 +168,7 @@ export class SongSetService {
           name: data.name,
           status: data.status,
           type: data.type,
+          scoreSystem: data.scoreSystem,
           updatedAt: new Date()
         }
       })

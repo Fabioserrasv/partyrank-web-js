@@ -20,6 +20,11 @@ const statusOptions = [
   { value: "FINISHED", display: "Finished" },
   { value: "PAUSED", display: "Paused" }
 ]
+const scoreSystemOptions = [
+  { value: "SCORING", display: "Scoring (Sum of Scores)" },
+  { value: "SCORING_AVERAGE", display: "Scoring (Average)" },
+  { value: "RANKING", display: "Ranking" }
+]
 
 type fields = "type" | "status"
 
@@ -67,6 +72,15 @@ export function SongSetOptionsForm({handleUpdateSongSet, updateNewSongSet, songS
           options={statusOptions}
           {...register("status")}
           value={songSet.status}
+          onChange={onInputChange}
+        >
+        </Select>
+
+        <Select
+          displayName="Score System"
+          options={scoreSystemOptions}
+          {...register("scoreSystem")}
+          value={songSet.scoreSystem}
           onChange={onInputChange}
         >
         </Select>

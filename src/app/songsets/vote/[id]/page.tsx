@@ -22,6 +22,10 @@ export default async function Vote({ params }: VotePageProps) {
     return
   };
 
+  /*
+    NEED TO CREATE CONTEXT TO CHECK ALLOWED USER
+  */
+
   let allowed = false
 
   if (set.user?.id == session.user.id) {

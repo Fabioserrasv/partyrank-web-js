@@ -4,12 +4,55 @@ import { convertDbSongToModel } from "./song.repository"
 /*
   Convert relation of User x SongSet to Model defined on src/models
 */
-function convertDbUsersOn(data: any): UserOn{
+function convertDbUsersOn(data: any): UserOn {
   return {
     songSet: data,
     accepted: data.accepted,
     user: data.user
   }
+}
+
+/*
+  Convert a songset type to string
+*/
+export function convertSongSetTypeToString(type: SongSetType): string {
+  const convertedText = {
+    "PRIVATE": "Private",
+    "PUBLIC": "Public"
+  }
+
+  return convertedText[type]
+}
+
+export function filterOnlyUserOn(songSets: SongSet[], user: User) {
+
+  let creator = songSets.filter(song => song.user?.id == user.id)
+  let filtered = songSets.filter((songSet) => {
+    let isOn = false
+    songSet.usersOn?.map((relation) => {
+      if (relation.user.id == user.id) {
+        isOn = true;
+      }
+    })
+    if (isOn) {
+      return songSet
+    }
+  })
+
+  return [...creator, ...filtered]
+}
+
+/*
+  Convert a songset score system to string
+*/
+export function convertSongSetScoreSystemToString(type: SongSetScoreSystemType): string {
+  const convertedText = {
+    "RANKING": "Ranking",
+    "SCORING": "Scoring",
+    "SCORING_AVERAGE": "Scoring"
+  }
+
+  return convertedText[type]
 }
 
 /*
@@ -24,6 +67,7 @@ export async function convertDbSetToModel(data: any, generateJson: boolean = fal
     status: data.status,
     songs: data.songs !== undefined && data.songs.length > 0 ? data.songs.map(convertDbSongToModel) : [],
     usersOn: data.users !== undefined && data.users.length > 0 ? data.users.map(convertDbUsersOn) : [],
+    scoreSystem: data.scoreSystem,
     generateImageObject: generateJson ? generateImageObjectConverter(data) : undefined,
     generateVideoObject: generateJson ? await generateVideoObject(data) : undefined,
     createdAt: data.createdAt,

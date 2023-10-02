@@ -6,11 +6,14 @@ import { useState } from 'react';
 import { Search } from "lucide-react";
 import { Button } from "@/components/button/Button";
 
-type InputFilterProps = {
+type TableWithFilterProps = {
   initialSets: SongSet[];
+  user: User;
   search: (name: string) => Promise<SongSet[]>
+  handleJoinPublicSongSet: (songSetId: number, userId: number) => Promise<Boolean>
 }
-export function TableWithFilter({ initialSets, search }: InputFilterProps) {
+
+export function TableWithFilter({ initialSets, search, handleJoinPublicSongSet, user }: TableWithFilterProps) {
   const [sets, setSets] = useState<SongSet[]>(initialSets)
   const [filterQuery, setFilterQuery] = useState<string>('')
 
@@ -42,6 +45,8 @@ export function TableWithFilter({ initialSets, search }: InputFilterProps) {
       <TablePaginated
         sets={sets}
         itemsPerPage={5}
+        handleJoinPublicSongSet={handleJoinPublicSongSet}
+        user={user}
       />
     </>
   )

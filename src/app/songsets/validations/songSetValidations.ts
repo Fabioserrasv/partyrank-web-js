@@ -30,5 +30,6 @@ export const inviteUserSchema = z.object({
 
 export const songSetUpdateSchema = z.object({
   status: z.string(),
-  type: z.string()
+  type: z.string(),
+  scoreSystem: z.string(),
 })

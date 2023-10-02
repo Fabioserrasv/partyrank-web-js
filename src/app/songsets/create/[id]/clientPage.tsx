@@ -36,6 +36,7 @@ const initialValue = {
   name: '',
   type: 'PRIVATE' as SongSetType,
   status: 'ON_GOING' as SongSetStatus,
+  scoreSystem: 'SCORING_AVERAGE' as SongSetScoreSystemType,
   songs: []
 }
 
@@ -161,15 +162,7 @@ export function ClientCreateSongPage({
   useEffect(() => {
     if (dbSet != null) {
       const dbSetAsSongSet = dbSet as SongSet
-      setSongSet({
-        id: dbSetAsSongSet.id,
-        type: dbSetAsSongSet.type,
-        status: dbSetAsSongSet.status,
-        name: dbSetAsSongSet.name,
-        user: dbSetAsSongSet.user,
-        usersOn: dbSetAsSongSet.usersOn,
-        songs: dbSetAsSongSet.songs || []
-      })
+      setSongSet(dbSetAsSongSet)
     }
   }, [dbSet]) 
 
