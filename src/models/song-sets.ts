@@ -1,12 +1,19 @@
 type SongSetPostData = {
   id?: number;
   name: string;
+  status?: SongSetStatus;
+  type?: SongSetType;
 }
+
+type SongSetStatus = "RECRUITING" | "ON_GOING" | "PROCESSING" | "FINISHED" | "PAUSED"
+type SongSetType = "PRIVATE" | "PUBLIC"
 
 type SongSet = {
   id: number;
   name: string;
-  songs?: Song[];
+  songs: Song[];
+  type: SongSetType;
+  status: SongSetStatus;
   user?: User;
   usersOn?: UserOn[];
   generateImageObject?: JsonToGenerateImages;

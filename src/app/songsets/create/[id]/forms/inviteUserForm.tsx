@@ -35,7 +35,10 @@ export function InviteUserForm({ songSetId, handleInviteUser, addInvite }: Invit
           accepted: false,
           songSet: {
             id: songSetId,
-            name: ""
+            name: "",
+            type: 'PRIVATE' as SongSetType,
+            status: 'ON_GOING' as SongSetStatus,
+            songs: []
           },
           user: {
             id: 0,

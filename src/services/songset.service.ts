@@ -86,6 +86,13 @@ export class SongSetService {
               }
             }
           },
+          user: {
+            select: {
+              id: true,
+              username: true,
+              animeList: true
+            }
+          },
           users: {
             select: {
               accepted: true,
@@ -116,11 +123,35 @@ export class SongSetService {
   async update(data: SongSetPostData, id: number): Promise<SongSet> {
     try {
       const set = await prisma.songSet.update({
+        include: {
+          user: {
+            select: {
+              id: true,
+              username: true,
+              animeList: true
+            }
+          },
+          users: {
+            select: {
+              accepted: true,
+              user: {
+                select: {
+                  id: true,
+                  username: true,
+                  animeList: true
+                }
+              }
+            }
+          },
+          songs: true
+        },
         where: {
           id: id
         },
         data: {
           name: data.name,
+          status: data.status,
+          type: data.type,
           updatedAt: new Date()
         }
       })

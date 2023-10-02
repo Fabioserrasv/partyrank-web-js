@@ -27,3 +27,8 @@ export const songFinderSchema = z.object({
 export const inviteUserSchema = z.object({
   username: z.string().min(1)
 })
+
+export const songSetUpdateSchema = z.object({
+  status: z.string(),
+  type: z.string()
+})

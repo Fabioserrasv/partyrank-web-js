@@ -41,7 +41,7 @@ export function TableWithFilter({ initialSets, search }: InputFilterProps) {
       </div>
       <TablePaginated
         sets={sets}
-        itemsPerPage={10}
+        itemsPerPage={5}
       />
     </>
   )

@@ -1,8 +1,14 @@
 .table {
   width: 60%;
+  height: 100%;
 
   .cell {
     height: 120px;
+
+    @media (max-width: $notebook-width) {
+      height: 100px;
+    }
+
     display: flex;
     justify-content: center;
     

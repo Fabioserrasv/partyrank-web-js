@@ -20,6 +20,8 @@ export async function convertDbSetToModel(data: any, generateJson: boolean = fal
     id: data.id,
     name: data.name,
     user: data.user,
+    type: data.type,
+    status: data.status,
     songs: data.songs !== undefined && data.songs.length > 0 ? data.songs.map(convertDbSongToModel) : [],
     usersOn: data.users !== undefined && data.users.length > 0 ? data.users.map(convertDbUsersOn) : [],
     generateImageObject: generateJson ? generateImageObjectConverter(data) : undefined,

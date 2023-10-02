@@ -3,6 +3,11 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 100%;
+
+  .table{
+    height: 78%;
+  }
 
   .filters{
     width: 60%;

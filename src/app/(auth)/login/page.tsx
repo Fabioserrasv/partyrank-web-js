@@ -19,9 +19,9 @@ export default async function Login() {
         <Link href={'/register'} className='linkCreate'>
           Create your account
         </Link>
-        <Link href={'/register'} className='linkCreate'>
+        {/* <Link href={'/register'} className='linkCreate'>
           Forgot password?
-        </Link>
+        </Link> */}
       </div>
     </Card>
   );

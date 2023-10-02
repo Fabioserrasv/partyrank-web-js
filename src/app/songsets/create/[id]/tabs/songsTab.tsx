@@ -3,6 +3,7 @@ import { reverseArray } from "@/lib/utils";
 import { Globe, Mic2, Monitor, X } from "lucide-react";
 
 type SongsTabProps = {
+  isSetCreator: boolean;
   songs: Song[];
   onSongClick: (song: Song) => void
   onDeleteSong: (id: number) => Promise<void>
@@ -14,7 +15,7 @@ const formattedTypes = {
   "INSERT_SONG": "Insert Song"
 }
 
-export function SongsTab({ onDeleteSong, onSongClick, songs }: SongsTabProps) {
+export function SongsTab({ onDeleteSong, onSongClick, songs, isSetCreator }: SongsTabProps) {
   return (
     <div className="songsDiv">
       <Table>
@@ -39,9 +40,12 @@ export function SongsTab({ onDeleteSong, onSongClick, songs }: SongsTabProps) {
                     </span>
                   </div>
                 </div>
-                <div className='actions'>
-                  <X className="icon" onClick={() => { onDeleteSong(song.id) }} />
-                </div>
+                {
+                  isSetCreator &&
+                  <div className='actions'>
+                    <X className="icon" onClick={() => { onDeleteSong(song.id) }} />
+                  </div>
+                }
               </TableRow>
             )
           })

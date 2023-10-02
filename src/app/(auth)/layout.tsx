@@ -1,6 +1,8 @@
 'use client'
+import { Suspense } from 'react';
 import './auth.scss';
 import { usePathname } from "next/navigation";
+import { LoadingComponent } from '../components/loading-component';
 
 export default function RegisterLayout({
   children,
@@ -12,6 +14,7 @@ export default function RegisterLayout({
 
     if (pathname.includes('register')) return 'Sign up';
     if (pathname.includes('login')) return 'Sign in';
+    return ''
   }
 
   return (
@@ -21,8 +24,10 @@ export default function RegisterLayout({
         <span>パーティーランク</span>
       </div>
       <div className='cards'>
-        <span>{currentPageSubTitle()}</span>
-        {children}
+        <span className='subtitle'>{currentPageSubTitle()}</span>
+        <Suspense fallback={<LoadingComponent />}>
+          {children}
+        </Suspense>
       </div>
     </div>
   )

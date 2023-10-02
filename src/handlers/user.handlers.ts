@@ -1,5 +1,16 @@
-import { getUser, updateUserInfo, updateUserPassword } from "@/actions/user.actions"
+import { createUser, getUser, updateUserInfo, updateUserPassword } from "@/actions/user.actions"
 import { ChangeUserInfoFormSchema } from "@/app/profile/forms/changeUserInfoForm"
+
+export async function handleCreateUserForm(data: UserPostData): Promise<User> {
+  "use server"
+
+  try {
+    data.animeList = ''
+    return await createUser(data);
+  } catch (error) {
+    throw error
+  }
+}
 
 export async function handleUpdateUserInfoForm(data: ChangeUserInfoFormSchema, id: number) {
   "use server"

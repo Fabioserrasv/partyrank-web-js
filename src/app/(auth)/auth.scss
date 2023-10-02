@@ -21,17 +21,11 @@ $marginBetweenInpuButton: 25px;
     flex-direction: column;
     padding-bottom: 200px;
 
-    span {
+    .subtitle {
       display: block;
       margin-bottom: 10px;
       font-size: x-large;
       text-align: center;
-
-      color: $lightTextPrimary;
-
-      @include dark {
-        color: $darkTextPrimary;
-      }
     }
 
     .nameInput {

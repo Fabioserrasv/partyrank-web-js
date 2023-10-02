@@ -21,6 +21,18 @@ export async function handleCreateSongSetFormSubmit(data: SongSetPostData) {
   }
 }
 
+export async function handleUpdateSongSet(set: SongSetPostData, id: number) {
+  "use server"
+
+  try {
+    const newSet = await updateSongSet(set, id);
+
+    return newSet;
+  } catch (error) {
+    throw error
+  }
+}
+
 export async function handleGetSongSet(id: number, generateJson: boolean = false) {
   "use server"
 

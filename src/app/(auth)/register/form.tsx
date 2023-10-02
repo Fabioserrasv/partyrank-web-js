@@ -2,60 +2,73 @@
 
 import { useForm } from "react-hook-form";
 import { Form } from "../../components/form";
-import { Csrf } from "../../components/csrf";
 import { Input } from "../../components/input";
 import { Button } from "../../components/button/Button";
-import { signIn } from "next-auth/react";
-
 import toast from "react-hot-toast";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { registerSchema } from "../validations/authValidations";
 
-type FormLoginDataProps = {
-  username: string;
-  password: string;
-  csrfToken: string;
+type FormRegisterProps = {
+  handleCreateUserForm: (data: UserPostData) => Promise<User>
 }
 
-export function FormRegister() {
-  const { register, handleSubmit } = useForm<FormLoginDataProps>();
+type UserRegister = UserPostData & {
+  repassword: string
+}
 
-  async function onSubmitLogin(data: FormLoginDataProps) {
-    const signInResponse = await signIn("credentials", { ...data, redirect: false })
+export function FormRegister({ handleCreateUserForm }: FormRegisterProps) {
+  const { register, handleSubmit, formState: { errors }, setValue } = useForm<UserRegister>({
+    resolver: zodResolver(registerSchema)
+  });
 
-    if (signInResponse?.error) {
-      toast.error("User not found")
-      return;
+  async function onSubmitRegister(data: UserRegister) {
+    try {
+      const newUser = await handleCreateUserForm(data)
+
+      if (newUser) {
+        toast.success("User created successfully")
+        window.location.href = "/login"
+        return;
+      }
+
+      toast.error("Something went wrong")
+    } catch (error) {
+      toast.error("Something went wrong")
     }
-
-    window.location.href = "/songsets"
   }
 
   return (
-    <Form className="formRegister" onSubmit={handleSubmit(onSubmitLogin)}>
-      <Csrf {...register("csrfToken")} />
+    <Form className="formRegister" onSubmit={handleSubmit(onSubmitRegister)}>
 
       <Input
         displayName="Username"
-        {...register("username")}
         type="text"
         className="nameInput"
+        errorMessage={errors.username?.message}
+        placeholder="xxNarutoxx..."
+        {...register("username")}
       />
 
       <div className="inputPass">
         <Input
           displayName="Password"
-          {...register("password", { required: true })}
           type="password"
+          placeholder="***********"
+          errorMessage={errors.password?.message}
+          {...register("password", { required: true })}
         />
 
         <Input
           displayName="Repeat Password"
-          {...register("password", { required: true })}
           type="password"
+          placeholder="***********"
+          errorMessage={errors.repassword?.message}
+          {...register("repassword", { required: true })}
         />
 
       </div>
 
-      <Button name="Sign in" className="buttonSignup" />
+      <Button name="Sign up" className="buttonSignup" />
     </Form>
   )
 }

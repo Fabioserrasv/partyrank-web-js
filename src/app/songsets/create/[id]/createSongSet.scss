@@ -12,10 +12,19 @@
   .infoSection {
     grid-area: info;
     height: 95%;
+    margin-top: 20px;
     padding: 1rem;
     border-radius: 1rem;
-    margin-top: 20px;
     background-color: $lightSecondBackground;
+
+    @media (max-width: $notebook-width) {
+      height: 98%;
+      margin-top: 15px;
+    }
+
+    .titleSongSet {
+      font-size: 2rem;
+    }
 
     .titleSection {
       display: flex;
@@ -137,21 +146,45 @@
     grid-area: songs;
     padding: 1rem;
     width: 100%;
-    overflow: auto;
     max-height: 750px;
 
-    form {
-      .inviteDiv {
-        display: flex;
-        align-items: flex-end;
+    .songsetoptionsforms {
+      display: flex;
+      justify-content: flex-start;
+      width: 100%;
 
-        .inputGroup {
-          width: 20%;
+      form {
+        max-width: 400px;
+
+        &:nth-child(2) {
+          margin-left: 15px;
         }
 
-        button {
-          width: 10%;
-          margin-left: 10px;
+        .inviteDiv,
+        .selectOptionsSongSet {
+          display: flex;
+          align-items: flex-end;
+
+          .inputGroup:not(:first-child) {
+            margin-left: 10px;
+          }
+
+          .inputGroup {
+            width: 60%;
+          }
+
+          button {
+            width: 50%;
+            margin-left: 10px;
+          }
+        }
+        
+        .selectOptionsSongSet{
+          width: 400px;
+
+          .inputGroup {
+            width: 50%;
+          }
         }
       }
     }

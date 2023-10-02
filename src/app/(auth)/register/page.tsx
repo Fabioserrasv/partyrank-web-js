@@ -1,12 +1,14 @@
 import { Card } from "@/app/components/card";
-import Link from "next/link";
 import { FormRegister } from "./form";
 import './register.scss';
+import { handleCreateUserForm } from "@/handlers/user.handlers";
 
 export default function Register() {
   return (
     <Card size="sm">
-      <FormRegister />
+      <FormRegister 
+        handleCreateUserForm={handleCreateUserForm}
+      />
     </Card>
   )
 }
