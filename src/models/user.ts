@@ -9,6 +9,10 @@ type UserUpdateData = {
   animeList: string;
 }
 
+type ChangeProfilePictureSchema = {
+  profileImage: FileList
+}
+
 type ChangePasswordType = { oldPass: string, newPass: string }
 
 type UserProfilePicturePost = {

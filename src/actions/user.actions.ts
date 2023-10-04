@@ -13,7 +13,7 @@ export async function createUser(user: UserPostData) {
     if (!validateUser.rules(user)) {
       throw new Error("Invalid data")
     }
-  
+
     const newUser = await userService.create(user);
     return newUser
   } catch (error) {
@@ -90,31 +90,31 @@ export async function updateUserPassword({ oldPass, newPass }: ChangePasswordTyp
   }
 }
 
-export async function updateUserPicture(file: File){
+export async function updateUserPicture(file: File) {
   try {
     const session = await getServerSession(options);
     const userService = new UserService;
-    
+
     if (!file) {
       throw new Error("File not Found")
     }
-    
+
     const extension = String(file.name.split('.').pop())
-    
+
     if (!PROFILE_PICTURE_PERMITED_EXTENSIONS.includes(extension)) {
       throw new Error("File extension not supported.")
     }
-    
+
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)
-    
+
     const fileName = session?.user.username + '.' + extension;
     const path = `/public/user_images/${fileName}`
     const pathDb = `/user_images/${fileName}`
     await writeFile('.' + path, buffer)
-    
+
     userService.updateProfilePicture(pathDb, session?.user.id as number)
-  
+
     return true
   } catch (error) {
     throw error

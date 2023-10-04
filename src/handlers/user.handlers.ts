@@ -1,5 +1,5 @@
 "use server"
-import { createUser, getUser, updateUserInfo, updateUserPassword } from "@/actions/user.actions"
+import { createUser, getUser, updateUserInfo, updateUserPassword, updateUserPicture } from "@/actions/user.actions"
 import { ChangeUserInfoFormSchema } from "@/app/profile/forms/changeUserInfoForm"
 
 export async function handleCreateUserForm(data: UserPostData): Promise<User> {
@@ -39,6 +39,17 @@ export async function handleUpdatePasswordForm({ oldPass, newPass }: ChangePassw
       oldPass,
       newPass
     }, id)
+
+    return response
+  } catch (error) {
+    throw error
+  }
+}
+
+export async function handleChangeProfilePictureForm(formData: FormData) {
+  try {
+    const file = formData.get('image') as File
+    const response = await updateUserPicture(file)
 
     return response
   } catch (error) {

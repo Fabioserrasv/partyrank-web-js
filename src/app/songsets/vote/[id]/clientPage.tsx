@@ -115,6 +115,18 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
     setSongUserData({ ...songUserData, timeStamp: Number(value) })
   }
 
+  function getScoreOfSong(scores: number[], scoreSystem: SongSetScoreSystemType) {
+    const sum = Number(scores.reduce((a, b) => a + b, 0));
+    if (scoreSystem == "SCORING_AVERAGE") {
+      return Number((sum / scores.length).toFixed(2))
+    } else if (scoreSystem == "SCORING") {
+      return sum
+    } else {
+      // TO DO RANKING
+      return sum
+    }
+  }
+
   useEffect(() => {
     let userAllScores: number[] = []
     songs.map((s) => {
@@ -124,7 +136,8 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
         }
       })
     })
-    setAverage(Number((userAllScores.reduce((a, b) => a + b, 0) / userAllScores.length).toFixed(2)))
+
+    setAverage(getScoreOfSong(userAllScores, set.scoreSystem))
   }, [songs])
 
   useEffect(() => {
@@ -172,7 +185,7 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
       </div>
 
       <div className="aside">
-        <h2>{`${set.name} - Average: ${average}`}</h2>
+        <h2>{`${set.name} | Score: ${average}`}</h2>
         <div className='list'>
           <Table>
             {

@@ -7,6 +7,7 @@ import { handleGetUser, handleUpdatePasswordForm, handleUpdateUserInfoForm } fro
 import { handleAnswerInvite } from "@/handlers/songset.handlers";
 import { InvitesSection } from './invitesSection';
 import { getUserImageUrlPath } from '@/lib/utils';
+import ChangeProfilePictureForm from './forms/changeProfilePictureForm';
 
 export default async function Profile() {
   const session = await getServerSession(options);
@@ -17,17 +18,16 @@ export default async function Profile() {
   return (
     <div className="profilePage">
       <div className="userCard">
-        <div className="profilePicture">
-          <img src={getUserImageUrlPath(user.imageUrl)} alt="Profile Picture" />
-          {/* <span>{user.username}</span> */}
-        </div>
-
-        <ChangeUserInfoForm
+        <ChangeProfilePictureForm
           user={user}
         />
 
+        <ChangeUserInfoForm
+          user={dbUser}
+        />
+
         <ChangePasswordForm
-          id={user.id}
+          id={dbUser.id}
         />
       </div>
       <InvitesSection

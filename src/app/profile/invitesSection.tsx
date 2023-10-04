@@ -9,7 +9,7 @@ type InvitesSectionProps = {
 }
 
 export function InvitesSection({ dbUser }: InvitesSectionProps) {
-  const [invites, setInvites] = useState<UserOn[]>(dbUser.invites ?? []);
+  const [invites, setInvites] = useState<UserOn[]>(dbUser.invites?.filter(invite => !invite.accepted) ?? []);
 
   function removeInvite(invite: UserOn){
     const newInvites = invites.filter(inviteOld => inviteOld !== invite);
@@ -22,9 +22,8 @@ export function InvitesSection({ dbUser }: InvitesSectionProps) {
       <h2>Invites</h2>
       <Table>
         {
-          invites.length > 0 &&
+          (invites.length > 0) &&
           invites.map((invite) => {
-            if (invite.accepted === true) return <></>
             return (
               <TableRow key={invite.songSet.id}>
                 <div className='info'>

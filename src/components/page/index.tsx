@@ -4,7 +4,6 @@ import { getServerSession } from "next-auth";
 import { Nav } from "../nav";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { Toaster } from 'react-hot-toast';
-import { LoadingComponent } from "../loading-component";
 type PageProps = {
   children: ReactNode;
 }
