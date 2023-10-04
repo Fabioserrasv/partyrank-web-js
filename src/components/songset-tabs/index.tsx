@@ -1,24 +1,17 @@
-import { Music, Upload, Users } from "lucide-react";
+import { ClipboardList, Music, Users } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
 
+export type tabs = "users" | "songs" | "result";
+
 type SongSetTabsProps = {
-  setJsonModalOpen: Dispatch<SetStateAction<boolean>>;
   tab: tabs;
   setTab: Dispatch<SetStateAction<tabs>>
 }
 
-type tabs = "users" | "songs"
-
-export function SongSetTabs({ setJsonModalOpen, tab, setTab }: SongSetTabsProps) {
+export function SongSetTabs({ tab, setTab }: SongSetTabsProps) {
   return (<div className="tabs">
-    <Upload className="generateIcon" onClick={() => {
-      setJsonModalOpen(true);
-    }} />
-    <Users className={tab == "users" ? "active" : ""} onClick={() => {
-      setTab("users");
-    }} />
-    <Music className={tab == "songs" ? "active" : ""} onClick={() => {
-      setTab("songs");
-    }} />
+    <ClipboardList className={tab == "result" ? "active" : ""} onClick={() => { setTab("result"); }} />
+    <Users className={tab == "users" ? "active" : ""} onClick={() => { setTab("users"); }} />
+    <Music className={tab == "songs" ? "active" : ""} onClick={() => { setTab("songs"); }} />
   </div>);
 }

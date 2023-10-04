@@ -15,7 +15,8 @@ export let maskValueToDecimal = (a: string | number) => {
   Output the reverse version of the array
 */
 export function reverseArray<T>(array: T[]): T[] {
-  return [...array].reverse()
+  const a = array
+  return [...a].reverse()
 }
 
 export function getUserImageUrlPath(url: string | null | undefined): string {

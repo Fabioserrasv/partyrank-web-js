@@ -2,14 +2,13 @@
 import { useEffect, useState } from "react";
 import { CreateUpdateSongSetForm } from "./forms/createUpdateSongSetForm";
 import { AddSongForm } from "./forms/addSongForm";
-import { Music, Upload, Users } from "lucide-react";
 import toast from "react-hot-toast";
 import { SongFinderModal } from "./modals/songFinderModal";
-import { JsonViewModal } from "./modals/jsonViewModal";
 import { UsersTab } from "./tabs/usersTab";
 import { SongsTab } from "./tabs/songsTab";
 import { handleDeleteSong } from "@/handlers/song.handlers";
-import { SongSetTabs } from "@/components/songset-tabs";
+import { SongSetTabs, tabs } from "@/components/songset-tabs";
+import ResultTab from "./tabs/resultTab";
 
 type ClientCreateSongPageProps = {
   dbSet: SongSet | null;
@@ -24,8 +23,6 @@ export type AddSongFormSchema = {
   link: string;
   type: SongType;
 }
-
-type tabs = "users" | "songs"
 
 const initialValue = {
   id: 0,
@@ -128,20 +125,12 @@ export function ClientCreateSongPage({ dbSet, user }: ClientCreateSongPageProps)
           setSongSet={setSongSet}
         />
       }
-      {
-        jsonModalOpen &&
-        <JsonViewModal
-          songSetId={songSet.id}
-          closeModal={setJsonModalOpen}
-        />
-      }
       <div className="infoSection">
         <div className="titleSection">
           <h3>{cardTitle}</h3>
-
           {
             isSetCreator &&
-            <SongSetTabs setJsonModalOpen={setJsonModalOpen} tab={tab} setTab={setTab} />
+            <SongSetTabs tab={tab} setTab={setTab} />
           }
         </div>
         {
@@ -189,6 +178,10 @@ export function ClientCreateSongPage({ dbSet, user }: ClientCreateSongPageProps)
               isSetCreator={isSetCreator}
               onDeleteSong={onDeleteSong}
               onSongClick={onSongClick}
+            />
+          case 'result':
+            return <ResultTab
+              songSetId={songSet.id}
             />
           default:
             return <></>

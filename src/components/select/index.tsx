@@ -6,7 +6,7 @@ type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
   displayName: string;
   name: string;
   errorMessage?: string;
-  children: ReactNode;
+  children?: ReactNode;
   options?: { value: string, display: string }[];
 }
 

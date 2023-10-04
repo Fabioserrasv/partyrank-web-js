@@ -1,16 +1,13 @@
 'use client'
+import { Button } from '@/components/button/Button';
+import { LoadingComponent } from '@/components/loading-component';
+import { Textarea } from '@/components/textarea'
+import { handleGetSongSet } from '@/handlers/songset.handlers';
+import React, { useState } from 'react'
+import toast from 'react-hot-toast';
 
-import { Button } from "@/components/button/Button"
-import { LoadingComponent } from "@/components/loading-component"
-import Modal from "@/components/modal"
-import { Textarea } from "@/components/textarea"
-import { handleGetSongSet } from "@/handlers/songset.handlers"
-import { Dispatch, SetStateAction, useState } from "react"
-import toast from "react-hot-toast"
-
-type JsonViewModalProps = {
+type ResultTabProps = {
   songSetId: number;
-  closeModal: Dispatch<SetStateAction<boolean>>
 }
 
 type JsonResult = {
@@ -19,7 +16,7 @@ type JsonResult = {
   description: string;
 }
 
-export function JsonViewModal({ songSetId, closeModal }: JsonViewModalProps) {
+export default function ResultTab({ songSetId }: ResultTabProps) {
   const [isLoading, setIsLoadind] = useState<boolean>(false);
   const [jsonsResult, setJsonsResult] = useState<JsonResult>({
     video: '',
@@ -32,14 +29,14 @@ export function JsonViewModal({ songSetId, closeModal }: JsonViewModalProps) {
       setIsLoadind(true);
       const response = await handleGetSongSet(songSetId, true);
       let videoJson = '';
-      
-      
+
+
       response?.generateVideoObject?.map((v) => {
         videoJson += JSON.stringify(v, undefined, 2)
       })
-      
+
       let imageJson = JSON.stringify(response?.generateImageObject, undefined, 2)
-      
+
       setJsonsResult({
         description: '',
         video: videoJson,
@@ -53,11 +50,7 @@ export function JsonViewModal({ songSetId, closeModal }: JsonViewModalProps) {
   }
 
   return (
-    <Modal
-      title="Results"
-      className="modalResult lg"
-      closeModal={closeModal}
-    >
+    <div className='divResult'>
       <div className="textAreasJson">
         <Textarea
           displayName="JSON Images"
@@ -81,13 +74,13 @@ export function JsonViewModal({ songSetId, closeModal }: JsonViewModalProps) {
         </Textarea>
       </div>
       {
-          !isLoading ?
+        !isLoading ?
           <Button
             name="Generate Json"
             className="generateButton"
             onClick={getSongSetWithJson}
           /> : <LoadingComponent />
       }
-    </Modal>
+    </div>
   )
 }

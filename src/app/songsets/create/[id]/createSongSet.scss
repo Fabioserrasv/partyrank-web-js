@@ -36,6 +36,19 @@
         svg {
           margin-right: 5px;
           cursor: pointer;
+
+          &>* {
+            transition: .3s;
+
+          }
+
+          &:hover:not(.active)>* {
+            color: rgba($primaryColor, .6);
+
+            @include dark {
+              color: rgba($secondaryColor, .6);
+            }
+          }
         }
 
         .active>* {
@@ -43,7 +56,6 @@
 
           @include dark {
             color: $secondaryColor;
-
           }
         }
       }
@@ -124,6 +136,12 @@
     overflow: auto;
     height: 100%;
 
+    .inputGroup{
+      width: 10%;
+      margin-bottom: 5px;
+      // margin-left: auto;
+    }
+
     // margin-top: 10px;
     .table {
       width: 100%;
@@ -178,8 +196,8 @@
             margin-left: 10px;
           }
         }
-        
-        .selectOptionsSongSet{
+
+        .selectOptionsSongSet {
           width: 450px;
 
           .inputGroup {
@@ -205,25 +223,29 @@
   }
 
 
-  .modalResult {
-    .modalBody {
-      flex-direction: column;
+  .divResult {
+    grid-area: songs;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
 
-      .textAreasJson {
-        .inputGroup {
-          width: 33%;
-          height: 90%;
-        }
+    .textAreasJson {
+      width: 100%;
 
-        display: flex;
-        justify-content: space-evenly;
+      .inputGroup {
+        width: 100%;
         height: 90%;
       }
 
-      .generateButton {
+      display: flex;
+      justify-content: space-evenly;
+      height: 90%;
+    }
 
-        width: 20%;
-      }
+    .generateButton {
+
+      width: 20%;
     }
   }
 

@@ -32,7 +32,7 @@ export const options: NextAuthOptions = {
 
           if (user?.scores) {
             let sum = user.scores.map(score => score.value)
-            average = (sum.reduce((a, b) => a + b, 0) / sum.length)
+            average = Number((sum.reduce((a, b) => a + b, 0) / sum.length).toFixed(2))
           }
 
           if (user != null) {

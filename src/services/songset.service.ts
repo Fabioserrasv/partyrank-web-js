@@ -79,6 +79,9 @@ export class SongSetService {
             where: {
               deletedAt: null
             },
+            orderBy: {
+              createdAt: 'asc',
+            },
             include: {
               scores: {
                 orderBy: {
