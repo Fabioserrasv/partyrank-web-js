@@ -50,6 +50,19 @@ export function ClientCreateSongPage({ dbSet, user }: ClientCreateSongPageProps)
   const [tab, setTab] = useState<tabs>("songs");
   const [isSetCreator, setIsSetCreator] = useState<boolean>(false);
 
+  useEffect(() => {
+    if (dbSet != null) {
+      const dbSetAsSongSet = dbSet as SongSet
+      setSongSet(dbSetAsSongSet)
+    }
+  }, [dbSet])
+
+  useEffect(() => {
+    if (user && user.id){
+      setIsSetCreator(Boolean(songSet.id && songSet.id != 0 && songSet.user?.id == user.id))
+    }
+  }, [songSet, user])
+
   const cardTitle = dbSet == null ? "Create new Song set" : "Edit song set"
   const buttonTitle = dbSet == null ? "Create" : "Update";
 
@@ -102,17 +115,6 @@ export function ClientCreateSongPage({ dbSet, user }: ClientCreateSongPageProps)
       type: song.type
     })
   }
-
-  useEffect(() => {
-    if (dbSet != null) {
-      const dbSetAsSongSet = dbSet as SongSet
-      setSongSet(dbSetAsSongSet)
-    }
-  }, [dbSet])
-
-  useEffect(() => {
-    setIsSetCreator(Boolean(songSet.id && songSet.id != 0 && songSet.user?.id == user.id))
-  }, [songSet])
 
   return (
     <>

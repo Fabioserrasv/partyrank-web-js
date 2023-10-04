@@ -1,7 +1,7 @@
 import { FolderSearch2, Library, Users } from "lucide-react"
 import './nav.scss'
 import { User } from "next-auth"
-import { NavDropdown } from "./navDropdown/navDropdown"
+import NavDropdown from "./navDropdown/navDropdown"
 import { headers } from "next/headers";
 import { NavItem } from "./navDropdown/navItem";
 import Link from "next/link";

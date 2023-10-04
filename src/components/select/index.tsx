@@ -10,7 +10,7 @@ type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
   options?: { value: string, display: string }[];
 }
 
-export const Select = forwardRef<HTMLSelectElement, SelectProps>(({ displayName, children, errorMessage, name, options, ...rest }: SelectProps, ref) => {
+const Select = forwardRef<HTMLSelectElement, SelectProps>(({ displayName, children, errorMessage, name, options, ...rest }: SelectProps, ref) => {
   return (
     <div className='inputGroup'>
       <label htmlFor={name}>{displayName}</label>
@@ -32,3 +32,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(({ displayName,
     </div>
   )
 })
+
+Select.displayName = "Select";
+
+export default Select;

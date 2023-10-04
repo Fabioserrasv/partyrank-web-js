@@ -1,6 +1,6 @@
 'use client'
 import { Button } from "@/components/button/Button";
-import { Input } from "@/components/input";
+import Input  from "@/components/input";
 import { LoadingComponent } from "@/components/loading-component";
 import { inviteUserSchema } from "@/app/songsets/validations/songSetValidations";
 import { zodResolver } from "@hookform/resolvers/zod";

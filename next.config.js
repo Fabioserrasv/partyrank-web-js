@@ -10,5 +10,6 @@ module.exports = (phase, {defaultConfig}) => {
     appDir: true,
     serverActions: true
   }
+  defaultConfig['output'] = 'standalone'
   return defaultConfig;
 }

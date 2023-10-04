@@ -21,11 +21,11 @@ type handlePageClickProps = {
 }
 
 export function TablePaginated({ itemsPerPage, sets, user }: PaginatedItemsProps) {
+  const { push } = useRouter();
   const [itemOffset, setItemOffset] = useState(0);
   const endOffset = itemOffset + itemsPerPage;
   const currentItems = sets.slice(itemOffset, endOffset);
   const pageCount = Math.ceil(sets.length / itemsPerPage);
-  const { push } = useRouter();
   const handlePageClick = ({ selected }: handlePageClickProps) => {
     const newOffset = (selected * itemsPerPage) % sets.length;
     setItemOffset(newOffset);

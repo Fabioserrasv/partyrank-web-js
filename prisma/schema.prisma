@@ -2,7 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-1.1.x", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
@@ -11,19 +12,19 @@ datasource db {
 }
 
 model User {
-  id Int @id @default(autoincrement())
-  username String @unique
-  password String
-  animeList String
-  imageUrl String?
-  admin Boolean
-  acceptingInvite Boolean @default(true)
-  scores Score[]
+  id              Int              @id @default(autoincrement())
+  username        String           @unique
+  password        String
+  animeList       String
+  imageUrl        String?
+  admin           Boolean
+  acceptingInvite Boolean          @default(true)
+  scores          Score[]
   SongSetsCreated SongSet[]
-  SongSetsOn UsersOnSongSet[]
-  createdAt DateTime?
-  updatedAt DateTime?
-  deletedAt DateTime?
+  SongSetsOn      UsersOnSongSet[]
+  createdAt       DateTime?
+  updatedAt       DateTime?
+  deletedAt       DateTime?
 }
 
 enum SongSetStatus {
@@ -46,27 +47,27 @@ enum SongSetScoreSystemType {
 }
 
 model SongSet {
-  id Int @id @default(autoincrement())
-  name String
-  songs Song[]
-  user User @relation(fields: [userId], references: [id])
-  userId Int
-  status SongSetStatus @default(ON_GOING)
-  type SongSetInviteType @default(PRIVATE)
+  id          Int                    @id @default(autoincrement())
+  name        String
+  songs       Song[]
+  user        User                   @relation(fields: [userId], references: [id])
+  userId      Int
+  status      SongSetStatus          @default(ON_GOING)
+  type        SongSetInviteType      @default(PRIVATE)
   scoreSystem SongSetScoreSystemType @default(SCORING_AVERAGE)
-  users UsersOnSongSet[]
-  maxUsers Int? @default(0) 
-  createdAt DateTime?
-  updatedAt DateTime?
-  deletedAt DateTime?
+  users       UsersOnSongSet[]
+  maxUsers    Int?                   @default(0)
+  createdAt   DateTime?
+  updatedAt   DateTime?
+  deletedAt   DateTime?
 }
 
 model UsersOnSongSet {
-  songSet SongSet @relation(fields: [songSetId], references: [id])
+  songSet   SongSet @relation(fields: [songSetId], references: [id])
   songSetId Int
-  user User @relation(fields: [userId], references: [id])
-  userId Int
-  accepted Boolean @default(false)
+  user      User    @relation(fields: [userId], references: [id])
+  userId    Int
+  accepted  Boolean @default(false)
 
   @@id([songSetId, userId])
 }
@@ -78,30 +79,30 @@ enum SongType {
 }
 
 model Song {
-  id Int @id @default(autoincrement())
-  songSet SongSet @relation(fields: [songSetId], references: [id])
+  id        Int       @id @default(autoincrement())
+  songSet   SongSet   @relation(fields: [songSetId], references: [id])
   songSetId Int
-  anime String
-  artist String
-  name String
-  link String
-  type SongType @default(OPENING)
-  scores Score[]
+  anime     String
+  artist    String
+  name      String
+  link      String
+  type      SongType  @default(OPENING)
+  scores    Score[]
   createdAt DateTime?
   updatedAt DateTime?
   deletedAt DateTime?
 }
 
 model Score {
-  id Int @id @default(autoincrement())
-  song Song @relation(fields: [songId], references: [id])
-  songId Int
-  user User @relation(fields: [userId], references: [id])
-  userId Int
-  value Float
+  id             Int       @id @default(autoincrement())
+  song           Song      @relation(fields: [songId], references: [id])
+  songId         Int
+  user           User      @relation(fields: [userId], references: [id])
+  userId         Int
+  value          Float
   videoTimeStamp Int
-  valid Int
-  createdAt DateTime?
-  updatedAt DateTime?
-  deletedAt DateTime? 
+  valid          Int
+  createdAt      DateTime?
+  updatedAt      DateTime?
+  deletedAt      DateTime?
 }

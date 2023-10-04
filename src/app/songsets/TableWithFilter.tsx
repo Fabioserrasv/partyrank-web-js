@@ -1,5 +1,5 @@
 'use client'
-import { Input } from "@/components/input"
+import Input  from "@/components/input"
 import { TablePaginated } from "./TablePaginated"
 import { useState } from 'react';
 import { Search } from "lucide-react";

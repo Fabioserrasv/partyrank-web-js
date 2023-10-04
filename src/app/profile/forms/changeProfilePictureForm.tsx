@@ -7,17 +7,18 @@ import { getUserImageUrlPath } from '@/lib/utils';
 import toast from 'react-hot-toast';
 import { handleChangeProfilePictureForm } from '@/handlers/user.handlers';
 import { Button } from '@/components/button/Button';
-import { Input } from '@/components/input';
+import Input  from '@/components/input';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 
 export default function ChangeProfilePictureForm({ user }: { user: User }) {
+  const router = useRouter();
   const { register, handleSubmit, formState: { errors }, setValue, getValues } = useForm<ChangeProfilePictureSchema>({
     resolver: zodResolver(changeProfilePictureSchema)
   });
   const { data: session, update } = useSession();
-  const router = useRouter();
 
   async function onSubmitChangeProfilePicture(data: ChangeProfilePictureSchema) {
     const formData = new FormData;
@@ -50,7 +51,7 @@ export default function ChangeProfilePictureForm({ user }: { user: User }) {
   return (
     <>
       <div className="profilePicture">
-        <img src={getUserImageUrlPath(user.imageUrl)} alt="Profile Picture" />
+        <Image src={getUserImageUrlPath(user.imageUrl)} alt="Profile Picture" />
         <span>{user.username}</span>
       </div>
       <form onSubmit={handleSubmit(onSubmitChangeProfilePicture)}>

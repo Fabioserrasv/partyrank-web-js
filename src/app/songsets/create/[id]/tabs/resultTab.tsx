@@ -1,7 +1,7 @@
 'use client'
 import { Button } from '@/components/button/Button';
 import { LoadingComponent } from '@/components/loading-component';
-import { Textarea } from '@/components/textarea'
+import Textarea from '@/components/textarea'
 import { handleGetSongSet } from '@/handlers/songset.handlers';
 import React, { useState } from 'react'
 import toast from 'react-hot-toast';

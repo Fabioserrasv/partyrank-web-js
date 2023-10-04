@@ -1,6 +1,6 @@
 'use client';
 import { useSession } from "next-auth/react";
-import { ReactNode, createContext, useState, useContext, useEffect, useCallback } from "react";
+import { ReactNode, createContext, useState, useContext } from "react";
 
 type ThemeProviderProps = {
   children: ReactNode;
