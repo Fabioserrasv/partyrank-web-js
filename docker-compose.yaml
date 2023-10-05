@@ -1,7 +1,33 @@
-version: "3"
+version: "2.1"
 services:
+  nodejs_nginx:
+    container_name: "nginx"
+    image: nodejs_nginx
+    volumes:
+      - "/usr/src/app:/var/www/app/public:ro"
+    expose:
+      - 80
+    ports:
+      - 80:80
+    depends_on:
+      - next
+
+  next:
+    # build: .
+    image: partyrank-web-js-next
+    volumes:
+      - "/usr/src/app:/var/www/app/public:ro"
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    expose:
+      - 3000
+
   db:
     image: mysql
+    container_name: db
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -9,3 +35,7 @@ services:
       - "3306:3306"
     volumes:
       - ./mysql/data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10

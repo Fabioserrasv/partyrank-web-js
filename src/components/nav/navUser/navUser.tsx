@@ -3,7 +3,6 @@ import { User } from "next-auth";
 import NavDropdown from "../navDropdown/navDropdown";
 import { RefAttributes, useEffect, useRef, useState } from "react";
 import { getUserImageUrlPath } from "@/lib/utils";
-import Image from "next/image";
 
 type NavUserProps = {
   user: User;
@@ -52,7 +51,7 @@ export function NavUser({ user }: NavUserProps) {
         <span className="avg">Average: {user.average}</span>
       </div>
       <div className="pfp" onClick={() => { setIsDropdownOpen(!isDropdownOpen); }}>
-        <Image src={getUserImageUrlPath(user.imageUrl)} alt="Profile Picture" ref={imgRef} />
+        <img src={getUserImageUrlPath(user.imageUrl)} alt="Profile Picture" ref={imgRef}/>
       </div>
 
       <NavDropdown isOpen={isDropdownOpen} ref={menuRef} />
