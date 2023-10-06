@@ -8,4 +8,4 @@ USER root
 
 EXPOSE 80
 
-CMD ["/bin/sh", "/config/start.sh"]
+# CMD ["/bin/sh", "/config/start.sh"]
