@@ -13,8 +13,8 @@ services:
       - next
 
   next:
-    # build: .
-    image: partyrank-web-js-next
+    build: .
+    #image: partyrank-web-js-next
     volumes:
       - "/usr/src/app:/var/www/app/public:ro"
     depends_on:
