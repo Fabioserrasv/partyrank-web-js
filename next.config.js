@@ -1,3 +1,5 @@
+// const nextSafe = require('next-safe')
+
 module.exports = (phase, {defaultConfig}) => {
   if ('sassOptions' in defaultConfig) {
       defaultConfig['sassOptions'] = {
@@ -7,8 +9,17 @@ module.exports = (phase, {defaultConfig}) => {
       }
   }
   defaultConfig['experimental'] = {
-    appDir: true,
     serverActions: true
   }
+  // defaultConfig['headers'] = async () => {
+	// 	return [
+	// 		{
+	// 			source: '/login',
+	// 			headers: nextSafe({
+  //         isDev: true
+  //       }),
+	// 		},
+	// 	]
+	// }
   return defaultConfig;
 }
