@@ -72,8 +72,8 @@ export function SongsTab({ onDeleteSong, onSongClick, songs, isSetCreator }: Son
           songsTab.map(song => {
             return (
               <TableRow key={song.id}>
-                <div className='info' onClick={() => { onSongClick(song) }}>
-                  <span>{`${song.artist} - ${song.name} - id: ${song.id} - ${song.scores[0].value}`}</span>
+                <div className='info edit' onClick={() => { onSongClick(song) }}>
+                  <span>{`${song.artist} - ${song.name}`}</span>
                   <div className="extraInfo">
                     <span>
                       <Monitor />

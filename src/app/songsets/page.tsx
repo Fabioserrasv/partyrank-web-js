@@ -1,9 +1,8 @@
-import { getAllSongSets, getAllSongSetsHomePage } from "@/actions/songset.actions";
-import { TableWithFilter } from "./TableWithFilter";
+import { getAllSongSetsHomePage } from "@/actions/songset.actions";
 import './songsets.scss';
-import { handleGetAllSongSets, handleJoinPublicSongSet } from "@/handlers/songset.handlers";
 import { getServerSession } from "next-auth";
 import { options } from "../api/auth/[...nextauth]/options";
+import { HomeSongSetTable } from "./components/home-song-set-table";
 
 export default async function SongSets() {
   let sets = await getAllSongSetsHomePage("");
@@ -11,7 +10,7 @@ export default async function SongSets() {
   const user = session?.user!
   return (
     <div className="songSetPage">
-      <TableWithFilter
+      <HomeSongSetTable
         user={user}
         initialSets={sets}
       />

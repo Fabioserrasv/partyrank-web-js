@@ -27,6 +27,10 @@
       flex-direction: column;
       justify-content: center;
       margin-right: auto;
+
+      &.edit{
+        cursor: pointer;
+      }
     }
 
     .actions{

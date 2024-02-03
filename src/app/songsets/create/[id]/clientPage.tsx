@@ -46,7 +46,6 @@ export function ClientCreateSongPage({ dbSet, user }: ClientCreateSongPageProps)
   const [songSet, setSongSet] = useState<SongSet>(initialValue)
   const [song, setSong] = useState<AddSongFormSchema>(initialSongValue)
   const [songFinderModalOpen, setSongFinderModalOpen] = useState<boolean>(false);
-  const [jsonModalOpen, setJsonModalOpen] = useState<boolean>(false);
   const [tab, setTab] = useState<tabs>("songs");
   const [isSetCreator, setIsSetCreator] = useState<boolean>(false);
 
@@ -101,6 +100,7 @@ export function ClientCreateSongPage({ dbSet, user }: ClientCreateSongPageProps)
       link: song.link,
       type: song.type
     })
+
   }
 
   useEffect(() => {
