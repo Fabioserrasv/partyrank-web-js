@@ -1,0 +1,42 @@
+.tabs-container{
+  display: flex;
+  flex-direction: column;
+
+  padding: 0;
+  
+  span{
+    font-size: 0.6rem;
+    margin: 0px 0px 5px 0px;
+    padding: 0px !important;
+  }
+
+  .tabs {
+    display: flex;
+  
+    svg {
+      margin-right: 5px;
+      cursor: pointer;
+  
+      &>* {
+        transition: .3s;
+  
+      }
+  
+      &:hover:not(.active)>* {
+        color: rgba($primaryColor, .6);
+  
+        @include dark {
+          color: rgba($secondaryColor, .6);
+        }
+      }
+    }
+  
+    .active>* {
+      color: $primaryColor;
+  
+      @include dark {
+        color: $secondaryColor;
+      }
+    }
+  }
+}

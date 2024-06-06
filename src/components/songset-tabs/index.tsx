@@ -1,7 +1,8 @@
 import { ClipboardList, Music, Users } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
+import './songset-tabs.scss';
 
-export type tabs = "users" | "songs" | "result";
+export type tabs = "users" | "songs" | "result" | "";
 
 type SongSetTabsProps = {
   tab: tabs;
@@ -9,9 +10,14 @@ type SongSetTabsProps = {
 }
 
 export function SongSetTabs({ tab, setTab }: SongSetTabsProps) {
-  return (<div className="tabs">
-    <ClipboardList className={tab == "result" ? "active" : ""} onClick={() => { setTab("result"); }} />
-    <Users className={tab == "users" ? "active" : ""} onClick={() => { setTab("users"); }} />
-    <Music className={tab == "songs" ? "active" : ""} onClick={() => { setTab("songs"); }} />
-  </div>);
+  return (
+    <div className="tabs-container">
+      <span>Switch Tabs</span>
+      <div className="tabs">
+        <Music className={tab == "songs" ? "active" : ""} onClick={() => { setTab("songs"); }} />
+        <Users className={tab == "users" ? "active" : ""} onClick={() => { setTab("users"); }} />
+        <ClipboardList className={tab == "result" ? "active" : ""} onClick={() => { setTab("result"); }} />
+      </div>
+    </div>
+  );
 }

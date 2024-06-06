@@ -30,37 +30,6 @@
       display: flex;
       justify-content: space-between;
 
-      .tabs {
-        display: flex;
-
-        svg {
-          margin-right: 5px;
-          cursor: pointer;
-
-          &>* {
-            transition: .3s;
-
-          }
-
-          &:hover:not(.active)>* {
-            color: rgba($primaryColor, .6);
-
-            @include dark {
-              color: rgba($secondaryColor, .6);
-            }
-          }
-        }
-
-        .active>* {
-          color: $primaryColor;
-
-          @include dark {
-            color: $secondaryColor;
-          }
-        }
-      }
-
-
     }
 
     h3 {
@@ -136,7 +105,7 @@
     overflow: auto;
     height: 100%;
 
-    .inputGroup{
+    .inputGroup {
       width: 10%;
       margin-bottom: 5px;
       // margin-left: auto;
@@ -168,14 +137,25 @@
 
     .songsetoptionsforms {
       display: flex;
+      flex-direction: column;
       justify-content: flex-start;
       width: 100%;
+
+      background-color: $lightSecondBackground;
+
+      @include dark {
+        background-color: $darkSecondBackground;
+      }
+
+      padding: 10px;
+
+      border-radius: 0.7rem;
 
       form {
         max-width: 400px;
 
         &:nth-child(2) {
-          margin-left: 15px;
+          margin-top: 10px;
         }
 
         .inviteDiv,

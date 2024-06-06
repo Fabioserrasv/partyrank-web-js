@@ -24,7 +24,7 @@ const statusOptions = [
 const scoreSystemOptions = [
   { value: "SCORING", display: "Scoring (Sum of Scores)" },
   { value: "SCORING_AVERAGE", display: "Scoring (Average)" },
-  { value: "RANKING", display: "Ranking" }
+  { value: "RANKING", display: "Ranking", disabled: true}
 ]
 
 type fields = "type" | "status"

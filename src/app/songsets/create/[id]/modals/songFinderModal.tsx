@@ -70,6 +70,11 @@ export function SongFinderModal({ changeSongFinderModalOpen, addSongToSongSetSta
     })
   }
 
+  function removeSongFromSongFinder(song: SongWeb) {
+    setSongsFind(songsFind.filter(s => s !== song));
+    toast.success("Song removed successfully");
+  }
+
   async function addAllSongsFindToSongSet() {
     let songsToAddToState: Song[] = [];
     try {
@@ -121,6 +126,7 @@ export function SongFinderModal({ changeSongFinderModalOpen, addSongToSongSetSta
         populateTableSongsWeb={populateTableSongsWeb}
         actions={true}
         addSongFromSongFinder={addSongFromSongFinder}
+        removeSongFromSongFinder={removeSongFromSongFinder}
       />
 
       {

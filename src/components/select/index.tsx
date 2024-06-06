@@ -7,7 +7,7 @@ type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
   name: string;
   errorMessage?: string;
   children?: ReactNode;
-  options?: { value: string, display: string }[];
+  options?: { value: string, display: string, disabled?: boolean }[];
 }
 
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(({ displayName, children, errorMessage, name, options, ...rest }: SelectProps, ref) => {
@@ -22,7 +22,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(({ displayName,
         {
           options && options.map((option) => {
             return (
-              <option key={option.value} value={option.value}>{option.display}</option>
+              <option key={option.value} disabled={option?.disabled} value={option.value}>{option.display}</option>
             )
           })
         }

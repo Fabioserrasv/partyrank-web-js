@@ -46,7 +46,7 @@ export function ClientCreateSongPage({ dbSet, user }: ClientCreateSongPageProps)
   const [songSet, setSongSet] = useState<SongSet>(initialValue)
   const [song, setSong] = useState<AddSongFormSchema>(initialSongValue)
   const [songFinderModalOpen, setSongFinderModalOpen] = useState<boolean>(false);
-  const [tab, setTab] = useState<tabs>("songs");
+  const [tab, setTab] = useState<tabs>("");
   const [isSetCreator, setIsSetCreator] = useState<boolean>(false);
 
   const cardTitle = dbSet == null ? "Create new Song set" : "Edit song set"
@@ -112,6 +112,9 @@ export function ClientCreateSongPage({ dbSet, user }: ClientCreateSongPageProps)
 
   useEffect(() => {
     setIsSetCreator(Boolean(songSet.id && songSet.id != 0 && songSet.user?.id == user.id))
+    if (songSet.id != 0) {
+      setTab("songs")
+    }
   }, [songSet])
 
   return (
@@ -140,6 +143,7 @@ export function ClientCreateSongPage({ dbSet, user }: ClientCreateSongPageProps)
             setSongSet={setSongSet}
             user={user}
             buttonName={buttonTitle}
+            setTab={setTab}
           />
         }
         {
@@ -167,17 +171,17 @@ export function ClientCreateSongPage({ dbSet, user }: ClientCreateSongPageProps)
       </div>
       {(() => {
         switch (tab) {
-          case 'users':
-            return <UsersTab
-              songSet={songSet}
-              setSongSet={setSongSet}
-            />
           case 'songs':
             return <SongsTab
               songs={songSet.songs}
               isSetCreator={isSetCreator}
               onDeleteSong={onDeleteSong}
               onSongClick={onSongClick}
+            />
+          case 'users':
+            return <UsersTab
+              songSet={songSet}
+              setSongSet={setSongSet}
             />
           case 'result':
             return <ResultTab

@@ -9,10 +9,11 @@ type SongFinderClientPageProps = {
   actions: boolean;
   songsFind: SongWeb[]
   addSongFromSongFinder?: (song: SongWeb) => void
+  removeSongFromSongFinder?: (song: SongWeb) => void
   populateTableSongsWeb?: (songs: SongWeb[]) => void
 }
 
-export default function SongFinderComponent({ actions, addSongFromSongFinder, populateTableSongsWeb, songsFind }: SongFinderClientPageProps) {
+export default function SongFinderComponent({ actions, addSongFromSongFinder, removeSongFromSongFinder, populateTableSongsWeb, songsFind }: SongFinderClientPageProps) {
 
   return (
     <>
@@ -45,10 +46,10 @@ export default function SongFinderComponent({ actions, addSongFromSongFinder, po
                     </div>
                   </div>
                   {
-                    (actions && addSongFromSongFinder) &&
-                    <div className='actions'>
+                    (actions && addSongFromSongFinder && removeSongFromSongFinder) &&
+                    <div className='actions songfinderactions'>
                       <Plus className="icon" onClick={() => { addSongFromSongFinder(song) }} />
-                      <X className="icon" />
+                      <X className="icon" onClick={() => removeSongFromSongFinder(song)} />
                     </div>
                   }
                 </TableRow>

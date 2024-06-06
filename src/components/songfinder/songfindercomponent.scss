@@ -1,5 +1,19 @@
-.result{
-  .table{
+.result {
+  .table {
     width: 100%;
+  }
+}
+
+.songfinderactions {
+  .icon:nth-child(1) {
+    &>* {
+      color: $secondaryColor !important;
+    }
+  }
+
+  .icon:nth-child(2) {
+    &>* {
+      color: $redButton !important;
+    }
   }
 }
