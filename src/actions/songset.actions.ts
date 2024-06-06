@@ -50,10 +50,10 @@ export async function getSongSet(id: number, generateJson: boolean = false) {
   }
 }
 
-export async function getAllSongSets(name: string) {
+export async function getAllSongSets(name: string, loggedUserId: number) {
   const setService = new SongSetService;
   try {
-    const sets = await setService.getAll(name);
+    const sets = await setService.getAll(name, loggedUserId);
 
     return sets
   } catch (error) {
@@ -61,10 +61,10 @@ export async function getAllSongSets(name: string) {
   }
 }
 
-export async function getAllSongSetsHomePage(name: string) {
+export async function getAllSongSetsHomePage(name: string, loggedUserId: number) {
   const setService = new SongSetService;
   try {
-    const sets = await setService.getAll(name);
+    const sets = await setService.getAll(name, loggedUserId);
     const session = await getServerSession(options)
     const filteredSets = filterOnlyUserOn(sets, session?.user!)
     return filteredSets

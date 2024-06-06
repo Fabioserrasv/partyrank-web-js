@@ -22,3 +22,16 @@ export function reverseArray<T>(array: T[]): T[] {
 export function getUserImageUrlPath(url: string | null | undefined): string {
   return (url != '' && url != null && url != undefined) ? url : "/user_images/default_user_profilepic.png"
 }
+
+export function normalizeUsername(username: string) {
+  return username
+      .normalize('NFD') // Normaliza a string para decompor caracteres acentuados
+      .replace(/[\u0300-\u036f]/g, '') // Remove os diacríticos
+      .toLowerCase() // Converte para minúsculas
+      .replace(/[^a-z0-9]/g, ''); // Remove caracteres não alfanuméricos
+}
+
+export function getUserImageUrlPathFromUsername(username: string): string {
+  return (username != '' && username != null && username != undefined) ? "/user_images/" + normalizeUsername(username) + ".png" : "/user_images/default_user_profilepic.png"
+ 
+}

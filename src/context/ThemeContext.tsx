@@ -13,7 +13,7 @@ type ThemeContextProps = {
 }
 
 export const ThemeContext = createContext<ThemeContextProps>({
-  isDarkMode: false,
+  isDarkMode: true,
   toggleTheme: () => { }
 });
 

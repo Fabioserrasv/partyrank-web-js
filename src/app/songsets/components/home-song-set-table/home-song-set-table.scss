@@ -1,6 +1,6 @@
 .main-table {
   align-self: center;
-  height: 100vh;
+  height: 100%;
   width: 100%;
   padding: 2rem;
 
@@ -35,7 +35,7 @@
 
   .pagination {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
 
     li {
       display: block;

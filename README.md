@@ -1,6 +1,6 @@
 # Party Rank Web
 
-[![My Skills](https://skills.thijs.gg/icons?i=ts,nextjs,prisma,mysql,react,sass&theme=light)](https://skills.thijs.gg)
+[![My Skills](https://skillicons.dev/icons?i=ts,nextjs,prisma,mysql,react,sass&theme=light)](https://skillicons.dev)
 
 _Status: Under Development_
 _Status: Em Desenvolvimento_

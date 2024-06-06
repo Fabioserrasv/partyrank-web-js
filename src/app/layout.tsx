@@ -23,7 +23,7 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   const session = await getServerSession(options);
-  const theme = session?.user.theme || "light"
+  const theme = session?.user.theme || "dark"
 
   return (
     <html lang="pt-BR" className={theme}>

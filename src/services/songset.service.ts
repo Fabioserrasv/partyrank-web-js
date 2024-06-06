@@ -27,7 +27,7 @@ export class SongSetService {
     }
   }
 
-  async getAll(name: string): Promise<SongSet[]> {
+  async getAll(name: string, loggedUserId?: number): Promise<SongSet[]> {
     try {
       const sets = await prisma.songSet.findMany({
         include: {
@@ -59,6 +59,23 @@ export class SongSetService {
           name: {
             contains: name
           },
+          OR: [
+            {
+              users: {
+                every: {
+                  user: {
+                    id: loggedUserId
+                  }
+                }
+              }
+            },
+            {
+              user: {
+                id: loggedUserId
+              }
+            }
+          ],
+
           deletedAt: null
         }
       });

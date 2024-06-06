@@ -1,5 +1,6 @@
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { UserRequest } from "@/app/api/user/request";
+import { normalizeUsername } from "@/lib/utils";
 import { PROFILE_PICTURE_PERMITED_EXTENSIONS } from "@/repositories/user.repository";
 import { UserService } from "@/services/user.service";
 import { writeFile } from 'fs/promises'
@@ -108,7 +109,7 @@ export async function updateUserPicture(file: File) {
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)
 
-    const fileName = session?.user.username + '.' + extension;
+    const fileName = normalizeUsername(session?.user.username!) + '.' + extension;
     const path = `/public/user_images/${fileName}`
     const pathDb = `/user_images/${fileName}`
     await writeFile('.' + path, buffer)

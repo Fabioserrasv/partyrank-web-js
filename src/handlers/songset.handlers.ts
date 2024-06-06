@@ -42,9 +42,9 @@ export async function handleGetSongSet(id: number, generateJson: boolean = false
   }
 }
 
-export async function handleGetAllSongSets(name: string) {
+export async function handleGetAllSongSets(name: string, loggedUserId: number) {
   try {
-    const sets = await getAllSongSets(name);
+    const sets = await getAllSongSets(name, loggedUserId);
 
     return sets
   } catch (error) {

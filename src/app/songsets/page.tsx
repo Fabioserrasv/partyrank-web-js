@@ -5,9 +5,9 @@ import { options } from "../api/auth/[...nextauth]/options";
 import { HomeSongSetTable } from "./components/home-song-set-table";
 
 export default async function SongSets() {
-  let sets = await getAllSongSetsHomePage("");
   const session = await getServerSession(options);
   const user = session?.user!
+  let sets = await getAllSongSetsHomePage("", user?.id);
   return (
     <div className="songSetPage">
       <HomeSongSetTable

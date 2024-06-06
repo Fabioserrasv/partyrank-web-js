@@ -5,6 +5,7 @@ import { convertSongSetScoreSystemToString, convertSongSetTypeToString } from '@
 import { AlignEndHorizontal, Calendar, FolderEdit, Lock, Music, Play, User } from 'lucide-react'
 import moment from 'moment'
 import Link from 'next/link'
+import { getUserImageUrlPathFromUsername, normalizeUsername } from '@/lib/utils';
 
 type SongSetItemProps = {
   songSet: SongSet,
@@ -34,7 +35,19 @@ export function SongSetItem({ songSet, onJoinPublicSongSet }: SongSetItemProps) 
         </div>
       </div>
       <div className='img'>
-        <img src="/user_images/default_user_profilepic.png" alt="" />
+        <span>Participants:</span>
+        <div>
+        <img src={getUserImageUrlPathFromUsername(songSet.user?.username!)} alt="Participant image" title={songSet.user?.username} />
+        {
+
+          songSet.usersOn?.map(userOn => {
+            const user = userOn.user
+            return(
+              <img key={user.id} src={getUserImageUrlPathFromUsername(user.username)} alt="Participant image" title={user.username} />
+            )
+          })
+        }
+        </div>        
       </div>
       <div className='footer'>
         <div className='creatorInfo'>

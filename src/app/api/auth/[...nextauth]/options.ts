@@ -63,7 +63,7 @@ export const options: NextAuthOptions = {
         token.username = user.username
         token.animeList = user.animeList
         token.admin = user.admin;
-        token.theme = user.theme
+        token.theme = "dark"
         token.average = user.average
         token.imageUrl = user.imageUrl
       }
@@ -75,7 +75,7 @@ export const options: NextAuthOptions = {
         session.user.username = token.username
         session.user.animeList = token.animeList
         session.user.id = token.id
-        session.user.theme = token.theme
+        session.user.theme = "dark"
         session.user.average = token.average
         session.user.imageUrl = token.imageUrl
       }

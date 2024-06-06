@@ -20,7 +20,7 @@ export default async function Vote({ params }: VotePageProps) {
   const allowed = await checkIsAllowed(params.id);
 
   if (!allowed) {
-    redirect("/songsets")
+    redirect("/songsets?error=not_allowed");
   }
 
   return (
