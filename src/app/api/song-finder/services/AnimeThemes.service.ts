@@ -62,7 +62,7 @@ export class AnimeThemesService implements SongFinderContract {
 
     const finalResult: SongWeb[] = []
 
-    if (songSet.songs && songSet.songs.length > 0) {
+    if (songSet && songSet.songs && songSet.songs.length > 0) {
       const times = songSet.songs.length
       for (let i = 0; i < times; i++) {
         let songDb = songSet.songs[i]

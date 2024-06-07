@@ -1,11 +1,12 @@
 'use client'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './song-set-item.scss';
 import { convertSongSetScoreSystemToString, convertSongSetTypeToString } from '@/repositories/songset.repository'
 import { AlignEndHorizontal, Calendar, DoorClosed, FolderEdit, Lock, Music, Play, Unlock, User } from 'lucide-react'
 import moment from 'moment'
 import Link from 'next/link'
 import { getUserImageUrlPathFromUsername, normalizeUsername } from '@/lib/utils';
+import { handleGetCoverImageFromAnilistUrl } from '@/handlers/anilist-api.handlers';
 
 type SongSetItemProps = {
   songSet: SongSet,
@@ -13,6 +14,29 @@ type SongSetItemProps = {
 }
 
 export function SongSetItem({ songSet, onJoinPublicSongSet }: SongSetItemProps) {
+
+  const [coverImage, setCoverImage] = useState<string>("");
+
+  function getCoverImageFromAnilist(link: string) {
+    return handleGetCoverImageFromAnilistUrl(link)
+      .then(coverImageUrl => {
+        return coverImageUrl || '';
+      })
+      .catch(error => {
+        return '';
+      });
+  }
+
+  useEffect(() => {
+    getCoverImageFromAnilist(songSet.anilistLink)
+      .then(imageUrl => {
+        setCoverImage(imageUrl);
+      })
+      .catch(error => {
+        setCoverImage('');
+      });
+  }, [songSet]);
+
   return (
     <div className='songitem'>
       <span className='title'>{songSet.name}</span>
@@ -35,16 +59,6 @@ export function SongSetItem({ songSet, onJoinPublicSongSet }: SongSetItemProps) 
             <span>Participants:</span>
             <div>
               <img src={getUserImageUrlPathFromUsername(songSet.user?.username!)} alt="Participant image" title={songSet.user?.username} />
-              <img src={getUserImageUrlPathFromUsername(songSet.user?.username!)} alt="Participant image" title={songSet.user?.username} />
-              <img src={getUserImageUrlPathFromUsername(songSet.user?.username!)} alt="Participant image" title={songSet.user?.username} />
-              <img src={getUserImageUrlPathFromUsername(songSet.user?.username!)} alt="Participant image" title={songSet.user?.username} />
-              <img src={getUserImageUrlPathFromUsername(songSet.user?.username!)} alt="Participant image" title={songSet.user?.username} />
-              <img src={getUserImageUrlPathFromUsername(songSet.user?.username!)} alt="Participant image" title={songSet.user?.username} />
-              <img src={getUserImageUrlPathFromUsername(songSet.user?.username!)} alt="Participant image" title={songSet.user?.username} />
-              <img src={getUserImageUrlPathFromUsername(songSet.user?.username!)} alt="Participant image" title={songSet.user?.username} />
-              <img src={getUserImageUrlPathFromUsername(songSet.user?.username!)} alt="Participant image" title={songSet.user?.username} />
-              <img src={getUserImageUrlPathFromUsername(songSet.user?.username!)} alt="Participant image" title={songSet.user?.username} />
-              <img src={getUserImageUrlPathFromUsername(songSet.user?.username!)} alt="Participant image" title={songSet.user?.username} />
               {
 
                 songSet.usersOn?.map(userOn => {
@@ -60,7 +74,13 @@ export function SongSetItem({ songSet, onJoinPublicSongSet }: SongSetItemProps) 
 
       </div>
       <div className='img'>
-        <img src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx154587-gHSraOSa0nBG.jpg" alt="" />
+        {
+          coverImage != '' ?
+          <img src={coverImage} alt="" /> :
+          <div>
+            <span>No image</span>
+          </div>
+        }
       </div>
       <div className='footer'>
         <div className='creatorInfo'>
