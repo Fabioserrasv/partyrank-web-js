@@ -6,7 +6,8 @@ export const scoreVoteSchema = z.object({
 })
 
 export const createSongSetSchema = z.object({
-  name: z.string()
+  name: z.string(),
+  anilistLink: z.string()
 })
 
 export const addSongSchema = z.object({

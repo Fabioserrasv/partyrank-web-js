@@ -1,6 +1,7 @@
 type SongSetPostData = {
   id?: number;
   name: string;
+  anilistLink?: string;
   status?: SongSetStatus;
   type?: SongSetType;
   scoreSystem?: SongSetScoreSystemType;
@@ -13,6 +14,7 @@ type SongSetScoreSystemType = "RANKING" | "SCORING" | "SCORING_AVERAGE"
 type SongSet = {
   id: number;
   name: string;
+  anilistLink: string;
   songs: Song[];
   type: SongSetType;
   status: SongSetStatus;

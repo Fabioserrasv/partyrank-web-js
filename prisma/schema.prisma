@@ -48,6 +48,7 @@ enum SongSetScoreSystemType {
 model SongSet {
   id Int @id @default(autoincrement())
   name String
+  anilistLink String?
   songs Song[]
   user User @relation(fields: [userId], references: [id])
   userId Int

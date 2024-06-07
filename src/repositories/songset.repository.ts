@@ -62,6 +62,7 @@ export async function convertDbSetToModel(data: any, generateJson: boolean = fal
   return {
     id: data.id,
     name: data.name,
+    anilistLink: data.anilistLink,
     user: data.user,
     type: data.type,
     status: data.status,

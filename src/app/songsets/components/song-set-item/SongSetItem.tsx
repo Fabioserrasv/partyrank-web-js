@@ -2,7 +2,7 @@
 import React from 'react'
 import './song-set-item.scss';
 import { convertSongSetScoreSystemToString, convertSongSetTypeToString } from '@/repositories/songset.repository'
-import { AlignEndHorizontal, Calendar, FolderEdit, Lock, Music, Play, User } from 'lucide-react'
+import { AlignEndHorizontal, Calendar, DoorClosed, FolderEdit, Lock, Music, Play, Unlock, User } from 'lucide-react'
 import moment from 'moment'
 import Link from 'next/link'
 import { getUserImageUrlPathFromUsername, normalizeUsername } from '@/lib/utils';
@@ -23,31 +23,44 @@ export function SongSetItem({ songSet, onJoinPublicSongSet }: SongSetItemProps) 
             Songs: {songSet.songs?.length}
           </span>
 
-          <span>
+          {/* <span>
             <Lock />
             {convertSongSetTypeToString(songSet.type)}
-          </span>
+          </span> */}
           <span>
             <AlignEndHorizontal />
             {convertSongSetScoreSystemToString(songSet.scoreSystem)}
           </span>
+          <div className='participants'>
+            <span>Participants:</span>
+            <div>
+              <img src={getUserImageUrlPathFromUsername(songSet.user?.username!)} alt="Participant image" title={songSet.user?.username} />
+              <img src={getUserImageUrlPathFromUsername(songSet.user?.username!)} alt="Participant image" title={songSet.user?.username} />
+              <img src={getUserImageUrlPathFromUsername(songSet.user?.username!)} alt="Participant image" title={songSet.user?.username} />
+              <img src={getUserImageUrlPathFromUsername(songSet.user?.username!)} alt="Participant image" title={songSet.user?.username} />
+              <img src={getUserImageUrlPathFromUsername(songSet.user?.username!)} alt="Participant image" title={songSet.user?.username} />
+              <img src={getUserImageUrlPathFromUsername(songSet.user?.username!)} alt="Participant image" title={songSet.user?.username} />
+              <img src={getUserImageUrlPathFromUsername(songSet.user?.username!)} alt="Participant image" title={songSet.user?.username} />
+              <img src={getUserImageUrlPathFromUsername(songSet.user?.username!)} alt="Participant image" title={songSet.user?.username} />
+              <img src={getUserImageUrlPathFromUsername(songSet.user?.username!)} alt="Participant image" title={songSet.user?.username} />
+              <img src={getUserImageUrlPathFromUsername(songSet.user?.username!)} alt="Participant image" title={songSet.user?.username} />
+              <img src={getUserImageUrlPathFromUsername(songSet.user?.username!)} alt="Participant image" title={songSet.user?.username} />
+              {
 
+                songSet.usersOn?.map(userOn => {
+                  const user = userOn.user
+                  return (
+                    <img key={user.id} src={getUserImageUrlPathFromUsername(user.username)} alt="Participant image" title={user.username} />
+                  )
+                })
+              }
+            </div>
+          </div>
         </div>
+
       </div>
       <div className='img'>
-        <span>Participants:</span>
-        <div>
-        <img src={getUserImageUrlPathFromUsername(songSet.user?.username!)} alt="Participant image" title={songSet.user?.username} />
-        {
-
-          songSet.usersOn?.map(userOn => {
-            const user = userOn.user
-            return(
-              <img key={user.id} src={getUserImageUrlPathFromUsername(user.username)} alt="Participant image" title={user.username} />
-            )
-          })
-        }
-        </div>        
+        <img src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx154587-gHSraOSa0nBG.jpg" alt="" />
       </div>
       <div className='footer'>
         <div className='creatorInfo'>
@@ -59,19 +72,22 @@ export function SongSetItem({ songSet, onJoinPublicSongSet }: SongSetItemProps) 
             <Calendar />
             {moment(songSet.createdAt).format('DD/MM/YYYY')}
           </span>
+          {
+            songSet.type == "PUBLIC" &&
+            <Unlock />
+          }
+          {
+            songSet.type == "PRIVATE" &&
+            <Lock />
+          }
         </div>
         <div className='actions'>
-          {/* {
-          songSet.type == "PUBLIC" &&
-          <DoorClosed onClick={() => { onJoinPublicSongSet(songSet) }} />
-        } */}
           <Link href={`/songsets/create/${songSet.id}`}>
             <FolderEdit />
           </Link>
           <Link href={`/songsets/vote/${songSet.id}`}>
             <Play />
           </Link>
-
         </div>
       </div>
     </div>

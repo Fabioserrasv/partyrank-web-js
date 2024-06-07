@@ -28,10 +28,11 @@ export function CreateUpdateSongSetForm({ songSet, user, setTab, setSongSet, but
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
   const { push, refresh } = useRouter();
 
-  function updateSetSongSet(name: string, id: number) {
+  function updateSetSongSet(name: string, anilistLink: string, id: number) {
     setSongSet({
       ...songSet,
       name: name,
+      anilistLink: anilistLink,
       user: user,
       id: Number(id)
     })
@@ -65,7 +66,7 @@ export function CreateUpdateSongSetForm({ songSet, user, setTab, setSongSet, but
       }
 
       if (id) {
-        updateSetSongSet(songSet.name, Number(id))
+        updateSetSongSet(songSet.name, songSet.anilistLink, Number(id));
         toast.success(`Song set ${newOrUp} successfully`)
       }
     } catch (error) {
@@ -76,7 +77,11 @@ export function CreateUpdateSongSetForm({ songSet, user, setTab, setSongSet, but
   }
 
   function onNameInputChange(e: React.ChangeEvent<HTMLInputElement>) {
-    updateSetSongSet(e.target.value, songSet.id)
+    updateSetSongSet(e.target.value, songSet.anilistLink, songSet.id)
+  }
+
+  function onAnilistLinkChange(e: React.ChangeEvent<HTMLInputElement>) {
+    updateSetSongSet(songSet.name, e.target.value, songSet.id)
   }
 
   return (
@@ -113,6 +118,15 @@ export function CreateUpdateSongSetForm({ songSet, user, setTab, setSongSet, but
         defaultValue={songSet.name}
         value={songSet.name}
         onChange={onNameInputChange}
+      />
+      <Input
+        displayName="Anilist link"
+        placeholder="https://anilist.co/anime/10721/Mawaru-Penguindrum/"
+        errorMessage={errors.anilistLink?.message}
+        {...register("anilistLink")}
+        defaultValue={songSet.anilistLink}
+        value={songSet.anilistLink}
+        onChange={onAnilistLinkChange}
       />
       <div className="botoes">
         {

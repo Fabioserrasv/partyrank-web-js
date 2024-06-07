@@ -16,6 +16,7 @@ export class SongSetService {
       const newSet = await prisma.songSet.create({
         data: {
           name: data.name,
+          anilistLink: data.anilistLink,
           userId: session?.user.id,
           createdAt: new Date()
         }
@@ -186,6 +187,7 @@ export class SongSetService {
         },
         data: {
           name: data.name,
+          anilistLink: data.anilistLink,
           status: data.status,
           type: data.type,
           scoreSystem: data.scoreSystem,

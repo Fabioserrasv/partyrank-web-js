@@ -5,7 +5,7 @@
 
   color: $lightTextPrimary;
 
-  @include dark{
+  @include dark {
     color: $darkTextPrimary;
   }
 }
@@ -16,4 +16,42 @@ body {
   @include dark {
     background-color: $darkBackground;
   }
+}
+
+/* Estilo geral da barra de rolagem (WebKit) */
+::-webkit-scrollbar {
+  width: 12px;
+  /* Largura da barra de rolagem vertical */
+  height: 12px;
+  /* Altura da barra de rolagem horizontal */
+}
+
+/* Estilo da área da barra de rolagem (track) (WebKit) */
+::-webkit-scrollbar-track {
+  background: #2e3338;
+  /* Cor do fundo da track */
+  border-radius: 8px;
+  /* Cantos arredondados */
+}
+
+/* Estilo do "polegar" (thumb) da barra de rolagem (WebKit) */
+::-webkit-scrollbar-thumb {
+  background: #202225;
+  /* Cor do polegar */
+  border-radius: 8px;
+  /* Cantos arredondados */
+  border: 3px solid #2e3338;
+  /* Espaço ao redor do polegar, dando a impressão de uma borda */
+}
+
+/* Estilo do polegar da barra de rolagem quando em estado de hover (WebKit) */
+::-webkit-scrollbar-thumb:hover {
+  background: #55595c;
+  /* Cor do polegar quando em hover */
+}
+
+/* Estilo do polegar da barra de rolagem quando em estado ativo (WebKit) */
+::-webkit-scrollbar-thumb:active {
+  background: #3a3d42;
+  /* Cor do polegar quando ativo */
 }
