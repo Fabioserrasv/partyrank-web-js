@@ -7,8 +7,10 @@ import toast from "react-hot-toast";
 import { Dispatch, SetStateAction, useState } from "react";
 import { LoadingComponent } from "@/components/loading-component";
 import { createSongSetSchema } from "@/app/songsets/validations/songSetValidations";
-import { handleCreateSongSetFormSubmit } from "@/handlers/songset.handlers";
+import { handleCreateSongSetFormSubmit, handleDeleteSongSet } from "@/handlers/songset.handlers";
 import { tabs } from "@/components/songset-tabs";
+import { useRouter } from "next/navigation";
+import ActionModal from "@/components/action-modal";
 
 type createUpdateSongSetFormProps = {
   songSet: SongSet;
@@ -23,6 +25,8 @@ export function CreateUpdateSongSetForm({ songSet, user, setTab, setSongSet, but
     resolver: zodResolver(createSongSetSchema)
   });
   const [isLoading, setIsLoadind] = useState<boolean>(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
+  const { push, refresh } = useRouter();
 
   function updateSetSongSet(name: string, id: number) {
     setSongSet({
@@ -33,6 +37,21 @@ export function CreateUpdateSongSetForm({ songSet, user, setTab, setSongSet, but
     })
   }
 
+  async function onSubmitDeleteSongSet() {
+    try {
+      setIsLoadind(true);
+      if (await handleDeleteSongSet(songSet.id)) {
+        toast.success("Song Set deleted successfully");
+        refresh();
+        push(`/songsets`);
+      }
+    } catch (error) {
+      toast.error("Something went wrong")
+    } finally {
+      setIsLoadind(false);
+    }
+  }
+
   async function onSubmitHandleCreateSongSet(data: SongSetPostData) {
     try {
       setIsLoadind(true);
@@ -40,8 +59,8 @@ export function CreateUpdateSongSetForm({ songSet, user, setTab, setSongSet, but
       const id = await handleCreateSongSetFormSubmit(data)
 
       const newOrUp = data.id == 0 ? "created" : "updated";
-      
-      if(data.id == 0){
+
+      if (data.id == 0) {
         setTab("songs");
       }
 
@@ -63,6 +82,29 @@ export function CreateUpdateSongSetForm({ songSet, user, setTab, setSongSet, but
   return (
     <form onSubmit={handleSubmit(onSubmitHandleCreateSongSet)} className="formSongSet">
       {isLoading && <LoadingComponent />}
+      {
+        deleteModalOpen &&
+        <ActionModal
+          title="Are you sure you want to delete this song set?"
+          firstButton={
+            {
+              description: "Yes",
+              color: "#4bf313",
+              func: () => { onSubmitDeleteSongSet() }
+            }
+          }
+          secondButton={
+            {
+              description: "No",
+              color: "#f31818",
+              func: () => { setDeleteModalOpen(false) }
+            }
+          }
+          closeModal={() => { setDeleteModalOpen(false) }}
+          className=""
+        />
+      }
+
       <Input
         displayName="Name"
         placeholder="All Mawaru Penguindrum songs..."
@@ -72,10 +114,22 @@ export function CreateUpdateSongSetForm({ songSet, user, setTab, setSongSet, but
         value={songSet.name}
         onChange={onNameInputChange}
       />
-      <Button
-        name={buttonName}
-        type="submit"
-      />
+      <div className="botoes">
+        {
+          (songSet.user?.id == user.id && songSet.id != 0) &&
+          <Button
+            name="Delete Song Set"
+            type="button"
+            className="deletebutton"
+            onClick={() => { setDeleteModalOpen(true) }}
+          />
+        }
+        <Button
+          name={buttonName}
+          className="submitbutton"
+          type="submit"
+        />
+      </div>
     </form>
   )
 }

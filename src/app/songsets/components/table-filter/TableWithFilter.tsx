@@ -16,7 +16,7 @@ export function TableWithFilter({ initialSets, user }: TableWithFilterProps) {
   const [filterQuery, setFilterQuery] = useState<string>('')
 
   async function onSubmitFilter() {
-    const filteredSets = await handleGetAllSongSets(filterQuery);
+    const filteredSets = await handleGetAllSongSets(filterQuery, user?.id);
     setSets(filteredSets)
   }
 

@@ -153,7 +153,10 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
   return (
     <>
       <div className="video">
-        {selectedSong?.link ? <iframe src={selectedSong.link}></iframe> : <div>Song Not Found</div>}
+        {/* {selectedSong?.link ? <iframe src={selectedSong.link}></iframe> : <div>Song Not Found</div>} */}
+        {selectedSong?.link ? 
+        <video src={selectedSong.link} width="320" height="240" controls></video>
+        : <div>Song Not Found</div>}
       </div>
 
       <div className="left">

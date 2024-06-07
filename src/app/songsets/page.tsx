@@ -8,6 +8,9 @@ export default async function SongSets() {
   const session = await getServerSession(options);
   const user = session?.user!
   let sets = await getAllSongSetsHomePage("", user?.id);
+  
+
+
   return (
     <div className="songSetPage">
       <HomeSongSetTable
