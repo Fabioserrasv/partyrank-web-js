@@ -7,6 +7,7 @@ import moment from 'moment'
 import Link from 'next/link'
 import { getUserImageUrlPathFromUsername, normalizeUsername } from '@/lib/utils';
 import { handleGetCoverImageFromAnilistUrl } from '@/handlers/anilist-api.handlers';
+import { handleAddImageAnimeFormSubmit, handleGetImageAnime } from '@/handlers/image.anime.handleres';
 
 type SongSetItemProps = {
   songSet: SongSet,
@@ -17,15 +18,41 @@ export function SongSetItem({ songSet, onJoinPublicSongSet }: SongSetItemProps) 
 
   const [coverImage, setCoverImage] = useState<string>("");
 
-  function getCoverImageFromAnilist(link: string) {
-    return handleGetCoverImageFromAnilistUrl(link)
-      .then(coverImageUrl => {
-        return coverImageUrl || '';
-      })
-      .catch(error => {
-        return '';
-      });
+  function getCoverImageFromAnilist(link: string): Promise<string> {
+    return handleGetImageAnime(link).then((res) => {
+      if (res != null) {
+        return res.link;
+      } else {
+        return handleGetCoverImageFromAnilistUrl(link)
+          .then(async (coverImageUrl) => {
+            if (coverImageUrl != '') {
+              await handleAddImageAnimeFormSubmit({
+                anilistLink: link,
+                link: coverImageUrl
+              });
+            }
+            return coverImageUrl || '';
+          })
+          .catch(error => {
+            console.log(error);
+            return '';
+          });
+      }
+    }).catch(error => {
+      console.log(error);
+      return '';
+    });
   }
+
+  // function getCoverImageFromAnilist(link: string) {
+  //   return handleGetCoverImageFromAnilistUrl(link)
+  //     .then(coverImageUrl => {
+  //       return coverImageUrl || '';
+  //     })
+  //     .catch(error => {
+  //       return '';
+  //     });
+  // }
 
   useEffect(() => {
     getCoverImageFromAnilist(songSet.anilistLink)
@@ -76,10 +103,10 @@ export function SongSetItem({ songSet, onJoinPublicSongSet }: SongSetItemProps) 
       <div className='img'>
         {
           coverImage != '' ?
-          <img src={coverImage} alt="" /> :
-          <div>
-            <span>No image</span>
-          </div>
+            <img src={coverImage} alt="" /> :
+            <div>
+              <span>No image</span>
+            </div>
         }
       </div>
       <div className='footer'>

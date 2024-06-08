@@ -64,10 +64,20 @@ export async function getAllSongSets(name: string, loggedUserId: number) {
 export async function getAllSongSetsHomePage(name: string, loggedUserId: number) {
   const setService = new SongSetService;
   try {
+    const sets = await setService.getAllPublic(name, loggedUserId);
+
+    return sets
+  } catch (error) {
+    throw error
+  }
+}
+
+export async function getAllMySongSetsPage(name: string, loggedUserId: number) {
+  const setService = new SongSetService;
+  try {
     const sets = await setService.getAll(name, loggedUserId);
-    const session = await getServerSession(options)
-    const filteredSets = filterOnlyUserOn(sets, session?.user!)
-    return filteredSets
+
+    return sets
   } catch (error) {
     throw error
   }

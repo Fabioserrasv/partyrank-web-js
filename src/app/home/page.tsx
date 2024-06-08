@@ -1,12 +1,23 @@
+import { getServerSession } from 'next-auth';
+import { HomeSongSetTable } from '../songsets/components/home-song-set-table';
+import { HomeClientPage } from './clientPage';
 import './home.scss';
+import { options } from '../api/auth/[...nextauth]/options';
+import { getAllSongSetsHomePage } from '@/actions/songset.actions';
 
 export default async function Home() {
-  const response = await fetch('http://localhost:3000/api/auth/csrf')
-  const responseObject = await response.json()
+  const session = await getServerSession(options);
+  const user = session?.user!
+  let sets = await getAllSongSetsHomePage("", user?.id);
+
 
   return (
-    <div>
-      <p>{JSON.stringify(responseObject)}</p>
+    <div className='homePage'>
+      <HomeSongSetTable
+        user={user}
+        initialSets={sets}
+        pageType='home'
+      />
     </div>
   )
 }

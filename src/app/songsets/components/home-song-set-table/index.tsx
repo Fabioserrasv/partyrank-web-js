@@ -1,20 +1,22 @@
 'use client';
 import './home-song-set-table.scss';
 import { useEffect, useState } from 'react';
-import { handleGetAllSongSets, handleJoinPublicSongSet } from '@/handlers/songset.handlers';
+import { handleGetAllSongSets, handleGetHomeSongSets, handleJoinPublicSongSet } from '@/handlers/songset.handlers';
 import { Input } from '@/components/input';
 import { Button } from '@/components/button/Button';
 import { Search } from 'lucide-react';
 import { TablePaginated } from '../table-paginated/TablePaginated';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import toast from 'react-hot-toast';
+
 type HomeSongSetTableProps = {
   initialSets: SongSet[];
   user: User;
+  pageType: 'home' | 'private';
 }
 
 
-export function HomeSongSetTable({ initialSets, user }: HomeSongSetTableProps) {
+export function HomeSongSetTable({ initialSets, user, pageType }: HomeSongSetTableProps) {
   const [sets, setSets] = useState<SongSet[]>(initialSets)
   const [filterQuery, setFilterQuery] = useState<string>('')
 
@@ -33,12 +35,23 @@ export function HomeSongSetTable({ initialSets, user }: HomeSongSetTableProps) {
   }, [router, pathname, searchParams]);
 
   async function onSubmitFilter() {
-    const filteredSets = await handleGetAllSongSets(filterQuery, user.id);
+    let filteredSets
+    if(pageType == 'home'){
+      filteredSets = await handleGetHomeSongSets(filterQuery, user.id);
+    }else{
+      filteredSets = await handleGetAllSongSets(filterQuery, user.id);
+    }
     setSets(filteredSets)
   }
 
   return (
     <div className="main-table">
+      {
+        pageType == 'home' &&
+        <>
+          <span className='title-search-public'>Search Public Song Sets</span>
+        </>
+      }
       <div className="filters">
         <form action={onSubmitFilter}>
           <Input

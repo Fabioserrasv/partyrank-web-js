@@ -63,7 +63,7 @@ export class SongSetService {
           OR: [
             {
               users: {
-                every: {
+                some: {
                   user: {
                     id: loggedUserId
                   }
@@ -76,7 +76,45 @@ export class SongSetService {
               }
             }
           ],
+          deletedAt: null
+        }
+      });
 
+
+      const result = await Promise.all(sets.map(async (s) => await convertDbSetToModel(s)));
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getAllPublic(name: string, loggedUserId: number): Promise<SongSet[]> {
+    try {
+      const sets = await prisma.songSet.findMany({
+        include: {
+          songs: {
+            where: {
+              deletedAt: null
+            }
+          },
+          user: {
+            select: {
+              username: true,
+              id: true
+            }
+          },
+        },
+        where: {
+          name: {
+            contains: name
+          },
+          type: 'PUBLIC',
+          NOT: {
+            user: {
+              id: loggedUserId
+            }
+          },
           deletedAt: null
         }
       });

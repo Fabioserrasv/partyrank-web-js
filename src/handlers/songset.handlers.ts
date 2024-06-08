@@ -1,5 +1,5 @@
 "use server"
-import { answerUserToPartyRank, createSongSet, deleteSongSet, getAllSongSets, getSongSet, inviteUserToPartyRank, updateSongSet } from "@/actions/songset.actions";
+import { answerUserToPartyRank, createSongSet, deleteSongSet, getAllSongSets, getAllSongSetsHomePage, getSongSet, inviteUserToPartyRank, updateSongSet } from "@/actions/songset.actions";
 import { getUserByUsername } from "@/actions/user.actions";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getServerSession } from "next-auth";
@@ -45,6 +45,16 @@ export async function handleGetSongSet(id: number, generateJson: boolean = false
 export async function handleGetAllSongSets(name: string, loggedUserId: number) {
   try {
     const sets = await getAllSongSets(name, loggedUserId);
+
+    return sets
+  } catch (error) {
+    throw error
+  }
+}
+
+export async function handleGetHomeSongSets(name: string, loggedUserId: number) {
+  try {
+    const sets = await getAllSongSetsHomePage(name, loggedUserId);
 
     return sets
   } catch (error) {

@@ -24,13 +24,14 @@ export type AddSongFormSchema = {
   type: SongType;
 }
 
-const initialValue = {
+const initialValue: SongSet = {
   id: 0,
   name: '',
   type: 'PRIVATE' as SongSetType,
   status: 'ON_GOING' as SongSetStatus,
   scoreSystem: 'SCORING_AVERAGE' as SongSetScoreSystemType,
-  songs: []
+  songs: [],
+  anilistLink: ''
 }
 
 export const initialSongValue: AddSongFormSchema = {

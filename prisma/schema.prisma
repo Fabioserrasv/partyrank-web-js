@@ -106,3 +106,13 @@ model Score {
   updatedAt DateTime?
   deletedAt DateTime? 
 }
+
+model ImagesAnime {
+  id Int @id @default(autoincrement())
+  animeName String?
+  anilistLink String?
+  link String
+  createdAt DateTime?
+  updatedAt DateTime?
+  deletedAt DateTime? 
+}

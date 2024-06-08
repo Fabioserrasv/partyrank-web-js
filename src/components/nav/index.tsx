@@ -15,10 +15,17 @@ export function Nav({ user }: NavProps) {
 
   return (
     <nav>
+      <Link href="/home">
+        <NavItem route="/home">
+          <Library />
+          <span>Home</span>
+        </NavItem>
+      </Link>
+
       <Link href="/songsets">
         <NavItem route="/songsets">
           <Library />
-          <span>Song Set</span>
+          <span>My Song Sets</span>
         </NavItem>
       </Link>
 
