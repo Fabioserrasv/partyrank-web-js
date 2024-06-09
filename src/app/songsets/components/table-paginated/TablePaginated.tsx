@@ -1,6 +1,6 @@
 'use client'
 import './table-paginated.scss';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
@@ -12,16 +12,17 @@ type PaginatedItemsProps = {
   itemsPerPage: number;
   sets: SongSet[];
   user: User;
+  pageType: 'home' | 'private';
 }
 
 type handlePageClickProps = {
   selected: number;
 }
 
-export function TablePaginated({ itemsPerPage, sets, user }: PaginatedItemsProps) {
+export function TablePaginated({ itemsPerPage, pageType, sets, user }: PaginatedItemsProps) {
   const [itemOffset, setItemOffset] = useState(0);
-  const endOffset = itemOffset + itemsPerPage;
-  const currentItems = sets.slice(itemOffset, endOffset);
+  const [songSets, setSongSets ] = useState<SongSet[]>(sets);
+  const [currentItems, setCurrentItems ] = useState<SongSet[]>(songSets.slice(itemOffset, (itemOffset + itemsPerPage)));
   const pageCount = Math.ceil(sets.length / itemsPerPage);
   const { push } = useRouter();
   const handlePageClick = ({ selected }: handlePageClickProps) => {
@@ -33,6 +34,7 @@ export function TablePaginated({ itemsPerPage, sets, user }: PaginatedItemsProps
     try {
       const response = await handleJoinPublicSongSet(songSet.id, user.id)
       if (response) {
+        removeSetFromSongSets(songSet)
         toast.success("Joined song set successfully!")
         push(`/songsets/create/${songSet.id}`)
       }
@@ -41,17 +43,28 @@ export function TablePaginated({ itemsPerPage, sets, user }: PaginatedItemsProps
     }
   }
 
+  function removeSetFromSongSets(songSet: SongSet){
+    const newSongSets = songSets.filter(s => s.id === songSet.id)
+    setSongSets(newSongSets); 
+  }
+
+  useEffect(() => {
+    const endOffset =itemOffset + itemsPerPage;
+    setCurrentItems(songSets.slice(itemOffset, endOffset))
+  }, [songSets,itemOffset])
+
   return (
     <>
       <div className='home-table'>
         {currentItems && currentItems.length > 0 ? currentItems.map((item) => {
           return (
             // <TableRow>
-              <SongSetItem
-                key={item.id} 
-                songSet={item}
-                onJoinPublicSongSet={onJoinPublicSongSet}
-              />
+            <SongSetItem
+              key={item.id}
+              songSet={item}
+              onJoinPublicSongSet={onJoinPublicSongSet}
+              pageType={pageType}
+            />
             // </TableRow>
           )
         }) : <div>No Songs Set Found</div>}

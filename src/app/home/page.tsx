@@ -5,11 +5,13 @@ import './home.scss';
 import { options } from '../api/auth/[...nextauth]/options';
 import { getAllSongSetsHomePage } from '@/actions/songset.actions';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = false;
+
 export default async function Home() {
   const session = await getServerSession(options);
   const user = session?.user!
   let sets = await getAllSongSetsHomePage("", user?.id);
-
 
   return (
     <div className='homePage'>

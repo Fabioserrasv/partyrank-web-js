@@ -1,5 +1,5 @@
 "use server"
-import { answerUserToPartyRank, createSongSet, deleteSongSet, getAllSongSets, getAllSongSetsHomePage, getSongSet, inviteUserToPartyRank, updateSongSet } from "@/actions/songset.actions";
+import { answerUserToPartyRank, createSongSet, deleteSongSet, getAllSongSets, getAllSongSetsHomePage, getSongSet, inviteUserToPartyRank, leaveSongSet, updateSongSet } from "@/actions/songset.actions";
 import { getUserByUsername } from "@/actions/user.actions";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getServerSession } from "next-auth";
@@ -95,6 +95,14 @@ export async function handleJoinPublicSongSet(songSetId: number, userId: number)
     await inviteUserToPartyRank(songSetId, userId);
     return await answerUserToPartyRank(songSetId, userId, true)
 
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function handleLeaveSongSet(songSetId: number, userId: number){
+  try {
+    return await leaveSongSet(songSetId, userId);
   } catch (error) {
     throw error;
   }

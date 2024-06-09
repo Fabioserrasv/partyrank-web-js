@@ -9,6 +9,9 @@ import { SongsTab } from "./tabs/songsTab";
 import { handleDeleteSong } from "@/handlers/song.handlers";
 import { SongSetTabs, tabs } from "@/components/songset-tabs";
 import ResultTab from "./tabs/resultTab";
+import { Button } from "@/components/button/Button";
+import { handleLeaveSongSet } from "@/handlers/songset.handlers";
+import { useRouter } from "next/navigation";
 
 type ClientCreateSongPageProps = {
   dbSet: SongSet | null;
@@ -49,6 +52,7 @@ export function ClientCreateSongPage({ dbSet, user }: ClientCreateSongPageProps)
   const [songFinderModalOpen, setSongFinderModalOpen] = useState<boolean>(false);
   const [tab, setTab] = useState<tabs>("");
   const [isSetCreator, setIsSetCreator] = useState<boolean>(false);
+  const { push, refresh } = useRouter();
 
   const cardTitle = dbSet == null ? "Create new Song set" : "Edit song set"
   const buttonTitle = dbSet == null ? "Create" : "Update";
@@ -101,7 +105,20 @@ export function ClientCreateSongPage({ dbSet, user }: ClientCreateSongPageProps)
       link: song.link,
       type: song.type
     })
+  }
 
+  async function onLeaveSongSet(){
+    try {
+      const result = await handleLeaveSongSet(songSet.id, user.id);
+
+      if(result) {
+        toast.success("Leaved song set successfully");
+        refresh();
+        push("/songsets");
+      }
+    } catch (error) {
+      
+    }
   }
 
   useEffect(() => {
@@ -163,9 +180,15 @@ export function ClientCreateSongPage({ dbSet, user }: ClientCreateSongPageProps)
                 />
               </div>
             </> :
-            <>
+            <div className="not-creator-div">
               <span className="titleSongSet">{songSet.name}</span>
-            </>
+              <Button
+                name='Leave Song Set'
+                className="leave-button"
+                type="button"
+                onClick={onLeaveSongSet}
+              />
+            </div>
         }
       </div>
       {(() => {

@@ -74,6 +74,7 @@ export function HomeSongSetTable({ initialSets, user, pageType }: HomeSongSetTab
         sets={sets}
         itemsPerPage={8}
         user={user}
+        pageType={pageType}
       />
     </div>
   )

@@ -77,6 +77,17 @@
       background-color: $darkSecondBackground;
     }
 
+    .not-creator-div{
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      button{
+        width: 40%;
+        background-color: $redButton;
+        color: $darkTextPrimary;
+      }
+    }
+
     .songFormSection {
 
       .sectionTitle {
@@ -304,9 +315,8 @@
       margin-bottom: 20px;
 
       button {
-        width: 15%;
+        width: 20%;
         margin-left: auto;
-        margin-bottom: 5px;
         display: flex;
         align-items: center;
         justify-content: center;

@@ -8,6 +8,7 @@ import { Button } from "@/components/button/Button";
 import { signIn } from "next-auth/react";
 
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 type FormLoginDataProps = {
   username: string;
@@ -17,6 +18,7 @@ type FormLoginDataProps = {
 
 export function FormLogin() {
   const { register, handleSubmit } = useForm<FormLoginDataProps>();
+  const { push, refresh } = useRouter();
 
   async function onSubmitLogin(data: FormLoginDataProps) {
     const signInResponse = await signIn("credentials", { ...data, redirect: false })
@@ -25,8 +27,9 @@ export function FormLogin() {
       toast.error("User not found")
       return;
     }
-    
-    window.location.href = "/songsets"
+    refresh();
+    push('/home');
+    // window.location.href = "/songsets"
   }
 
   return (

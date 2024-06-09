@@ -126,4 +126,12 @@ export async function joinPublicPartyRank(songSetId: number, userId: number) {
   }
 }
 
+export async function leaveSongSet(songSetId: number, userId: number){
+  try {
+    const setService = new SongSetService;
 
+    return await setService.leaveSongSet(songSetId, userId); 
+  } catch (error) {
+    throw error;
+  }
+}

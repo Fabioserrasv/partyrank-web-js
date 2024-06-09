@@ -132,6 +132,25 @@
       display: flex;
       gap: 10px;
       margin-left: auto;
+
+      .icon-button{
+        cursor: pointer;
+
+        .open{
+          display: none;
+          margin-bottom: 2px;
+        }
+
+        &:hover{
+          .open{
+            display: block;
+          }
+
+          .closed{
+            display: none;
+          }
+        }
+      }
     }
   }
 }

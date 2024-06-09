@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import './song-set-item.scss';
 import { convertSongSetScoreSystemToString, convertSongSetTypeToString } from '@/repositories/songset.repository'
-import { AlignEndHorizontal, Calendar, DoorClosed, FolderEdit, Lock, Music, Play, Unlock, User } from 'lucide-react'
+import { AlignEndHorizontal, Calendar, DoorClosed, DoorOpen, FolderEdit, Lock, Music, Play, Unlock, User } from 'lucide-react'
 import moment from 'moment'
 import Link from 'next/link'
 import { getUserImageUrlPathFromUsername, normalizeUsername } from '@/lib/utils';
@@ -12,9 +12,10 @@ import { handleAddImageAnimeFormSubmit, handleGetImageAnime } from '@/handlers/i
 type SongSetItemProps = {
   songSet: SongSet,
   onJoinPublicSongSet: (songSet: SongSet) => Promise<void>
+  pageType: 'home' | 'private';
 }
 
-export function SongSetItem({ songSet, onJoinPublicSongSet }: SongSetItemProps) {
+export function SongSetItem({ songSet, pageType, onJoinPublicSongSet }: SongSetItemProps) {
 
   const [coverImage, setCoverImage] = useState<string>("");
 
@@ -129,12 +130,23 @@ export function SongSetItem({ songSet, onJoinPublicSongSet }: SongSetItemProps) 
           }
         </div>
         <div className='actions'>
-          <Link href={`/songsets/create/${songSet.id}`}>
-            <FolderEdit />
-          </Link>
-          <Link href={`/songsets/vote/${songSet.id}`}>
-            <Play />
-          </Link>
+          {
+            pageType == 'private' ?
+              <>
+                <Link href={`/songsets/create/${songSet.id}`}>
+                  <FolderEdit />
+                </Link>
+                <Link href={`/songsets/vote/${songSet.id}`}>
+                  <Play />
+                </Link>
+              </>
+              :
+              <div className='icon-button'>
+                <DoorClosed className='closed' onClick={() => { onJoinPublicSongSet(songSet) }} />
+                <DoorOpen className='open' onClick={() => { onJoinPublicSongSet(songSet) }} />
+              </div>
+          }
+
         </div>
       </div>
     </div>

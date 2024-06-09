@@ -104,17 +104,40 @@ export class SongSetService {
               id: true
             }
           },
+          users: {
+            select: {
+              accepted: true,
+              user: {
+                select: {
+                  id: true,
+                  username: true,
+                  animeList: true
+                }
+              }
+            }
+          }
         },
         where: {
           name: {
             contains: name
           },
           type: 'PUBLIC',
-          NOT: {
-            user: {
-              id: loggedUserId
+          NOT: [
+            {
+              user: {
+                id: loggedUserId
+              }
+            },
+            {
+              users: {
+                some: {
+                  user: {
+                    id: loggedUserId
+                  }
+                }
+              }
             }
-          },
+          ],
           deletedAt: null
         }
       });
@@ -298,6 +321,22 @@ export class SongSetService {
           }
         })
       }
+      return true
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async leaveSongSet(songSetId: number, userId: number): Promise<Boolean> {
+    try {
+      await prisma.usersOnSongSet.delete({
+        where: {
+          songSetId_userId: {
+            songSetId: songSetId,
+            userId: userId
+          }
+        }
+      })
       return true
     } catch (error) {
       throw error;
