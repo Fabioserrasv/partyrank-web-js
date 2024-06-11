@@ -1,4 +1,4 @@
-import { FolderSearch2, Library, Users } from "lucide-react"
+import { FolderSearch2, Home, Library, Users } from "lucide-react"
 import './nav.scss'
 import { User } from "next-auth"
 import { NavDropdown } from "./navDropdown/navDropdown"
@@ -17,7 +17,7 @@ export function Nav({ user }: NavProps) {
     <nav>
       <Link href="/home">
         <NavItem route="/home">
-          <Library />
+          <Home />
           <span>Home</span>
         </NavItem>
       </Link>
