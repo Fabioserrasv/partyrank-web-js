@@ -23,13 +23,6 @@ export type FormVote = {
 }
 
 export function VoteClientPage({ user, set }: VoteClientPageProps) {
-  if (!set.songs || set.songs.length == 0) {
-    toast.error("No songs found")
-    const route = useRouter()
-    route.push("/songsets")
-    return;
-  }
-
   const [selectedSong, setSelectedSong] = useState<Song>(set?.songs[0]);
   const [songUserData, setSongUserData] = useState<FormVote>({ score: 0, timeStamp: 0 })
   const [songs, setSongs] = useState<Song[]>(set.songs)
@@ -37,6 +30,13 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
   const { register, handleSubmit, formState: { errors }, setValue } = useForm<FormVote>({
     resolver: zodResolver(scoreVoteSchema)
   });
+
+  if (!set.songs || set.songs.length == 0) {
+    toast.error("No songs found")
+    const route = useRouter()
+    route.push("/songsets")
+    return;
+  }
 
   async function handleFormSubmit(data: FormVote) {
     try {
@@ -138,12 +138,12 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
     })
 
     setAverage(getScoreOfSong(userAllScores, set.scoreSystem))
-  }, [songs])
+  }, [songs, user.id, set.scoreSystem]);
 
   useEffect(() => {
     const userDataForSong = getSessionDataSong(selectedSong);
     setSongUserData({ score: userDataForSong.score, timeStamp: userDataForSong.timeStamp })
-  }, [selectedSong])
+  }, [selectedSong, getSessionDataSong])
 
   useEffect(() => {
     setValue('score', String(songUserData.score));

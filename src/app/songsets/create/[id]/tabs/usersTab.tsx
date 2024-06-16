@@ -61,7 +61,7 @@ export function UsersTab({ songSet, setSongSet }: UsersTabProps) {
         {
           invites ? invites.map((invite) => {
             return (
-              <TableRow>
+              <TableRow key={invite.songSet.id}>
                 <div className='info'>
                   <span>{invite.user.username}</span>
                   <div className="extraInfo">
