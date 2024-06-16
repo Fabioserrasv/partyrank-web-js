@@ -1,5 +1,5 @@
 'use client'
-import React, { forwardRef } from 'react'
+import React, { forwardRef } from 'react';
 import './input.scss';
 import { FieldValues, UseFormRegister } from 'react-hook-form';
 
@@ -9,7 +9,7 @@ type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   errorMessage?: string;
 }
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(({ displayName, errorMessage, name, ...rest }: InputProps, ref) => {
+const Input = forwardRef<HTMLInputElement, InputProps>(({ displayName, errorMessage, name, ...rest }: InputProps, ref) => {
   return (
     <div className='inputGroup'>
       <label htmlFor={name}>{displayName} {errorMessage ? <span className='error'>{errorMessage}</span> : <></>} </label>
@@ -20,5 +20,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(({ displayName, er
         name={name}
       />
     </div>
-  )
-})
+  );
+});
+
+Input.displayName = 'Input';
+
+export { Input };
