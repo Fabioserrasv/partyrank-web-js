@@ -1,5 +1,5 @@
 'use client'
-import React, { forwardRef } from 'react'
+import React, { forwardRef } from 'react';
 import './input.scss';
 import { FieldValues, UseFormRegister } from 'react-hook-form';
 
@@ -20,9 +20,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({ displayName, errorMess
         name={name}
       />
     </div>
-  )
-})
+  );
+});
 
-Input.displayName = "Input"
+Input.displayName = 'Input';
 
-export default Input;
+export { Input };
