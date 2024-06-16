@@ -1,6 +1,6 @@
 'use client'
 import { Button } from "@/components/button/Button";
-import { Input } from "@/components/input";
+import Input  from "@/components/input";
 import { useForm } from "react-hook-form";
 import { changePasswordSchema } from "./validations/profileValidations";
 import { zodResolver } from "@hookform/resolvers/zod";

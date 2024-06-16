@@ -13,8 +13,8 @@ type UsersTabProps = {
 }
 
 export function UsersTab({ songSet, setSongSet }: UsersTabProps) {
+  const [invites, setInvites] = useState<UserOn[]>(songSet?.usersOn || []);
   if (!songSet) return
-  const [invites, setInvites] = useState<UserOn[]>(songSet.usersOn || []);
 
   function addInvite(invite: UserOn) {
     const newInvites = [...invites, invite]
@@ -61,7 +61,7 @@ export function UsersTab({ songSet, setSongSet }: UsersTabProps) {
         {
           invites ? invites.map((invite) => {
             return (
-              <TableRow>
+              <TableRow key={`${invite.songSet.id}${invite.user.id}`}>
                 <div className='info'>
                   <span>{invite.user.username}</span>
                   <div className="extraInfo">

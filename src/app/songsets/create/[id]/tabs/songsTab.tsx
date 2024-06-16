@@ -1,5 +1,5 @@
 'use client'
-import { Select } from "@/components/select";
+import Select from "@/components/select";
 import { Table, TableRow } from "@/components/table";
 import { reverseArray } from "@/lib/utils";
 import { Globe, Mic2, Monitor, X } from "lucide-react";

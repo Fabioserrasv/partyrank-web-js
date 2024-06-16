@@ -1,7 +1,39 @@
-version: "3"
+version: "2.1"
 services:
+  nodejs_nginx:
+    container_name: "nginx"
+    image: nginx_config_ssl
+    volumes:
+      - "/home/ubuntu/partyrank-web-js/public:/var/www/app/public:ro"
+    expose:
+      - 80
+      - 443
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - next
+
+  next:
+    build: .
+    volumes:
+      - "/usr/src/app:/var/www/app/public:ro"
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    expose:
+      - 3000
+    command: >
+      sh -c "
+      npx prisma migrate deploy &&
+      node server.js
+      "
+
   db:
     image: mysql
+    container_name: db
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -9,3 +41,7 @@ services:
       - "3306:3306"
     volumes:
       - ./mysql/data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
