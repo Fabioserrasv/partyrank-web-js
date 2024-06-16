@@ -2,19 +2,20 @@ version: "2.1"
 services:
   nodejs_nginx:
     container_name: "nginx"
-    image: nodejs_nginx
+    image: nginx_config_ssl
     volumes:
-      - "/usr/src/app:/var/www/app/public:ro"
+      - "/home/ubuntu/partyrank-web-js/public:/var/www/app/public:ro"
     expose:
       - 80
+      - 443
     ports:
       - 80:80
+      - 443:443
     depends_on:
       - next
 
   next:
     build: .
-    #image: partyrank-web-js-next
     volumes:
       - "/usr/src/app:/var/www/app/public:ro"
     depends_on:
@@ -24,6 +25,11 @@ services:
       - "3000:3000"
     expose:
       - 3000
+    command: >
+      sh -c "
+      npx prisma migrate deploy &&
+      node server.js
+      "
 
   db:
     image: mysql

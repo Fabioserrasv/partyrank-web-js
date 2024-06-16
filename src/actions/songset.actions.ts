@@ -2,7 +2,6 @@ import { options } from "@/app/api/auth/[...nextauth]/options";
 import { SongSetRequest } from "@/app/api/song-sets/requests";
 import { filterOnlyUserOn } from "@/repositories/songset.repository";
 import { SongSetService } from "@/services/songset.service";
-import { getServerSession } from "next-auth";
 
 export async function createSongSet(set: SongSetPostData) {
   const validateSongSet = new SongSetRequest;

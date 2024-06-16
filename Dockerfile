@@ -1,16 +1,3 @@
-# FROM node:18-alpine
-
-# WORKDIR /usr/src/app
-
-# COPY prisma ./prisma/
-
-# COPY . .
-
-# RUN npm install --production
-# RUN yarn build
-
-# CMD ["npm", "run", "start:migrate:prod"]
-
 FROM node:18-alpine AS base
 
 # Install dependencies only when needed
@@ -19,17 +6,20 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-COPY prisma/ .  
+COPY prisma ./prisma/
 
 # Install dependencies based on the preferred package manager
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
-RUN \
-  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
-  elif [ -f package-lock.json ]; then npm ci; \
-  elif [ -f pnpm-lock.yaml ]; then yarn global add pnpm && pnpm i --frozen-lockfile; \
-  else echo "Lockfile not found." && exit 1; \
+RUN set -eux; \
+  if [ -f yarn.lock ]; then \
+    yarn --frozen-lockfile; \
+  elif [ -f package-lock.json ]; then \
+    npm ci || npm install; \
+  elif [ -f pnpm-lock.yaml ]; then \
+    yarn global add pnpm && pnpm install --frozen-lockfile; \
+  else \
+    echo "Lockfile not found." && exit 1; \
   fi
-
 
 # Rebuild the source code only when needed
 FROM base AS builder
@@ -38,15 +28,10 @@ COPY --from=deps /app/node_modules ./node_modules
 
 COPY . .
 
-# Next.js collects completely anonymous telemetry data about general usage.
-# Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line in case you want to disable telemetry during the build.
 # ENV NEXT_TELEMETRY_DISABLED 1
 
-# RUN yarn build
-
-# If using npm comment out above and use below instead
-RUN npm run build
+RUN yarn build
 
 # Production image, copy all the files and run next
 FROM base AS runner
@@ -64,15 +49,15 @@ COPY --from=builder /app/public ./public
 # Set the correct permission for prerender cache
 RUN mkdir .next
 RUN chown nextjs:nodejs .next
+RUN chown -R nextjs:nodejs public/
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
 
 USER nextjs
-
-# EXPOSE  
 
 ENV PORT 3000
 # set hostname to localhost
