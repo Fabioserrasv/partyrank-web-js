@@ -2,7 +2,7 @@
 import { Button } from "@/components/button/Button";
 import { Input } from "@/components/input"
 import { Table, TableRow } from "@/components/table"
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -55,14 +55,13 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
     }
   }
 
-  function getSessionDataSong(song: Song) {
+  const getSessionDataSong = useCallback((song: Song) => {
     const data = song.scores.filter((score) => score.user?.id === user.id)[0]
     if (data !== undefined) {
       return ({ score: data.value, timeStamp: data.videoTimeStamp });
     }
-
     return ({ score: 0, timeStamp: 0 });
-  }
+  }, [user.id]);
 
   function setSessionDataSong(song: Song, scoreId: number, { score, timeStamp }: FormVote) {
     let newScore = true;
@@ -103,7 +102,6 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
 
   function onTimeStampInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     let value = parseFloat(e.target.value)
-
     value = Number.isNaN(value) ? 0 : value
     setSongUserData({ ...songUserData, timeStamp: Number(value) })
   }
@@ -122,14 +120,7 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
 
   const hasNoSongs = !set.songs || set.songs.length === 0;
 
-  if (hasNoSongs) {
-    toast.error("No songs found");
-    const route = useRouter();
-    route.push("/songsets");
-    return null; // Or throw an error to exit the component
-  }
-  
-  function calculateUserAverageScore() {
+  const calculateUserAverageScore = useCallback(() => {
     let userAllScores: number[] = [];
     songs.map((s) => {
       s.scores.map((sc) => {
@@ -139,11 +130,11 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
       });
     });
     return getScoreOfSong(userAllScores, set.scoreSystem);
-  }
-  
+  }, [songs, user.id, set.scoreSystem]);
+
   useEffect(() => {
     setAverage(calculateUserAverageScore());
-  }, [songs, user.id, set.scoreSystem]);
+  }, [songs, user.id, set.scoreSystem, calculateUserAverageScore]);
 
   useEffect(() => {
     const userDataForSong = getSessionDataSong(selectedSong);
@@ -153,15 +144,26 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
   useEffect(() => {
     setValue('score', String(songUserData.score));
     setValue('timeStamp', String(songUserData.timeStamp));
-  }, [songUserData])
+  }, [songUserData, setValue])
+
+  useEffect(() => {
+    if (hasNoSongs) {
+      toast.error("No songs found");
+      const route = useRouter();
+      route.push("/songsets");
+    }
+  }, [hasNoSongs]);
+
+  if (hasNoSongs) {
+    return null; // Or throw an error to exit the component
+  }
 
   return (
     <>
       <div className="video">
-        {/* {selectedSong?.link ? <iframe src={selectedSong.link}></iframe> : <div>Song Not Found</div>} */}
-        {selectedSong?.link ? 
-        <video src={selectedSong.link} width="320" height="240" controls></video>
-        : <div>Song Not Found</div>}
+        {selectedSong?.link ?
+          <video src={selectedSong.link} width="320" height="240" controls></video>
+          : <div>Song Not Found</div>}
       </div>
 
       <div className="left">
