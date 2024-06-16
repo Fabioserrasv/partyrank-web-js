@@ -8,6 +8,7 @@ import Link from 'next/link'
 import { getUserImageUrlPathFromUsername, normalizeUsername } from '@/lib/utils';
 import { handleGetCoverImageFromAnilistUrl } from '@/handlers/anilist-api.handlers';
 import { handleAddImageAnimeFormSubmit, handleGetImageAnime } from '@/handlers/image.anime.handleres';
+import Image from 'next/image';
 
 type SongSetItemProps = {
   songSet: SongSet,
@@ -88,13 +89,13 @@ export function SongSetItem({ songSet, pageType, onJoinPublicSongSet }: SongSetI
           <div className='participants'>
             <span>Participants:</span>
             <div>
-              <img src={getUserImageUrlPathFromUsername(songSet.user?.username!)} alt="Participant image" title={songSet.user?.username} />
+              <Image width={0} height={0} src={getUserImageUrlPathFromUsername(songSet.user?.username!)} alt="Participant image" title={songSet.user?.username} />
               {
 
                 songSet.usersOn?.map(userOn => {
                   const user = userOn.user
                   return (
-                    <img key={user.id} src={getUserImageUrlPathFromUsername(user.username)} alt="Participant image" title={user.username} />
+                    <Image width={0} height={0} key={user.id} src={getUserImageUrlPathFromUsername(user.username)} alt="Participant image" title={user.username} />
                   )
                 })
               }
@@ -106,7 +107,7 @@ export function SongSetItem({ songSet, pageType, onJoinPublicSongSet }: SongSetI
       <div className='img'>
         {
           coverImage != '' ?
-            <img src={coverImage} alt="" /> :
+            <Image width={0} height={0} src={coverImage} alt="" /> :
             <div>
               <span>No image</span>
             </div>
