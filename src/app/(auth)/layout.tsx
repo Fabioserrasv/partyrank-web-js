@@ -9,7 +9,7 @@ export default function RegisterLayout({
 }: {
   children: React.ReactNode
 }) {
-  function currentPageSubTitle() {
+  function CurrentPageSubTitle() {
     const pathname = usePathname()
 
     if (pathname.includes('register')) return 'Sign up';
@@ -24,7 +24,7 @@ export default function RegisterLayout({
         <span>パーティーランク</span>
       </div>
       <div className='cards'>
-        <span className='subtitle'>{currentPageSubTitle()}</span>
+        <span className='subtitle'>{CurrentPageSubTitle()}</span>
         <Suspense fallback={<LoadingComponent />}>
           {children}
         </Suspense>

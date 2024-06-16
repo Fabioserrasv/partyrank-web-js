@@ -1,6 +1,6 @@
-'use client'
-import { zodResolver } from '@hookform/resolvers/zod';
-import React, { createRef, useRef, useState } from 'react'
+"use client";
+import { zodResolver } from "@hookform/resolvers/zod";
+import React, { createRef, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { changeProfilePictureSchema } from './validations/profileValidations';
 import { getUserImageUrlPath } from '@/lib/utils';
@@ -14,37 +14,45 @@ import Image from 'next/image';
 
 
 export default function ChangeProfilePictureForm({ user }: { user: User }) {
-  const { register, handleSubmit, formState: { errors }, setValue, getValues } = useForm<ChangeProfilePictureSchema>({
-    resolver: zodResolver(changeProfilePictureSchema)
+  const router = useRouter();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    getValues,
+  } = useForm<ChangeProfilePictureSchema>({
+    resolver: zodResolver(changeProfilePictureSchema),
   });
   const { data: session, update } = useSession();
-  const router = useRouter();
 
-  async function onSubmitChangeProfilePicture(data: ChangeProfilePictureSchema) {
-    const formData = new FormData;
+  async function onSubmitChangeProfilePicture(
+    data: ChangeProfilePictureSchema
+  ) {
+    const formData = new FormData();
 
-    formData.append('image', data.profileImage[0])
+    formData.append("image", data.profileImage[0]);
 
     try {
-      const response = await handleChangeProfilePictureForm(formData)
+      const response = await handleChangeProfilePictureForm(formData);
 
       if (response) {
-        toast.success("Profile picture saved successfully!")
+        toast.success("Profile picture saved successfully!");
 
-        const extension = String(data.profileImage[0].name.split('.').pop()) 
+        const extension = String(data.profileImage[0].name.split(".").pop());
 
         await update({
           ...session,
           user: {
             ...session?.user,
-            imageUrl: `/user_images/${user.username}.${extension}`
-          }
-        })
+            imageUrl: `/user_images/${user.username}.${extension}`,
+          },
+        });
 
-        router.refresh()
+        router.refresh();
       }
     } catch (error) {
-      toast.error("Something went wrong!")
+      toast.error("Something went wrong!");
     }
   }
 
@@ -55,17 +63,17 @@ export default function ChangeProfilePictureForm({ user }: { user: User }) {
         <span>{user.username}</span>
       </div>
       <form onSubmit={handleSubmit(onSubmitChangeProfilePicture)}>
-        <div className='formImage'>
+        <div className="formImage">
           <Input
-            displayName='Change Picture'
-            accept='image/*'
-            type='file'
-            {...register('profileImage')}
+            displayName="Change Picture"
+            accept="image/*"
+            type="file"
+            {...register("profileImage")}
             errorMessage={errors.profileImage?.message}
           />
-          <Button name='Submit' />
+          <Button name="Submit" />
         </div>
       </form>
     </>
-  )
+  );
 }

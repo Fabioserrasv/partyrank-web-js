@@ -1,6 +1,6 @@
 'use client'
 import { User } from "next-auth";
-import { NavDropdown } from "../navDropdown/navDropdown";
+import NavDropdown from "../navDropdown/navDropdown";
 import { RefAttributes, useEffect, useRef, useState } from "react";
 import { getUserImageUrlPath } from "@/lib/utils";
 import Image from "next/image";

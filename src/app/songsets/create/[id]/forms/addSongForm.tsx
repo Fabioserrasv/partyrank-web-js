@@ -1,7 +1,7 @@
 'use client'
 import { Button } from "@/components/button/Button";
-import { Input } from "@/components/input"
-import { Select } from "@/components/select";
+import Input  from "@/components/input"
+import Select from "@/components/select";
 import { addSongSchema } from "@/app/songsets/validations/songSetValidations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
@@ -25,6 +25,14 @@ export function AddSongForm({ updateSongState, song, addSongToSongSetState, song
     resolver: zodResolver(addSongSchema)
   });
   const [isLoading, setIsLoadind] = useState<boolean>(false);
+
+  useEffect(() => {
+    setValue("anime", song.anime)
+    setValue("artist", song.artist)
+    setValue("name", song.name)
+    setValue("link", song.link)
+    setValue("type", song.type)
+  }, [song, setValue])
 
   function onAddSongInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     const key: fields = e.target.name as fields
@@ -65,14 +73,6 @@ export function AddSongForm({ updateSongState, song, addSongToSongSetState, song
   function clearSong() {
     updateSongState(initialSongValue)
   }
-
-  useEffect(() => {
-    setValue("anime", song.anime)
-    setValue("artist", song.artist)
-    setValue("name", song.name)
-    setValue("link", song.link)
-    setValue("type", song.type)
-  }, [song])
 
   return (
     <form onSubmit={handleSubmit(onSubmitHandleAddSong)} className="formAddSong">

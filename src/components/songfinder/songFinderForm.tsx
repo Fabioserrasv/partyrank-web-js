@@ -1,7 +1,7 @@
 'use client'
 import { Button } from "@/components/button/Button";
-import { Input } from "@/components/input";
-import { Select } from "@/components/select";
+import Input  from "@/components/input";
+import Select from "@/components/select";
 import { songFinderSchema } from "@/app/songsets/validations/songSetValidations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Search } from "lucide-react";

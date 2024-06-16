@@ -2,7 +2,7 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { Button } from "@/components/button/Button";
-import { Input } from "@/components/input";
+import Input  from "@/components/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { changeUserInfoSchema } from "./validations/profileValidations";
 import toast from "react-hot-toast";
@@ -23,6 +23,7 @@ export type ChangeUserInfoFormSchema = {
 type fields = "username" | "animelist"
 
 export function ChangeUserInfoForm({ user }: ChangeAnimeListFormProps) {
+  const route = useRouter();
   const { register, handleSubmit, formState: { errors }, setValue } = useForm<ChangeUserInfoFormSchema>({
     resolver: zodResolver(changeUserInfoSchema)
   });
@@ -31,7 +32,6 @@ export function ChangeUserInfoForm({ user }: ChangeAnimeListFormProps) {
 
   const { data: session, update } = useSession();
 
-  const route = useRouter();
 
   if (!session) return;
 
