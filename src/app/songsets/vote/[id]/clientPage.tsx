@@ -138,12 +138,12 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
     })
 
     setAverage(getScoreOfSong(userAllScores, set.scoreSystem))
-  }, [songs])
+  }, [songs, user.id, set.scoreSystem]);
 
   useEffect(() => {
     const userDataForSong = getSessionDataSong(selectedSong);
     setSongUserData({ score: userDataForSong.score, timeStamp: userDataForSong.timeStamp })
-  }, [selectedSong])
+  }, [selectedSong, getSessionDataSong])
 
   useEffect(() => {
     setValue('score', String(songUserData.score));

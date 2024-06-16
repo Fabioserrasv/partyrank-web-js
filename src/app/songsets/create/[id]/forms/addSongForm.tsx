@@ -72,7 +72,7 @@ export function AddSongForm({ updateSongState, song, addSongToSongSetState, song
     setValue("name", song.name)
     setValue("link", song.link)
     setValue("type", song.type)
-  }, [song])
+  }, [song, setValue])
 
   return (
     <form onSubmit={handleSubmit(onSubmitHandleAddSong)} className="formAddSong">
