@@ -31,13 +31,6 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
     resolver: zodResolver(scoreVoteSchema)
   });
 
-  if (!set.songs || set.songs.length == 0) {
-    toast.error("No songs found")
-    const route = useRouter()
-    route.push("/songsets")
-    return;
-  }
-
   async function handleFormSubmit(data: FormVote) {
     try {
       data.id = selectedSong.id
@@ -149,6 +142,13 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
     setValue('score', String(songUserData.score));
     setValue('timeStamp', String(songUserData.timeStamp));
   }, [songUserData])
+
+  if (!set.songs || set.songs.length == 0) {
+    toast.error("No songs found")
+    const route = useRouter()
+    route.push("/songsets")
+    return;
+  }
 
   return (
     <>
