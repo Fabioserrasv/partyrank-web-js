@@ -120,29 +120,29 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
     }
   }
 
-  const handleNoSongs = () => {
-    if (!set.songs || set.songs.length === 0) {
-      toast.error("No songs found");
-      const route = useRouter();
-      route.push("/songsets");
-      return true; // Or throw an error to exit the component
-    }
-    return false; // Or return to indicate success
-  };
+  const hasNoSongs = !set.songs || set.songs.length === 0;
 
-  if (handleNoSongs()) return null; // Or throw an error
-
-  useEffect(() => {
-    let userAllScores: number[] = []
+  if (hasNoSongs) {
+    toast.error("No songs found");
+    const route = useRouter();
+    route.push("/songsets");
+    return null; // Or throw an error to exit the component
+  }
+  
+  function calculateUserAverageScore() {
+    let userAllScores: number[] = [];
     songs.map((s) => {
       s.scores.map((sc) => {
-        if (sc.user?.id == user.id) {
-          userAllScores.push(sc.value)
+        if (sc.user?.id === user.id) {
+          userAllScores.push(sc.value);
         }
-      })
-    })
-
-    setAverage(getScoreOfSong(userAllScores, set.scoreSystem))
+      });
+    });
+    return getScoreOfSong(userAllScores, set.scoreSystem);
+  }
+  
+  useEffect(() => {
+    setAverage(calculateUserAverageScore());
   }, [songs, user.id, set.scoreSystem]);
 
   useEffect(() => {
