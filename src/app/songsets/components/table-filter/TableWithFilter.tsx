@@ -9,9 +9,10 @@ import { handleGetAllSongSets } from "@/handlers/songset.handlers";
 type TableWithFilterProps = {
   initialSets: SongSet[];
   user: User;
+  pageType: 'home' | 'private';
 }
 
-export function TableWithFilter({ initialSets, user }: TableWithFilterProps) {
+export function TableWithFilter({ initialSets, user, pageType }: TableWithFilterProps) {
   const [sets, setSets] = useState<SongSet[]>(initialSets)
   const [filterQuery, setFilterQuery] = useState<string>('')
 
@@ -42,6 +43,7 @@ export function TableWithFilter({ initialSets, user }: TableWithFilterProps) {
       </div>
       <TablePaginated
         sets={sets}
+        pageType={pageType}
         itemsPerPage={5}
         user={user}
       />
