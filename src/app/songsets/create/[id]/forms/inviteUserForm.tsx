@@ -35,6 +35,7 @@ export function InviteUserForm({ songSetId, addInvite }: InviteUserFormProps) {
           accepted: false,
           songSet: {
             id: songSetId,
+            anilistLink: "",
             name: "",
             type: 'PRIVATE' as SongSetType,
             scoreSystem: "SCORING" as SongSetScoreSystemType,
