@@ -23,6 +23,7 @@ export type FormVote = {
 }
 
 export function VoteClientPage({ user, set }: VoteClientPageProps) {
+  const router = useRouter();
   const [selectedSong, setSelectedSong] = useState<Song>(set?.songs[0]);
   const [songUserData, setSongUserData] = useState<FormVote>({ score: 0, timeStamp: 0 })
   const [songs, setSongs] = useState<Song[]>(set.songs)
@@ -118,8 +119,6 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
     }
   }
 
-  const hasNoSongs = !set.songs || set.songs.length === 0;
-
   const calculateUserAverageScore = useCallback(() => {
     let userAllScores: number[] = [];
     songs.map((s) => {
@@ -147,23 +146,23 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
   }, [songUserData, setValue])
 
   useEffect(() => {
+    const hasNoSongs = !set.songs || set.songs.length === 0;
     if (hasNoSongs) {
       toast.error("No songs found");
-      const route = useRouter();
-      route.push("/songsets");
+      router.push("/songsets");
     }
-  }, [hasNoSongs]);
+  }, [set.songs, router]);
 
-  if (hasNoSongs) {
+  if (!set.songs || set.songs.length === 0) {
     return null; // Or throw an error to exit the component
   }
 
   return (
     <>
       <div className="video">
-        {selectedSong?.link ?
-          <video src={selectedSong.link} width="320" height="240" controls></video>
-          : <div>Song Not Found</div>}
+        {selectedSong?.link ? 
+        <video src={selectedSong.link} width="320" height="240" controls></video>
+        : <div>Song Not Found</div>}
       </div>
 
       <div className="left">
