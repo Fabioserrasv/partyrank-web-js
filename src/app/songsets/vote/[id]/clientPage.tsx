@@ -143,12 +143,17 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
     setValue('timeStamp', String(songUserData.timeStamp));
   }, [songUserData])
 
-  if (!set.songs || set.songs.length == 0) {
-    toast.error("No songs found")
-    const route = useRouter()
-    route.push("/songsets")
-    return;
-  }
+  const handleNoSongs = () => {
+    if (!set.songs || set.songs.length === 0) {
+      toast.error("No songs found");
+      const route = useRouter();
+      route.push("/songsets");
+      return true; // Or throw an error to exit the component
+    }
+    return false; // Or return to indicate success
+  };
+
+  if (handleNoSongs()) return null; // Or throw an error
 
   return (
     <>
