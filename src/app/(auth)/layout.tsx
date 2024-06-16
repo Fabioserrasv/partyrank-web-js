@@ -9,13 +9,8 @@ export default function RegisterLayout({
 }: {
   children: React.ReactNode
 }) {
-  function currentPageSubTitle() {
-    const pathname = usePathname()
-
-    if (pathname.includes('register')) return 'Sign up';
-    if (pathname.includes('login')) return 'Sign in';
-    return ''
-  }
+  const pathname = usePathname();
+  const subtitle = pathname.includes('register') ? 'Sign up' : pathname.includes('login') ? 'Sign in' : '';
 
   return (
     <div className="authPage">
@@ -24,7 +19,7 @@ export default function RegisterLayout({
         <span>パーティーランク</span>
       </div>
       <div className='cards'>
-        <span className='subtitle'>{currentPageSubTitle()}</span>
+        <span className='subtitle'>{subtitle}</span>
         <Suspense fallback={<LoadingComponent />}>
           {children}
         </Suspense>
