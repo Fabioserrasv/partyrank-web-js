@@ -131,7 +131,7 @@ export function ClientCreateSongPage({ dbSet, user }: ClientCreateSongPageProps)
 
   useEffect(() => {
     setIsSetCreator(Boolean(songSet.id && songSet.id != 0 && songSet.user?.id == user.id))
-  }, [songSet])
+  }, [songSet, user.id])
 
   return (
     <>

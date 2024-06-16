@@ -13,8 +13,8 @@ type UsersTabProps = {
 }
 
 export function UsersTab({ songSet, setSongSet }: UsersTabProps) {
+  const [invites, setInvites] = useState<UserOn[]>(songSet && songSet.usersOn ? songSet.usersOn : []);
   if (!songSet) return
-  const [invites, setInvites] = useState<UserOn[]>(songSet.usersOn || []);
 
   function addInvite(invite: UserOn) {
     const newInvites = [...invites, invite]
