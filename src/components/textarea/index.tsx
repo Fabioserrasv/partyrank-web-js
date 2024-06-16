@@ -8,7 +8,7 @@ type InputProps = React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
   content: string;
 }
 
-export const Textarea = forwardRef<HTMLTextAreaElement, InputProps>(({ content, displayName, errorMessage, name, ...rest }: InputProps, ref) => {
+const Textarea = forwardRef<HTMLTextAreaElement, InputProps>(({ content, displayName, errorMessage, name, ...rest }: InputProps, ref) => {
   return (
     <div className='inputGroup'>
       <label htmlFor={name}>{displayName} {errorMessage ? <span className='error'>{errorMessage}</span> : <></>} </label>
@@ -23,3 +23,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, InputProps>(({ content, 
     </div>
   )
 })
+
+Textarea.displayName = 'Textarea';
+
+export { Textarea };

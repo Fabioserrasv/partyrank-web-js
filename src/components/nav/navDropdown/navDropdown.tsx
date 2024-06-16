@@ -10,7 +10,7 @@ type NavDropdownProps = {
   isOpen: boolean;
 }
 
-export const NavDropdown = forwardRef<HTMLUListElement, NavDropdownProps>(({ isOpen }: NavDropdownProps, ref) => {
+const NavDropdown = forwardRef<HTMLUListElement, NavDropdownProps>(({ isOpen }: NavDropdownProps, ref) => {
   const { isDarkMode, toggleTheme } = useTheme();
 
   return (
@@ -34,3 +34,7 @@ export const NavDropdown = forwardRef<HTMLUListElement, NavDropdownProps>(({ isO
     </ul>
   )
 })
+
+NavDropdown.displayName = 'NavDropdown';
+
+export { NavDropdown };
