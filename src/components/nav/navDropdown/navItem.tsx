@@ -6,15 +6,14 @@ type NavItemProps = {
   route: string;
   children: React.ReactNode
 }
+
 export function NavItem({ route, children }: NavItemProps) {
-  function isActive(route: string) {
-    
-    return usePathname().includes(route)  ? 'active' : ''; 
-  }
+  const pathname = usePathname();
+  const isActive = pathname.includes(route) ? 'active' : '';
 
   return (
-    <div className={"navItem " + isActive(route)} >
+    <div className={"navItem " + isActive}>
       {children}
     </div>
-  )
+  );
 }
