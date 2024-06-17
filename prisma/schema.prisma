@@ -24,8 +24,6 @@ model User {
   createdAt DateTime?
   updatedAt DateTime?
   deletedAt DateTime?
-
-  @@map(name: "user")
 }
 
 enum SongSetStatus {
@@ -62,8 +60,6 @@ model SongSet {
   createdAt DateTime?
   updatedAt DateTime?
   deletedAt DateTime?
-
-  @@map(name: "songset")
 }
 
 model UsersOnSongSet {
@@ -74,7 +70,6 @@ model UsersOnSongSet {
   accepted Boolean @default(false)
 
   @@id([songSetId, userId])
-  @@map(name: "usersonsongset")
 }
 
 enum SongType {
@@ -96,7 +91,6 @@ model Song {
   createdAt DateTime?
   updatedAt DateTime?
   deletedAt DateTime?
-  @@map(name: "song")
 }
 
 model Score {
@@ -111,7 +105,6 @@ model Score {
   createdAt DateTime?
   updatedAt DateTime?
   deletedAt DateTime?
-  @@map(name: "score")
 }
 
 model ImagesAnime {
@@ -122,5 +115,4 @@ model ImagesAnime {
   createdAt DateTime?
   updatedAt DateTime?
   deletedAt DateTime? 
-  @@map(name: "imagesanime")
 }
