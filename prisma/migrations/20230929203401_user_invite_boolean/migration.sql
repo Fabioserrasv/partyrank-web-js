@@ -1,2 +1,2 @@
 -- AlterTable
-ALTER TABLE `User` ADD COLUMN `acceptingInvite` BOOLEAN NOT NULL DEFAULT true;
+ALTER TABLE `user` ADD COLUMN `acceptingInvite` BOOLEAN NOT NULL DEFAULT true;

@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE `User` (
+CREATE TABLE `user` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `username` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NOT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE `User` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `SongSet` (
+CREATE TABLE `songset` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NULL,
@@ -26,7 +26,7 @@ CREATE TABLE `SongSet` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Song` (
+CREATE TABLE `song` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `songSetId` INTEGER NOT NULL,
     `anime` VARCHAR(191) NOT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE `Song` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Score` (
+CREATE TABLE `score` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `songId` INTEGER NOT NULL,
     `userId` INTEGER NOT NULL,
@@ -57,10 +57,10 @@ CREATE TABLE `Score` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `Song` ADD CONSTRAINT `Song_songSetId_fkey` FOREIGN KEY (`songSetId`) REFERENCES `SongSet`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `song` ADD CONSTRAINT `Song_songSetId_fkey` FOREIGN KEY (`songSetId`) REFERENCES `songset`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Score` ADD CONSTRAINT `Score_songId_fkey` FOREIGN KEY (`songId`) REFERENCES `Song`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `score` ADD CONSTRAINT `Score_songId_fkey` FOREIGN KEY (`songId`) REFERENCES `song`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Score` ADD CONSTRAINT `Score_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `score` ADD CONSTRAINT `Score_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

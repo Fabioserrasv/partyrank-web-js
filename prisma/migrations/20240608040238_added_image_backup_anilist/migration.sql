@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE `ImagesAnime` (
+CREATE TABLE `imagesanime` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `animeName` VARCHAR(191) NULL,
     `anilistLink` VARCHAR(191) NULL,
