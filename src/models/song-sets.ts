@@ -31,6 +31,7 @@ type UserOn ={
   songSet: SongSet;
   user: User;
   accepted: boolean;
+  imageUrl?: string;
 }
 
 // Changed json format for generating images, need to change on party-rank-video-generator

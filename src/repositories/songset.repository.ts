@@ -8,7 +8,8 @@ function convertDbUsersOn(data: any): UserOn {
   return {
     songSet: data,
     accepted: data.accepted,
-    user: data.user
+    user: data.user,
+    imageUrl: data.imageUrl
   }
 }
 

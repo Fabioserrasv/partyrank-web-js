@@ -21,15 +21,7 @@ export function FormLogin() {
   const { push, refresh } = useRouter();
 
   async function onSubmitLogin(data: FormLoginDataProps) {
-    const signInResponse = await signIn("credentials", { ...data, redirect: false })
-    
-    if (signInResponse?.error) {
-      toast.error("User not found")
-      return;
-    }
-    refresh();
-    push('/home');
-    // window.location.href = "/songsets"
+    await signIn("credentials", { ...data, redirect: true, callbackUrl: "/home" })
   }
 
   return (

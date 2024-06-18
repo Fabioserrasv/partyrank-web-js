@@ -5,7 +5,7 @@ import { convertSongSetScoreSystemToString, convertSongSetTypeToString } from '@
 import { AlignEndHorizontal, Calendar, DoorClosed, DoorOpen, FolderEdit, Lock, Music, Play, Unlock, User } from 'lucide-react'
 import moment from 'moment'
 import Link from 'next/link'
-import { getUserImageUrlPathFromUsername, normalizeUsername } from '@/lib/utils';
+import { getUserImageUrlPath, getUserImageUrlPathFromUsername, normalizeUsername } from '@/lib/utils';
 import { handleGetCoverImageFromAnilistUrl } from '@/handlers/anilist-api.handlers';
 import { handleAddImageAnimeFormSubmit, handleGetImageAnime } from '@/handlers/image.anime.handleres';
 import Image from 'next/image';
@@ -89,13 +89,13 @@ export function SongSetItem({ songSet, pageType, onJoinPublicSongSet }: SongSetI
           <div className='participants'>
             <span>Participants:</span>
             <div>
-              <Image width={0} height={0} src={getUserImageUrlPathFromUsername(songSet.user?.username!)} alt="Participant image" title={songSet.user?.username} />
+              <Image width={0} height={0} src={getUserImageUrlPath(songSet.user?.imageUrl!)} alt="Participant image" title={songSet.user?.username} />
               {
 
                 songSet.usersOn?.map(userOn => {
                   const user = userOn.user
                   return (
-                    <Image width={0} height={0} key={user.id} src={getUserImageUrlPathFromUsername(user.username)} alt="Participant image" title={user.username} />
+                    <Image width={0} height={0} key={user.id} src={getUserImageUrlPath(user.imageUrl!)} alt="Participant image" title={user.username} />
                   )
                 })
               }

@@ -179,8 +179,10 @@ export function ClientCreateSongPage({ dbSet, user }: ClientCreateSongPageProps)
                   updateSongState={setSong}
                 />
               </div>
-            </> :
-            <div className="not-creator-div">
+            </> : 
+            (
+              songSet.id != 0 &&
+              <div className="not-creator-div">
               <span className="titleSongSet">{songSet.name}</span>
               <Button
                 name='Leave Song Set'
@@ -189,6 +191,7 @@ export function ClientCreateSongPage({ dbSet, user }: ClientCreateSongPageProps)
                 onClick={onLeaveSongSet}
               />
             </div>
+            )
         }
       </div>
       {(() => {

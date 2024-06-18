@@ -40,7 +40,8 @@ export class SongSetService {
           user: {
             select: {
               username: true,
-              id: true
+              id: true,
+              imageUrl: true
             }
           },
           users: {
@@ -50,7 +51,8 @@ export class SongSetService {
                 select: {
                   id: true,
                   username: true,
-                  animeList: true
+                  animeList: true,
+                  imageUrl: true
                 }
               }
             }

@@ -5,7 +5,8 @@ import { UserService } from '@/services/user.service';
 
 export const options: NextAuthOptions = {
   pages: {
-    signIn: '/login'
+    signIn: '/login',
+    error: '/error'
   },
   providers: [
     CredentialsProvider({
@@ -81,6 +82,9 @@ export const options: NextAuthOptions = {
       }
       return session;
     },
+    async redirect({ url, baseUrl }) {
+      return baseUrl + '/home'
+    }
   },
   session: {
     strategy: "jwt"
