@@ -154,6 +154,10 @@ export class SongSetService {
 
   async get(id: number, generateJson: boolean): Promise<SongSet | null> {
     try {
+      if(Number.isNaN(id)) {
+        return null;
+      }
+      
       const set = await prisma.songSet.findUnique({
         include: {
           songs: {

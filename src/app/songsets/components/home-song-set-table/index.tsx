@@ -41,6 +41,7 @@ export function HomeSongSetTable({ initialSets, user, pageType }: HomeSongSetTab
     }else{
       filteredSets = await handleGetAllSongSets(filterQuery, user.id);
     }
+    console.log(filteredSets)
     setSets(filteredSets)
   }
 

@@ -3,6 +3,7 @@ import { SongSetService } from "@/services/songset.service";
 import axios from "axios";
 
 const apiUrl = process.env.ANISONGDB_API_URL as string + "/search_request"
+const amqUrlFile = process.env.AMQ_FILE_URL as string;
 
 type AnisongDBRequest = {
   anime_search_filter?: {
@@ -33,7 +34,7 @@ export class AnisongDBService implements SongFinderContract {
     const coverImageUrl = ""
     const videoId = data.annId !== null ? data.annId : ""
     const videoBasename = data.songName ? data.songName.replaceAll(" ", "_") : ""
-    const videoLink = data.HQ !== null ? data.HQ : ""
+    const videoLink = data.HQ !== null ? amqUrlFile + '/' + data.HQ : ""
     const downloadCmd = '!wget ' + videoLink + " -O /content/drive/MyDrive/" + this.folderName + "/" + videoBasename + ' --header="User-Agent: Mozilla/5.0 (Windows NT 6.0) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.97 Safari/537.11"';
 
     return {

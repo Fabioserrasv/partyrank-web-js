@@ -25,6 +25,7 @@ export function TablePaginated({ itemsPerPage, pageType, sets, user }: Paginated
   const [currentItems, setCurrentItems] = useState<SongSet[]>(songSets.slice(itemOffset, (itemOffset + itemsPerPage)));
   const pageCount = Math.ceil(sets.length / itemsPerPage);
   const { push } = useRouter();
+  
   const handlePageClick = ({ selected }: handlePageClickProps) => {
     const newOffset = (selected * itemsPerPage) % sets.length;
     setItemOffset(newOffset);
@@ -49,9 +50,10 @@ export function TablePaginated({ itemsPerPage, pageType, sets, user }: Paginated
   }
 
   useEffect(() => {
+    setSongSets(sets);
     const endOffset = itemOffset + itemsPerPage;
     setCurrentItems(songSets.slice(itemOffset, endOffset))
-  }, [songSets, itemOffset, itemsPerPage])
+  }, [sets, songSets, itemOffset, itemsPerPage])
 
   return (
     <>

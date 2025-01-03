@@ -14,6 +14,9 @@ type VotePageProps = {
 
 export default async function Vote({ params }: VotePageProps) {
   const session = await getServerSession(options);
+  if(Number.isNaN(params.id)){
+    return;
+  }
   const set = await getSongSet(Number(params.id));
   if (session == null || set == null) redirect("/songsets");
 
