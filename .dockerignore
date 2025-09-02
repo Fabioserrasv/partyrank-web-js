@@ -1,0 +1,64 @@
+# Dependências
+node_modules
+npm-debug.log*
+
+# Arquivos de build
+.next
+out
+dist
+
+# Arquivos de ambiente
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory usado por ferramentas como istanbul
+coverage
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+
+# Arquivos do Git
+.git
+.gitignore
+
+# Arquivos do Docker
+Dockerfile
+.dockerignore
+docker-compose.yaml
+
+# Arquivos de desenvolvimento
+.vscode
+.idea
+
+# Arquivos de teste
+__tests__
+*.test.js
+*.test.ts
+*.spec.js
+*.spec.ts
+
+# Arquivos temporários
+*.tmp
+*.temp
+
+# Documentação
+README.md
+DOCKER.md
+*.md
+
+# Scripts de deploy
+docker/deploy.sh
+docker/nginx/ssl/letsencrypt.sh

@@ -1,11 +1,84 @@
-version: "3"
+version: "3.8"
 services:
-  db:
-    image: mysql
-    restart: always
+  # Aplicação Next.js
+  app:
+    build: .
+    container_name: partyrank-app
+    restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: root
-    ports:
-      - "3306:3306"
+      - NODE_ENV=production
+      - DATABASE_URL=mysql://partyrank_user:partyrank_password@mariadb:3306/partyrank
+      - NEXTAUTH_URL=https://party-rank.win
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+      - ANIMETHEMES_API_URL=https://beta.animethemes.moe/api/animetheme
+      - ANISONGDB_API_URL=https://anisongdb.com/api
+      - AMQ_FILE_URL=https://naedist.animemusicquiz.com
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    networks:
+      - partyrank-network
     volumes:
-      - ./mysql/data:/var/lib/mysql
+      - app_uploads:/app/public/user_images
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Banco de dados MariaDB
+  mariadb:
+    image: mariadb:10.11
+    container_name: partyrank-mariadb
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: partyrank
+      MYSQL_USER: partyrank_user
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mariadb_data:/var/lib/mysql
+      - ./docker/mariadb/init:/docker-entrypoint-initdb.d
+    networks:
+      - partyrank-network
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --innodb-buffer-pool-size=256M
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: partyrank-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./docker/nginx/ssl:/etc/nginx/ssl:ro
+      - nginx_logs:/var/log/nginx
+    depends_on:
+      app:
+        condition: service_healthy
+    networks:
+      - partyrank-network
+    healthcheck:
+      test: ["CMD", "nginx", "-t"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  mariadb_data:
+  app_uploads:
+  nginx_logs:
+
+networks:
+  partyrank-network:
+    driver: bridge
