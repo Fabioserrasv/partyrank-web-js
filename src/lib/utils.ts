@@ -20,7 +20,15 @@ export function reverseArray<T>(array: T[]): T[] {
 }
 
 export function getUserImageUrlPath(url: string | null | undefined): string {
-  return (url != '' && url != null && url != undefined) ? url : "/user_images/default_user_profilepic.png"
+  if (url != '' && url != null && url != undefined) {
+    // Se a URL já contém o caminho completo, usar diretamente
+    if (url.startsWith('/user_images/')) {
+      return `/api/user-images${url}`;
+    }
+    // Se for apenas o nome do arquivo, construir o caminho
+    return `/api/user-images/user_images/${url}`;
+  }
+  return "/api/user-images/user_images/default_user_profilepic.png";
 }
 
 export function normalizeUsername(username: string) {
@@ -32,6 +40,8 @@ export function normalizeUsername(username: string) {
 }
 
 export function getUserImageUrlPathFromUsername(username: string): string {
-  return (username != '' && username != null && username != undefined) ? "/user_images/" + normalizeUsername(username) + ".png" : "/user_images/default_user_profilepic.png"
- 
+  if (username != '' && username != null && username != undefined) {
+    return `/api/user-images/user_images/${normalizeUsername(username)}.png`;
+  }
+  return "/api/user-images/user_images/default_user_profilepic.png";
 }
