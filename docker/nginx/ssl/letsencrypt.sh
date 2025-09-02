@@ -3,7 +3,7 @@
 # Script para configurar Let's Encrypt com Certbot
 # Execute este script após configurar o DNS para party-rank.win
 
-DOMAIN="party-rank.win"
+DOMAIN="new.party-rank.win"
 EMAIL="admin@party-rank.win"  # Altere para seu email
 
 echo "🔐 Configurando Let's Encrypt para $DOMAIN..."

@@ -3,7 +3,7 @@
 # Script para gerar certificados SSL auto-assinados para desenvolvimento
 # Para produção, use Let's Encrypt ou um certificado válido
 
-DOMAIN="party-rank.win"
+DOMAIN="new.party-rank.win"
 SSL_DIR="/etc/nginx/ssl"
 
 echo "Gerando certificado SSL auto-assinado para $DOMAIN..."

@@ -40,7 +40,7 @@ A aplicação é composta por 3 containers:
 
 ### 1. Configuração Inicial
 
-1. **Configure o DNS**: Aponte `party-rank.win` e `www.party-rank.win` para o IP do seu servidor
+1. **Configure o DNS**: Aponte `new.party-rank.win` e `www.new.party-rank.win` para o IP do seu servidor
 
 2. **Configure as variáveis de ambiente**:
 ```bash
@@ -53,7 +53,7 @@ Configure as seguintes variáveis no `.env`:
 DATABASE_URL=mysql://partyrank_user:partyrank_password@mariadb:3306/partyrank
 MYSQL_ROOT_PASSWORD=your_strong_root_password_here
 MYSQL_PASSWORD=your_strong_password_here
-NEXTAUTH_URL=https://party-rank.win
+NEXTAUTH_URL=https://new.party-rank.win
 NEXTAUTH_SECRET=your_very_strong_secret_key_here_minimum_32_characters
 NODE_ENV=production
 ```
@@ -104,7 +104,7 @@ docker-compose ps
 docker-compose logs -f
 
 # Testar health check
-curl https://party-rank.win/health
+curl https://new.party-rank.win/health
 ```
 
 ## Comandos Úteis
