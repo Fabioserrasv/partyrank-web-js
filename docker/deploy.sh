@@ -22,14 +22,18 @@ docker-compose down
 if [ ! -f docker/nginx/ssl/new.party-rank.win.crt ]; then
     echo "🔐 Gerando certificados SSL..."
     chmod +x docker/nginx/ssl/generate-ssl.sh
-    docker run --rm -v "$(pwd)/docker/nginx/ssl:/ssl" alpine/openssl sh -c "
-        apk add --no-cache openssl &&
-        openssl genrsa -out /ssl/new.party-rank.win.key 2048 &&
-        openssl req -new -x509 -key /ssl/new.party-rank.win.key -out /ssl/new.party-rank.win.crt -days 365 \
-            -subj '/C=BR/ST=SP/L=SaoPaulo/O=PartyRank/OU=IT/CN=new.party-rank.win' &&
-        chmod 600 /ssl/new.party-rank.win.key &&
-        chmod 644 /ssl/new.party-rank.win.crt
-    "
+    
+    # Criar diretório SSL se não existir
+    mkdir -p docker/nginx/ssl
+    
+    # Gerar certificados usando openssl local
+    openssl genrsa -out docker/nginx/ssl/new.party-rank.win.key 2048
+    openssl req -new -x509 -key docker/nginx/ssl/new.party-rank.win.key -out docker/nginx/ssl/new.party-rank.win.crt -days 365 \
+        -subj "/C=BR/ST=SP/L=SaoPaulo/O=PartyRank/OU=IT/CN=new.party-rank.win"
+    chmod 600 docker/nginx/ssl/new.party-rank.win.key
+    chmod 644 docker/nginx/ssl/new.party-rank.win.crt
+    
+    echo "✅ Certificados SSL gerados com sucesso!"
 fi
 
 # Build e iniciar containers

@@ -1,8 +1,8 @@
 # Dockerfile para a aplicação PartyRank Next.js - Produção
 FROM node:18-alpine AS base
 
-# Instalar dependências do sistema
-RUN apk add --no-cache libc6-compat curl
+epe# Instalar dependências do sistema incluindo OpenSSL
+RUN apk add --no-cache libc6-compat curl openssl openssl-dev
 
 # Instalar dependências apenas quando necessário
 FROM base AS deps
