@@ -23,12 +23,12 @@ export function getUserImageUrlPath(url: string | null | undefined): string {
   if (url != '' && url != null && url != undefined) {
     // Se a URL já contém o caminho completo, usar diretamente
     if (url.startsWith('/user_images/')) {
-      return `/api${url}`;
+      return `${url}`;
     }
     // Se for apenas o nome do arquivo, construir o caminho
-    return `/api/user-images/user_images/${url}`;
+    return `/user_images/${url}`;
   }
-  return "/api/user-images/user_images/default_user_profilepic.png";
+  return "/user-images/user_images/default_user_profilepic.png";
 }
 
 export function normalizeUsername(username: string) {
