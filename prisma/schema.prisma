@@ -3,7 +3,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
@@ -124,4 +123,15 @@ model ImagesAnime {
   updatedAt DateTime?
   deletedAt DateTime? 
   @@map(name: "imagesanime")
+}
+
+model SongService {
+  id Int @id @default(autoincrement())
+  name String
+  service String @unique
+  active Boolean @default(true)
+  createdAt DateTime?
+  updatedAt DateTime?
+  deletedAt DateTime?
+  @@map(name: "songservice")
 }

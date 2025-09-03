@@ -10,6 +10,7 @@ import { maskValueToDecimal } from "@/lib/utils";
 import toast from "react-hot-toast";
 import { scoreVoteSchema } from "@/app/songsets/validations/songSetValidations";
 import { handleScoreFormSubmit } from "@/handlers/score.handlers";
+import { Monitor } from "lucide-react";
 
 type VoteClientPageProps = {
   user: User;
@@ -28,9 +29,11 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
   const [songUserData, setSongUserData] = useState<FormVote>({ score: 0, timeStamp: 0 })
   const [songs, setSongs] = useState<Song[]>(set.songs)
   const [average, setAverage] = useState<number>(0)
+  const [isTheaterMode, setIsTheaterMode] = useState<boolean>(false);
   const { register, handleSubmit, formState: { errors }, setValue } = useForm<FormVote>({
     resolver: zodResolver(scoreVoteSchema)
   });
+
 
   async function handleFormSubmit(data: FormVote) {
     try {
@@ -153,13 +156,17 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
     }
   }, [set.songs, router]);
 
+  useEffect(() => {
+    document.querySelector('.votePage')?.classList.toggle('not-theater', isTheaterMode)
+  }, [isTheaterMode, songs])
+
   if (!set.songs || set.songs.length === 0) {
     return null; // Or throw an error to exit the component
   }
 
   return (
-    <>
-      <div className="video">
+    <div className={`votePage`}>
+      <div className={`video`}>
         {selectedSong?.link ? 
         <video src={selectedSong.link} width="320" height="240" controls></video>
         : <div>Song Not Found</div>}
@@ -194,7 +201,10 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
       </div>
 
       <div className="aside">
-        <h2>{`${set.name} | Score: ${average}`}</h2>
+        <div className="top-list">
+          <h2>{`${set.name} | Score: ${average ? average : 0}`}</h2> 
+          <Monitor onClick={() => { setIsTheaterMode(!isTheaterMode) }} title="Theater Mode" />
+        </div>
         <div className='list'>
           <Table>
             {
@@ -218,6 +228,6 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
           </Table>
         </div>
       </div>
-    </>
+    </div>
   )
 }

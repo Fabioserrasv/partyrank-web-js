@@ -1,5 +1,6 @@
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { SongSetRequest } from "@/app/api/song-sets/requests";
+import { FiltersQuerySongSet } from "@/models/song-sets";
 import { filterOnlyUserOn } from "@/repositories/songset.repository";
 import { SongSetService } from "@/services/songset.service";
 import { getServerSession } from "next-auth";
@@ -62,10 +63,10 @@ export async function getAllSongSets(name: string, loggedUserId: number) {
   }
 }
 
-export async function getAllSongSetsHomePage(name: string, loggedUserId: number) {
+export async function getAllSongSetsHomePage(filters: FiltersQuerySongSet, loggedUserId: number) {
   const setService = new SongSetService;
   try {
-    const sets = await setService.getAllPublic(name, loggedUserId);
+    const sets = await setService.getAllPublic(filters, loggedUserId);
 
     return sets
   } catch (error) {
@@ -73,10 +74,10 @@ export async function getAllSongSetsHomePage(name: string, loggedUserId: number)
   }
 }
 
-export async function getAllMySongSetsPage(name: string, loggedUserId: number) {
+export async function getAllMySongSetsPage(filters: FiltersQuerySongSet, loggedUserId: number) {
   const setService = new SongSetService;
   try {
-    const sets = await setService.getAll(name, loggedUserId);
+    const sets = await setService.getAll(filters, loggedUserId);
 
     return sets
   } catch (error) {

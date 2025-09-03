@@ -14,10 +14,10 @@ type SongFinderModalProps = {
   addSongToSongSetState: (song: Song) => void;
   changeSongFinderModalOpen: Dispatch<SetStateAction<boolean>>
   setSongSet: Dispatch<SetStateAction<SongSet>>;
-
+  services: SongService[];
 }
 
-export function SongFinderModal({ changeSongFinderModalOpen, addSongToSongSetState, songSet, setSongSet }: SongFinderModalProps) {
+export function SongFinderModal({ changeSongFinderModalOpen, addSongToSongSetState, songSet, setSongSet, services }: SongFinderModalProps) {
   const [isLoading, setIsLoadind] = useState<boolean>(false);
   const [songsFind, setSongsFind] = useState<SongWeb[]>([]);
 
@@ -127,6 +127,7 @@ export function SongFinderModal({ changeSongFinderModalOpen, addSongToSongSetSta
         actions={true}
         addSongFromSongFinder={addSongFromSongFinder}
         removeSongFromSongFinder={removeSongFromSongFinder}
+        services={services}
       />
 
       {

@@ -1,0 +1,27 @@
+version: "3.8"
+services:
+  # Banco de dados MariaDB para desenvolvimento
+  mariadb:
+    image: mariadb:10.11
+    container_name: partyrank-mariadb-dev
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root123@Root}
+      MYSQL_DATABASE: partyrank
+      MYSQL_USER: partyrank_user
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-partyrank123}
+    ports:
+      - "3306:3306"  # Expõe a porta para acesso local
+    volumes:
+      - mariadb_dev_data:/var/lib/mysql
+      - ./docker/mariadb/init:/docker-entrypoint-initdb.d
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --innodb-buffer-pool-size=256M
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD:-root123@Root}"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+volumes:
+  mariadb_dev_data:

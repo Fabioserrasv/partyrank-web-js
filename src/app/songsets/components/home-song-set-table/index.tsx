@@ -8,6 +8,22 @@ import { Search } from 'lucide-react';
 import { TablePaginated } from '../table-paginated/TablePaginated';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import toast from 'react-hot-toast';
+import { Select } from '@/components/select';
+import { FiltersQuerySongSet } from '@/models/song-sets';
+
+const statusOptions = [
+  { value: "RECRUITING", display: "Recruiting" },
+  { value: "ON_GOING", display: "On Going" },
+  { value: "PROCESSING", display: "Processing" },
+  { value: "FINISHED", display: "Finished" },
+  { value: "PAUSED", display: "Paused" }
+]
+
+const systemTypeOptions = [
+  { value: "SCORING", display: "Scoring (Sum of Scores)" },
+  { value: "SCORING_AVERAGE", display: "Scoring (Average)" },
+  { value: "RANKING", display: "Ranking" }
+]
 
 type HomeSongSetTableProps = {
   initialSets: SongSet[];
@@ -15,10 +31,9 @@ type HomeSongSetTableProps = {
   pageType: 'home' | 'private';
 }
 
-
 export function HomeSongSetTable({ initialSets, user, pageType }: HomeSongSetTableProps) {
   const [sets, setSets] = useState<SongSet[]>(initialSets)
-  const [filterQuery, setFilterQuery] = useState<string>('')
+  const [filterQuery, setFilterQuery] = useState<FiltersQuerySongSet>({})
 
   const router = useRouter();
   const pathname = usePathname();
@@ -60,9 +75,56 @@ export function HomeSongSetTable({ initialSets, user, pageType }: HomeSongSetTab
             name="name"
             className="nameFilter"
             autoComplete="off"
-            placeholder="Mawaru Penguindrum..."
-            value={filterQuery}
-            onChange={(e) => { setFilterQuery(e.target.value) }}
+            placeholder="Song set title..."
+            value={filterQuery.name}
+            onChange={(e) => { setFilterQuery({ ...filterQuery, name: e.target.value }) }}
+          />
+          <Input
+            displayName=""
+            name="creatorName"
+            className="creatorNameFilter"
+            autoComplete="off"
+            placeholder="Creator name..."
+            value={filterQuery.creatorName}
+            onChange={(e) => { setFilterQuery({ ...filterQuery, creatorName: e.target.value }) }}
+          />
+          <Select
+            displayName=""
+            name="status"
+            className="statusFilter"
+            autoComplete="off"
+            placeholder="Status..."
+            options={statusOptions}
+            value={filterQuery.status}
+            onChange={(e) => { setFilterQuery({ ...filterQuery, status: e.target.value as SongSetStatus }) }}
+          />
+          <Select
+            displayName=""
+            name="systemType"
+            className="systemTypeFilter"
+            autoComplete="off"
+            placeholder="System type..."
+            options={systemTypeOptions}
+            value={filterQuery.systemType}
+            onChange={(e) => { setFilterQuery({ ...filterQuery, systemType: e.target.value as SongSetScoreSystemType }) }}
+          />
+          <Input
+            displayName=""
+            name="minSongs"
+            className="minSongsFilter"
+            autoComplete="off"
+            placeholder="Min songs..."
+            value={filterQuery.minSongs}
+            onChange={(e) => { setFilterQuery({ ...filterQuery, minSongs: parseInt(e.target.value) }) }}
+          />
+          <Input
+            displayName=""
+            name="maxSongs"
+            className="maxSongsFilter"
+            autoComplete="off"
+            placeholder="Max songs..."
+            value={filterQuery.maxSongs}
+            onChange={(e) => { setFilterQuery({ ...filterQuery, maxSongs: parseInt(e.target.value) }) }}
           />
           <Button>
             <Search />

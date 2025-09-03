@@ -3,11 +3,12 @@
   color: $darkTextPrimary;
 
   @include dark{
-    background-color: $secondaryColor;
-    color: #333333;
+    // background-color: $secondaryColor;
+    background-color: #238636;
+    color: #fff;
     
     svg > *{
-      color: #333333;
+      color: #fff;
     }
   }
 
@@ -15,7 +16,7 @@
   width: 100%;
   
   border: none;
-  border-radius: .5rem;
+  border-radius: .4rem;
 
   font-size: 1.1rem;
 

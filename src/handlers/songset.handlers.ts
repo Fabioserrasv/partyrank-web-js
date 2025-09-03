@@ -2,6 +2,7 @@
 import { answerUserToPartyRank, createSongSet, deleteSongSet, getAllSongSets, getAllSongSetsHomePage, getSongSet, inviteUserToPartyRank, leaveSongSet, updateSongSet } from "@/actions/songset.actions";
 import { getUserByUsername } from "@/actions/user.actions";
 import { options } from "@/app/api/auth/[...nextauth]/options";
+import { FiltersQuerySongSet } from "@/models/song-sets";
 import { getServerSession } from "next-auth";
 
 export async function handleCreateSongSetFormSubmit(data: SongSetPostData) {
@@ -10,6 +11,7 @@ export async function handleCreateSongSetFormSubmit(data: SongSetPostData) {
     if (data.id == 0) {
       newSongSet = await createSongSet({
         name: data.name,
+        anilistLink: data.anilistLink
       })
     } else {
       newSongSet = await updateSongSet(data, data.id!)
@@ -52,9 +54,9 @@ export async function handleGetAllSongSets(name: string, loggedUserId: number) {
   }
 }
 
-export async function handleGetHomeSongSets(name: string, loggedUserId: number) {
+export async function handleGetHomeSongSets(filters: FiltersQuerySongSet, loggedUserId: number) {
   try {
-    const sets = await getAllSongSetsHomePage(name, loggedUserId);
+    const sets = await getAllSongSetsHomePage(filters, loggedUserId);
 
     return sets
   } catch (error) {

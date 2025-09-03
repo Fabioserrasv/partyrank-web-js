@@ -8,10 +8,10 @@ export async function GET(
 ) {
   try {
     const filename = params.path.join('/');
-    
+    console.log(filename);
     // Construir o caminho do arquivo
     const filePath = join(process.cwd(), 'public', 'user_images', filename);
-    
+    console.log(filePath);
     // Ler o arquivo
     const fileBuffer = await readFile(filePath);
     

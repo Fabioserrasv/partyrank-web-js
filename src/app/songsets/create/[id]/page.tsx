@@ -4,6 +4,7 @@ import { checkIsAllowed, handleGetSongSet } from "@/handlers/songset.handlers";
 import { getServerSession } from 'next-auth';
 import { options } from '@/app/api/auth/[...nextauth]/options';
 import { redirect } from 'next/navigation';
+import { getAllServices } from '@/actions/song-service.actions';
 
 type CreateSongSetProps = {
   params: {
@@ -13,6 +14,7 @@ type CreateSongSetProps = {
 
 export default async function CreateSongSet({ params }: CreateSongSetProps) {
   const set = await handleGetSongSet(params.id);
+  const services = await getAllServices();
   const session = await getServerSession(options)
   const user = session?.user
   if (session == null || user == undefined) redirect("/songsets");
@@ -33,6 +35,7 @@ export default async function CreateSongSet({ params }: CreateSongSetProps) {
       <ClientCreateSongPage
         dbSet={set}
         user={user}
+        services={services}
       />
     </div>
   )

@@ -27,7 +27,7 @@ export default async function Vote({ params }: VotePageProps) {
   }
 
   return (
-    <div className="votePage">
+    <div className="pageserv">
       <VoteClientPage
         user={session.user}
         set={set}

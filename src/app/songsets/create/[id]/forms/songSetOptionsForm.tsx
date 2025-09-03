@@ -22,7 +22,7 @@ const statusOptions = [
   { value: "PAUSED", display: "Paused" }
 ]
 const scoreSystemOptions = [
-  { value: "SCORING", display: "Scoring (Sum of Scores)" },
+  { value: "SCORING", display: "Scoring (Sum of Scores)", disabled: true},
   { value: "SCORING_AVERAGE", display: "Scoring (Average)" },
   { value: "RANKING", display: "Ranking", disabled: true}
 ]
@@ -87,7 +87,7 @@ export function SongSetOptionsForm({setSongSet, songSet}: SongSetOptionsFormProp
         </Select>
 
         <Button
-          name="Submit"
+          name="Update"
         />
       </div>
     </form>

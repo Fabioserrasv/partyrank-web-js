@@ -3,6 +3,7 @@ import { prisma } from '../lib/prisma';
 import { convertDbSetToModel } from '../repositories/songset.repository';
 import { options } from '../app/api/auth/[...nextauth]/options';
 import { UserService } from './user.service';
+import { FiltersQuerySongSet } from '@/models/song-sets';
 
 export class SongSetService {
   constructor() { }
@@ -28,7 +29,7 @@ export class SongSetService {
     }
   }
 
-  async getAll(name: string, loggedUserId?: number): Promise<SongSet[]> {
+  async getAll(filters: FiltersQuerySongSet, loggedUserId?: number): Promise<SongSet[]> {
     try {
       const sets = await prisma.songSet.findMany({
         include: {
@@ -60,8 +61,15 @@ export class SongSetService {
         },
         where: {
           name: {
-            contains: name
+            contains: filters.name
           },
+          user: {
+            username: {
+              contains: filters.creatorName
+            }
+          },
+          status: filters.status,
+          scoreSystem: filters.systemType,
           OR: [
             {
               users: {
@@ -91,7 +99,7 @@ export class SongSetService {
     }
   }
 
-  async getAllPublic(name: string, loggedUserId: number): Promise<SongSet[]> {
+  async getAllPublic(filters: FiltersQuerySongSet, loggedUserId: number): Promise<SongSet[]> {
     try {
       const sets = await prisma.songSet.findMany({
         include: {
@@ -121,8 +129,15 @@ export class SongSetService {
         },
         where: {
           name: {
-            contains: name
+            contains: filters.name
           },
+          user: {
+            username: {
+              contains: filters.creatorName
+            }
+          },
+          status: filters.status,
+          scoreSystem: filters.systemType,
           type: 'PUBLIC',
           NOT: [
             {

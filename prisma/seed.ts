@@ -12,6 +12,28 @@ async function main() {
       admin: true,
       createdAt: new Date()
     },
+  });
+
+  const anisong = await prisma.songService.upsert({
+    where: { service: 'anisongdb' },
+    update: {},
+    create: {
+      name: 'Anisong DB',
+      service: 'anisongdb',
+      active: true,
+      createdAt: new Date()
+    },
+  });
+
+  const animethemes = await prisma.songService.upsert({
+    where: { service: 'animethemes' },
+    update: {},
+    create: {
+      name: 'Animethemes',
+      service: 'animethemes',
+      active: false,
+      createdAt: new Date()
+    },
   })
 }
 main()

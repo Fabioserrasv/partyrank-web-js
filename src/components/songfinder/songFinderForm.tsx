@@ -14,9 +14,10 @@ import './songfindercomponent.scss';
 
 type SongFinderFormProps = {
   populateTableSongsWeb?: (songs: SongWeb[]) => void;
+  services: SongService[]
 }
 
-export function SongFinderForm({ populateTableSongsWeb }: SongFinderFormProps) {
+export function SongFinderForm({ populateTableSongsWeb, services }: SongFinderFormProps) {
   const { register, handleSubmit, formState: { errors }, setValue } = useForm<SongFinderAction>({
     resolver: zodResolver(songFinderSchema)
   });
@@ -65,8 +66,13 @@ export function SongFinderForm({ populateTableSongsWeb }: SongFinderFormProps) {
           {...register('serviceName')}
           errorMessage={errors.serviceName?.message}
         >
-          <option value="anisongdb">Anisong DB</option>
-          <option value="animethemes">Animethemes</option>
+          {
+            services ? services.map((service) => {
+              return (
+                <option key={service.id} value={service.service}>{service.name}</option>
+              )
+            }) : <></>
+          }
         </Select>
         <Button type="submit">
           <Search className="iconSearch" />

@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 type ClientCreateSongPageProps = {
   dbSet: SongSet | null;
   user: User;
+  services: SongService[];
 }
 
 export type AddSongFormSchema = {
@@ -46,7 +47,7 @@ export const initialSongValue: AddSongFormSchema = {
   type: 'OPENING' as SongType
 }
 
-export function ClientCreateSongPage({ dbSet, user }: ClientCreateSongPageProps) {
+export function ClientCreateSongPage({ dbSet, user, services }: ClientCreateSongPageProps) {
   const [songSet, setSongSet] = useState<SongSet>(initialValue)
   const [song, setSong] = useState<AddSongFormSchema>(initialSongValue)
   const [songFinderModalOpen, setSongFinderModalOpen] = useState<boolean>(false);
@@ -142,6 +143,7 @@ export function ClientCreateSongPage({ dbSet, user }: ClientCreateSongPageProps)
           addSongToSongSetState={addSongToSongSetState}
           changeSongFinderModalOpen={setSongFinderModalOpen}
           setSongSet={setSongSet}
+          services={services}
         />
       }
       <div className="infoSection">

@@ -8,17 +8,20 @@ import { Table, TableRow } from "../table";
 type SongFinderClientPageProps = {
   actions: boolean;
   songsFind: SongWeb[]
+  services: SongService[]
   addSongFromSongFinder?: (song: SongWeb) => void
   removeSongFromSongFinder?: (song: SongWeb) => void
   populateTableSongsWeb?: (songs: SongWeb[]) => void
+  services: SongService[]
 }
 
-export default function SongFinderComponent({ actions, addSongFromSongFinder, removeSongFromSongFinder, populateTableSongsWeb, songsFind }: SongFinderClientPageProps) {
+export default function SongFinderComponent({ actions, addSongFromSongFinder, removeSongFromSongFinder, populateTableSongsWeb, songsFind, services }: SongFinderClientPageProps) {
 
   return (
     <>
       <SongFinderForm
         populateTableSongsWeb={populateTableSongsWeb}
+        services={services}
       />
       <div className="result">
         <Table>

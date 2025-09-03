@@ -77,11 +77,11 @@
 
 
     // &:not(:first-child){
-    border-top: .0150rem solid $divisorColor ;
+    // border-top: .0150rem solid $divisorColor ;
 
-    @include dark {
-      border-top: .0150rem solid $divisorColor ;
-    }
+    // @include dark {
+    //   border-top: .0150rem solid $divisorColor ;
+    // }
 
     // }
 

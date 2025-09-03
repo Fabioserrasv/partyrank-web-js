@@ -59,3 +59,12 @@ type JsonToGenerateVideo = {
   video_path: string;
   cut_time: number[];
 }
+
+export type FiltersQuerySongSet = {
+  name?: string;
+  creatorName?: string;
+  status?: SongSetStatus;
+  systemType?: SongSetScoreSystemType;
+  minSongs?: number;
+  maxSongs?: number;
+}
