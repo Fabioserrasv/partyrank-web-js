@@ -60,7 +60,7 @@ type JsonToGenerateVideo = {
   cut_time: number[];
 }
 
-export type FiltersQuerySongSet = {
+type FiltersQuerySongSet = {
   name?: string;
   creatorName?: string;
   status?: SongSetStatus;
