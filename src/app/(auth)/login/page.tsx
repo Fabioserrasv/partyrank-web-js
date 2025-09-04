@@ -13,7 +13,7 @@ export default async function Login() {
   }
 
   return (
-    <Card size="sm loginmodal">
+    <Card size="sm">
       <FormLogin />
       <div className='authLinks'>
         <Link href={'/register'} className='linkCreate'>
