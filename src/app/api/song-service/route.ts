@@ -4,7 +4,7 @@ import { createSongSet, getAllSongSets } from '@/actions/songset.actions';
 export async function GET() {
   try {
     //fix later
-    const services = []
+    const services: SongService[] = []
 
     return NextResponse.json(services)
   } catch (error) {
