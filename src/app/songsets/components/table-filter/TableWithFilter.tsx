@@ -14,7 +14,7 @@ type TableWithFilterProps = {
 
 export function TableWithFilter({ initialSets, user, pageType }: TableWithFilterProps) {
   const [sets, setSets] = useState<SongSet[]>(initialSets)
-  const [filterQuery, setFilterQuery] = useState<string>('')
+  const [filterQuery, setFilterQuery] = useState<FiltersQuerySongSet>({})
 
   async function onSubmitFilter() {
     const filteredSets = await handleGetAllSongSets(filterQuery, user?.id);
@@ -31,8 +31,8 @@ export function TableWithFilter({ initialSets, user, pageType }: TableWithFilter
             className="nameFilter"
             autoComplete="off"
             placeholder="Mawaru Penguindrum..."
-            value={filterQuery}
-            onChange={(e) => { setFilterQuery(e.target.value) }}
+            value={filterQuery.name}
+            onChange={(e) => { setFilterQuery({ ...filterQuery, name: e.target.value }) }}
           />
           <Button>
             <Search />

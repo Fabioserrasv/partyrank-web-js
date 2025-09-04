@@ -12,7 +12,6 @@ type SongFinderClientPageProps = {
   addSongFromSongFinder?: (song: SongWeb) => void
   removeSongFromSongFinder?: (song: SongWeb) => void
   populateTableSongsWeb?: (songs: SongWeb[]) => void
-  services: SongService[]
 }
 
 export default function SongFinderComponent({ actions, addSongFromSongFinder, removeSongFromSongFinder, populateTableSongsWeb, songsFind, services }: SongFinderClientPageProps) {

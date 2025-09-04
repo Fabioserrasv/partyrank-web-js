@@ -4,7 +4,7 @@ import { createSongSet, getAllSongSets } from '@/actions/songset.actions';
 export async function GET() {
   try {
     //fix later
-    const sets = await getAllSongSets("", 0);
+    const sets = await getAllSongSets({} as FiltersQuerySongSet, 0);
 
     return NextResponse.json(sets)
   } catch (error) {

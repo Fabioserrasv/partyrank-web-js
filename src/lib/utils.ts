@@ -2,9 +2,9 @@
 /*
   Mask the value to a ##.## mask
 */
-export let maskValueToDecimal = (a: string | number) => {
+export let maskValueToDecimal = (a: string | number) : number => {
   if (a == '') a = 0
-  let n = parseFloat(a as string)
+  let n: number = parseFloat(a as string)
   if (isNaN(n)) return NaN;
   if (n < 0) return 0
   if (n > 10) return maskValueToDecimal(n / 10)

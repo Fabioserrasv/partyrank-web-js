@@ -11,7 +11,7 @@ export const revalidate = false;
 export default async function Home() {
   const session = await getServerSession(options);
   const user = session?.user!
-  let sets = await getAllSongSetsHomePage("", user?.id);
+  let sets = await getAllSongSetsHomePage({name: "", creatorName: ""}, user?.id);
 
   return (
     <div className='homePage'>

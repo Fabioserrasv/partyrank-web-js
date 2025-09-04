@@ -7,7 +7,7 @@ import { HomeSongSetTable } from "./components/home-song-set-table";
 export default async function SongSets() {
   const session = await getServerSession(options);
   const user = session?.user!
-  let sets = await getAllMySongSetsPage("", user?.id);
+  let sets = await getAllMySongSetsPage({name: "", creatorName: ""}, user?.id);
   
 
 

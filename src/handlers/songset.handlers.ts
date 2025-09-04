@@ -2,7 +2,6 @@
 import { answerUserToPartyRank, createSongSet, deleteSongSet, getAllSongSets, getAllSongSetsHomePage, getSongSet, inviteUserToPartyRank, leaveSongSet, updateSongSet } from "@/actions/songset.actions";
 import { getUserByUsername } from "@/actions/user.actions";
 import { options } from "@/app/api/auth/[...nextauth]/options";
-import { FiltersQuerySongSet } from "@/models/song-sets";
 import { getServerSession } from "next-auth";
 
 export async function handleCreateSongSetFormSubmit(data: SongSetPostData) {
@@ -44,9 +43,9 @@ export async function handleGetSongSet(id: number, generateJson: boolean = false
   }
 }
 
-export async function handleGetAllSongSets(name: string, loggedUserId: number) {
+export async function handleGetAllSongSets(filters: FiltersQuerySongSet, loggedUserId: number) {
   try {
-    const sets = await getAllSongSets(name, loggedUserId);
+    const sets = await getAllSongSets(filters, loggedUserId);
 
     return sets
   } catch (error) {

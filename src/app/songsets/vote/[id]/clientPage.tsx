@@ -203,7 +203,7 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
       <div className="aside">
         <div className="top-list">
           <h2>{`${set.name} | Score: ${average ? average : 0}`}</h2> 
-          <Monitor onClick={() => { setIsTheaterMode(!isTheaterMode) }} title="Theater Mode" />
+          <Monitor onClick={() => { setIsTheaterMode(!isTheaterMode) }} />
         </div>
         <div className='list'>
           <Table>

@@ -51,10 +51,10 @@ export async function getSongSet(id: number, generateJson: boolean = false) {
   }
 }
 
-export async function getAllSongSets(name: string, loggedUserId: number) {
+export async function getAllSongSets(filters: FiltersQuerySongSet, loggedUserId: number) {
   const setService = new SongSetService;
   try {
-    const sets = await setService.getAll(name, loggedUserId);
+    const sets = await setService.getAll(filters, loggedUserId);
 
     return sets
   } catch (error) {

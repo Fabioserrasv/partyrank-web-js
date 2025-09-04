@@ -3,8 +3,6 @@ import { prisma } from '../lib/prisma';
 import { convertDbSetToModel } from '../repositories/songset.repository';
 import { options } from '../app/api/auth/[...nextauth]/options';
 import { UserService } from './user.service';
-import { FiltersQuerySongSet } from '@/models/song-sets';
-
 export class SongSetService {
   constructor() { }
 

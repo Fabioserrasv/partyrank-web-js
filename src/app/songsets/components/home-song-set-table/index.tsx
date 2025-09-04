@@ -9,10 +9,9 @@ import { TablePaginated } from '../table-paginated/TablePaginated';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import toast from 'react-hot-toast';
 import { Select } from '@/components/select';
-import { FiltersQuerySongSet } from '@/models/song-sets';
 
 const statusOptions = [
-  { value: null, display: "Select Status" },
+  { value: "", display: "Select Status" },
   { value: "RECRUITING", display: "Recruiting" },
   { value: "ON_GOING", display: "On Going" },
   { value: "PROCESSING", display: "Processing" },
