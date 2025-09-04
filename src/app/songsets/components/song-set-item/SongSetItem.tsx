@@ -94,6 +94,7 @@ export function SongSetItem({ songSet, pageType, onJoinPublicSongSet }: SongSetI
 
                 songSet.usersOn?.map(userOn => {
                   const user = userOn.user
+                  if(!userOn.accepted) return null;
                   return (
                     <Image width={0} height={0} key={user.id} src={getUserImageUrlPath(user.imageUrl!)} alt="Participant image" title={user.username} />
                   )

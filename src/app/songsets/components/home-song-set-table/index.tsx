@@ -12,6 +12,7 @@ import { Select } from '@/components/select';
 import { FiltersQuerySongSet } from '@/models/song-sets';
 
 const statusOptions = [
+  { value: null, display: "Select Status" },
   { value: "RECRUITING", display: "Recruiting" },
   { value: "ON_GOING", display: "On Going" },
   { value: "PROCESSING", display: "Processing" },
@@ -108,7 +109,7 @@ export function HomeSongSetTable({ initialSets, user, pageType }: HomeSongSetTab
             value={filterQuery.systemType}
             onChange={(e) => { setFilterQuery({ ...filterQuery, systemType: e.target.value as SongSetScoreSystemType }) }}
           />
-          <Input
+          {/* <Input
             displayName=""
             name="minSongs"
             className="minSongsFilter"
@@ -125,7 +126,7 @@ export function HomeSongSetTable({ initialSets, user, pageType }: HomeSongSetTab
             placeholder="Max songs..."
             value={filterQuery.maxSongs}
             onChange={(e) => { setFilterQuery({ ...filterQuery, maxSongs: parseInt(e.target.value) }) }}
-          />
+          /> */}
           <Button>
             <Search />
           </Button>

@@ -184,14 +184,14 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
               value={songUserData.score}
               onChange={onScoreInputChange}
             />
-            <Input
+            {/* <Input
               displayName='Time suggested'
               errorMessage={errors.timeStamp?.message}
               {...register('timeStamp')}
               defaultValue={songUserData.timeStamp}
               value={songUserData.timeStamp}
               onChange={onTimeStampInputChange}
-            />
+            /> */}
             <Button
               name='Send'
               type="submit"
@@ -218,7 +218,7 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
                       <small>{song.anime}</small>
                       <div className='extraInfo'>
                         <span>{`Score: ${userDataForSong.score}`}</span>
-                        <span>{`Time Suggested: ${userDataForSong.timeStamp}`}</span>
+                        {/* <span>{`Time Suggested: ${userDataForSong.timeStamp}`}</span> */}
                       </div>
                     </div>
                   </TableRow>

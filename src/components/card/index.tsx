@@ -8,7 +8,7 @@ type ModalProps = {
 
 export function Card({ children, size }: ModalProps) {
   return (
-    <div className={`modal ${size}`}>
+    <div className={`modal-login-1 ${size}`}>
       <div className="header"></div>
       <div className="body">
         {children}

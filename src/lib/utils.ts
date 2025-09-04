@@ -24,6 +24,7 @@ export function getUserImageUrlPath(url: string | null | undefined): string {
     // Se a URL já contém o caminho completo, usar diretamente
     if (url.startsWith('/user_images/')) {
       url = url.replace('/user_images/', '/api/user-images/');
+      url = url.replace(" ", "");
       return url;
     }
     // Se for apenas o nome do arquivo, construir o caminho

@@ -51,7 +51,7 @@ export default function ChangeProfilePictureForm({ user }: { user: User }) {
   return (
     <>
       <div className="profilePicture">
-        <Image width="0" height="0" style={{ width: '100%', height: '100%' }} src={getUserImageUrlPath(user.imageUrl)} alt="Profile Picture" />
+        <Image width="0" height="0" style={{ width: '90%' }} src={getUserImageUrlPath(user.imageUrl)} alt="Profile Picture" />
         <span>{user.username}</span>
       </div>
       <form onSubmit={handleSubmit(onSubmitChangeProfilePicture)}>
