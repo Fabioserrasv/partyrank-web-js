@@ -38,7 +38,7 @@ export async function GET(
     }
     
     // Retornar a imagem com headers apropriados
-    return new NextResponse(fileBuffer, {
+    return new NextResponse(fileBuffer as BodyInit, {
       status: 200,
       headers: {
         'Content-Type': contentType,
@@ -55,7 +55,7 @@ export async function GET(
       const defaultImagePath = join(process.cwd(), 'public', 'user_images', 'default_user_profilepic.png');
       const defaultImageBuffer = await readFile(defaultImagePath);
       
-      return new NextResponse(defaultImageBuffer, {
+      return new NextResponse(defaultImageBuffer as BodyInit, {
         status: 200,
         headers: {
           'Content-Type': 'image/png',
