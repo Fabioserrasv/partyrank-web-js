@@ -39,3 +39,6 @@ next-env.d.ts
 .env
 public/user_images/
 mysql/
+
+docker/nginx/ssl_certs/
+docker/mariadb/init/01-init-user.sql

@@ -125,26 +125,6 @@ docker-compose up --build
 docker-compose logs -f mariadb
 ```
 
-### Acesso ao Banco de Dados
-
-```bash
-# Conectar ao MariaDB via linha de comando
-docker-compose exec mariadb mysql -u partyrank_user -p partyrank
-
-# Conectar como root
-docker-compose exec mariadb mysql -u root -p
-```
-
-### Backup e Restore
-
-```bash
-# Backup do banco de dados
-docker-compose exec mariadb mysqldump -u partyrank_user -p partyrank > backup.sql
-
-# Restore do banco de dados
-docker-compose exec -T mariadb mysql -u partyrank_user -p partyrank < backup.sql
-```
-
 ## Volumes e Dados Persistentes
 
 Os dados do MariaDB são armazenados no volume `mariadb_data`, garantindo que os dados persistem mesmo quando o container é removido.
