@@ -15,13 +15,10 @@ type AddMultipleSongsModalProps = {
   songSet: SongSet;
   addMultipleSongsToSongSetState: (songs: Song[]) => void;
   changeAddMultipleSongsModalOpen: Dispatch<SetStateAction<boolean>>
-  setSongSet: Dispatch<SetStateAction<SongSet>>;
-  services: SongService[];
 }
 
-export function AddMultipleSongsModal({ changeAddMultipleSongsModalOpen, addMultipleSongsToSongSetState, songSet, setSongSet, services }: AddMultipleSongsModalProps) {
+export function AddMultipleSongsModal({ changeAddMultipleSongsModalOpen, addMultipleSongsToSongSetState, songSet }: AddMultipleSongsModalProps) {
   const [isLoading, setIsLoadind] = useState<boolean>(false);
-  const [songsFind, setSongsFind] = useState<SongWeb[]>([]);
   const [songs, setSongs] = useState<string>('');
 
   const exampleJson = `[{
@@ -50,9 +47,7 @@ export function AddMultipleSongsModal({ changeAddMultipleSongsModalOpen, addMult
         toast.success("Songs added successfully")
 
         const newSongsNotInSongSet = newSongs.filter(song => !songSet.songs!.some(s => s.id === song.id))
-        console.log('--------------');
-        console.log(newSongsNotInSongSet);
-        console.log('--------------');
+
         addMultipleSongsToSongSetState(newSongsNotInSongSet)
 
         changeAddMultipleSongsModalOpen(false)

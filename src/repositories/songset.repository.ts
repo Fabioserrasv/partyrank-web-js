@@ -103,8 +103,8 @@ function generateImageObjectConverter(data: any) {
     song.scores.map(score =>  {
       if(!finalResult.participants.some(participant => participant.id == score.user?.id)) {
         finalResult.participants.push({
-          id: score.user?.id,
-          nome: score.user?.username
+          id: score.user?.id!,
+          nome: score.user?.username!
         })
       }
     })
@@ -138,7 +138,7 @@ async function generateVideoObject(data: any) {
     song.meanScore = average
   }
 
-  data.songs.sort((a, b) => a.meanScore - b.meanScore)
+  data.songs.sort((a: Song, b: Song) => a.meanScore! - b.meanScore!)
 
   for (let i = 0; i < times; i++) {
     let song: Song = data.songs[i]
