@@ -162,7 +162,6 @@ export function ClientCreateSongPage({ dbSet, user, services }: ClientCreateSong
         addMultipleSongsModalOpen &&
         <AddMultipleSongsModal
           songSet={songSet}
-          addSongToSongSetState={addSongToSongSetState}
           addMultipleSongsToSongSetState={addMultipleSongsToSongSetState}
           changeAddMultipleSongsModalOpen={setAddMultipleSongsModalOpen}
         />
