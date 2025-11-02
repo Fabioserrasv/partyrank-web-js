@@ -12,6 +12,8 @@ import ResultTab from "./tabs/resultTab";
 import { Button } from "@/components/button/Button";
 import { handleLeaveSongSet } from "@/handlers/songset.handlers";
 import { useRouter } from "next/navigation";
+import { Plus, Search } from "lucide-react";
+import { AddMultipleSongsModal } from "./modals/addMultipleSongsModal";
 
 type ClientCreateSongPageProps = {
   dbSet: SongSet | null;
@@ -51,6 +53,7 @@ export function ClientCreateSongPage({ dbSet, user, services }: ClientCreateSong
   const [songSet, setSongSet] = useState<SongSet>(initialValue)
   const [song, setSong] = useState<AddSongFormSchema>(initialSongValue)
   const [songFinderModalOpen, setSongFinderModalOpen] = useState<boolean>(false);
+  const [addMultipleSongsModalOpen, setAddMultipleSongsModalOpen] = useState<boolean>(false);
   const [tab, setTab] = useState<tabs>("");
   const [isSetCreator, setIsSetCreator] = useState<boolean>(false);
   const { push, refresh } = useRouter();
@@ -72,6 +75,15 @@ export function ClientCreateSongPage({ dbSet, user, services }: ClientCreateSong
     if (newSong) {
       updatedSongs.push(song)
     }
+
+    setSongSet({
+      ...songSet,
+      songs: updatedSongs
+    })
+  }
+
+  function addMultipleSongsToSongSetState(songs: Song[]) {
+    const updatedSongs = [...songSet.songs!, ...songs]
 
     setSongSet({
       ...songSet,
@@ -146,6 +158,15 @@ export function ClientCreateSongPage({ dbSet, user, services }: ClientCreateSong
           services={services}
         />
       }
+      {
+        addMultipleSongsModalOpen &&
+        <AddMultipleSongsModal
+          songSet={songSet}
+          addSongToSongSetState={addSongToSongSetState}
+          addMultipleSongsToSongSetState={addMultipleSongsToSongSetState}
+          changeAddMultipleSongsModalOpen={setAddMultipleSongsModalOpen}
+        />
+      }
       <div className="infoSection">
         <div className="titleSection">
           <h3>{cardTitle}</h3>
@@ -170,9 +191,16 @@ export function ClientCreateSongPage({ dbSet, user, services }: ClientCreateSong
               <div className="songFormSection">
                 <div className="sectionTitle">
                   <h3>Manage song</h3>
-                  <span onClick={() => { setSongFinderModalOpen(true) }}>
+                  <Button type="button" title="Search on Song Finder" className="search-button" onClick={() => { setSongFinderModalOpen(true) }}>
+                    <Search className="icon" />
+                  </Button>
+                  <Button type="button" title="Add Multiple Songs" className="search-button" onClick={() => { setAddMultipleSongsModalOpen(true) }}>
+                    <Plus className="icon"  />
+                  </Button>
+                  {/* <Search className="icon" onClick={() => { setSongFinderModalOpen(true) }} /> */}
+                  {/* <span onClick={() => { setSongFinderModalOpen(true) }}>
                     Search on Song Finder
-                  </span>
+                  </span> */}
                 </div>
                 <AddSongForm
                   songSet={songSet}

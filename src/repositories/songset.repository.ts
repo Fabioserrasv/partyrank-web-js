@@ -100,9 +100,14 @@ function generateImageObjectConverter(data: any) {
     let sum = song.scores.map(score => score.value)
     let average = (sum.reduce((a, b) => a + b, 0) / sum.length)
 
-    song.scores.map(score => finalResult.participants.push(String(score.user?.username)))
-    finalResult.participants = finalResult.participants.filter((x, y, z) => z.indexOf(x) == y)
-
+    song.scores.map(score =>  {
+      if(!finalResult.participants.some(participant => participant.id == score.user?.id)) {
+        finalResult.participants.push({
+          id: score.user?.id,
+          nome: score.user?.username
+        })
+      }
+    })
     finalResult.series.push({
       type: song.type,
       anime: song.anime,
@@ -123,18 +128,34 @@ async function generateVideoObject(data: any) {
   const finalResult: JsonToGenerateVideo[] = []
   const times = data.songs.length
 
+  for(let i = 0; i < times; i++) {
+    let song: Song = data.songs[i]
+    let sum = song.scores.map(score => score.value)
+    let average = (sum.reduce((a, b) => a + b, 0) / song.scores.length)
+    if(isNaN(average)){
+      average = 0
+    }
+    song.meanScore = average
+  }
+
+  data.songs.sort((a, b) => a.meanScore - b.meanScore)
+
   for (let i = 0; i < times; i++) {
     let song: Song = data.songs[i]
 
     let sum = song.scores.map(score => score.videoTimeStamp)
     let time = Math.floor(sum.reduce((a, b) => a + b, 0) / sum.length)
 
+    if(isNaN(time)){
+      time = 1
+    }
+
     const DEFAULT_PER_CLIP_TIME = 20 // NEED TO CHANGE THIS TO CHANGEABLE VALUE 
 
     let title = await getVideoTitleFromGoogleDriveLink(song.link)
 
     finalResult.push({
-      image_path: "/content/drive/MyDrive/images_party_rank/" + String(i + 1) + ".png",
+      image_path: "/content/drive/MyDrive/images_party_rank/" + song.id + ".png",
       video_path: "/content/drive/MyDrive/videos_party_rank/" + title,
       cut_time: [time, time + DEFAULT_PER_CLIP_TIME]
     })
@@ -161,7 +182,10 @@ async function getVideoTitleFromGoogleDriveLink(url: string) {
         }
       })
       .catch(function (error) {
-        throw error
+        if(error.response.status == 404) {
+          return null;
+        }
+        // throw error
       })
   }
   return result

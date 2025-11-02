@@ -1,5 +1,5 @@
 'use server'
-import { createSong, deleteSong, updateSong } from "@/actions/song.actions";
+import { createMultipleSongs, createSong, deleteSong, updateSong } from "@/actions/song.actions";
 import { AddSongFormSchema } from "@/app/songsets/create/[id]/clientPage";
 
 export async function handleAddSongFormSubmit(data: AddSongFormSchema, songSetId: number) {
@@ -24,6 +24,23 @@ export async function handleAddSongFormSubmit(data: AddSongFormSchema, songSetId
     return false;
   } catch (error) {
     throw error
+  }
+}
+
+export async function handleAddMultipleSongsFormSubmit(data: AddSongFormSchema[], songSetId: number) {
+  try {
+    const newSongs = await createMultipleSongs(data.map(d => ({
+      anime: d.anime,
+      artist: d.artist,
+      link: d.link,
+      name: d.name,
+      type: d.type,
+      songSetId: songSetId
+    })));
+    
+    return newSongs;
+  } catch (error) {
+    throw error;
   }
 }
 

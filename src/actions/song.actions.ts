@@ -16,6 +16,16 @@ export async function createSong(song: SongPostData) {
   }
 }
 
+export async function createMultipleSongs(songs: SongPostData[]) {
+  const songService = new SongService;
+  try {
+    const newSongs = await songService.createMultiple(songs);
+    return newSongs;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export async function getSong(id: number) {
   const songService = new SongService;
   try {

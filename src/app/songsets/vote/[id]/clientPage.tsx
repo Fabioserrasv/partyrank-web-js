@@ -99,6 +99,16 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
 
   function onScoreInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     let value = parseFloat(e.target.value)
+
+    if(value == 0 && (e.target.value == '0,' || e.target.value == '0.')) {
+      if(e.target.value.includes(',')) {
+        setSongUserData({ ...songUserData, score: e.target.value.replace(',', '.') })
+      }else{
+        setSongUserData({ ...songUserData, score: e.target.value })
+      }
+      return
+    }
+
     value = Number.isNaN(value) ? 0 : value
     e.target.value = String(maskValueToDecimal(value).toFixed(2))
     setSongUserData({ ...songUserData, score: Number(e.target.value) })

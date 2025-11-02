@@ -9,6 +9,11 @@
   grid-template-columns: 1fr 2fr 2fr;
   padding: 0px 1rem 0px 1rem;
 
+  .textSongs{
+    width: 1260px;
+    height: 450px;
+  }
+  
   .infoSection {
     grid-area: info;
     height: 95%;
@@ -93,6 +98,21 @@
       .sectionTitle {
         display: flex;
         align-items: flex-end;
+
+        &>button:not(:nth-child(2)){
+          margin-left: 5px;
+        }
+
+        .search-button {
+          width: 30px;
+          height: 30px;
+
+          
+
+          svg{
+            height: 20px;
+          }
+        }
 
         h3 {
           margin-bottom: unset;

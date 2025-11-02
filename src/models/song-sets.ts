@@ -41,9 +41,14 @@ type ScoreNote = {
   value: number;
 }
 
+type JsonUserImages = {
+  id: number;
+  nome: string;
+}
+
 type JsonToGenerateImages = {
   title: string;
-  participants: string[];
+  participants: JsonUserImages[];
   series: Array<{
     type: string,
     anime: string,

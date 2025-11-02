@@ -68,7 +68,7 @@ export function SongSetItem({ songSet, pageType, onJoinPublicSongSet }: SongSetI
 
   return (
     <div className='songitem'>
-      <Link href={`/songsets/vote/${songSet.id}`}>
+      <Link className='title-link' href={`/songsets/vote/${songSet.id}`}>
         <span className='title'>{songSet.name}</span>
       </Link>
       <div className='songinfo'>

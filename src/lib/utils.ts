@@ -6,8 +6,11 @@ export let maskValueToDecimal = (a: string | number) : number => {
   if (a == '') a = 0
   let n: number = parseFloat(a as string)
   if (isNaN(n)) return NaN;
+  console.log('1: ' + n);
   if (n < 0) return 0
+  console.log('2: ' + n);
   if (n > 10) return maskValueToDecimal(n / 10)
+  console.log('3: ' + n);
   return n
 }
 

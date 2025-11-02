@@ -26,6 +26,7 @@ type Song = {
   link: string;
   type: SongType;
   scores: Score[];
+  meanScore?: number;
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: Date;

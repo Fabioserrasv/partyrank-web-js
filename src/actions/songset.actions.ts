@@ -42,7 +42,6 @@ export async function getSongSet(id: number, generateJson: boolean = false) {
   const setService = new SongSetService;
 
   try {
-    console.log(id)
     const set = await setService.get(Number(id), generateJson);
 
     return set;
