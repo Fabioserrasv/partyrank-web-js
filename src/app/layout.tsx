@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Roboto } from 'next/font/google'
 import { ThemeProvider } from '../context/ThemeContext'
+import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/layout.scss';
 import AuthProvider from '../context/AuthProvider';
 import { getServerSession } from 'next-auth';

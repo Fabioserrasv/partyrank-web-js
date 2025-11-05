@@ -9,6 +9,9 @@ import { TablePaginated } from '../table-paginated/TablePaginated';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import toast from 'react-hot-toast';
 import { Select } from '@/components/select';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 const statusOptions = [
   { value: "", display: "Select Status" },
@@ -51,9 +54,9 @@ export function HomeSongSetTable({ initialSets, user, pageType }: HomeSongSetTab
 
   async function onSubmitFilter() {
     let filteredSets
-    if(pageType == 'home'){
+    if (pageType == 'home') {
       filteredSets = await handleGetHomeSongSets(filterQuery, user.id);
-    }else{
+    } else {
       filteredSets = await handleGetAllSongSets(filterQuery, user.id);
     }
     console.log(filteredSets)
@@ -61,84 +64,68 @@ export function HomeSongSetTable({ initialSets, user, pageType }: HomeSongSetTab
   }
 
   return (
-    <div className="main-table">
+    <Container className="main-table">
       {
         pageType == 'home' &&
         <>
           <span className='title-search-public'>Search Public Song Sets</span>
         </>
       }
-      <div className="filters">
-        <form action={onSubmitFilter}>
-          <Input
-            displayName=""
-            name="name"
-            className="nameFilter"
-            autoComplete="off"
-            placeholder="Song set title..."
-            value={filterQuery.name}
-            onChange={(e) => { setFilterQuery({ ...filterQuery, name: e.target.value }) }}
-          />
-          <Input
-            displayName=""
-            name="creatorName"
-            className="creatorNameFilter"
-            autoComplete="off"
-            placeholder="Creator name..."
-            value={filterQuery.creatorName}
-            onChange={(e) => { setFilterQuery({ ...filterQuery, creatorName: e.target.value }) }}
-          />
-          <Select
-            displayName=""
-            name="status"
-            className="statusFilter"
-            autoComplete="off"
-            placeholder="Status..."
-            options={statusOptions}
-            value={filterQuery.status}
-            onChange={(e) => { setFilterQuery({ ...filterQuery, status: e.target.value as SongSetStatus }) }}
-          />
-          <Select
-            displayName=""
-            name="systemType"
-            className="systemTypeFilter"
-            autoComplete="off"
-            placeholder="System type..."
-            options={systemTypeOptions}
-            value={filterQuery.systemType}
-            onChange={(e) => { setFilterQuery({ ...filterQuery, systemType: e.target.value as SongSetScoreSystemType }) }}
-          />
-          {/* <Input
-            displayName=""
-            name="minSongs"
-            className="minSongsFilter"
-            autoComplete="off"
-            placeholder="Min songs..."
-            value={filterQuery.minSongs}
-            onChange={(e) => { setFilterQuery({ ...filterQuery, minSongs: parseInt(e.target.value) }) }}
-          />
-          <Input
-            displayName=""
-            name="maxSongs"
-            className="maxSongsFilter"
-            autoComplete="off"
-            placeholder="Max songs..."
-            value={filterQuery.maxSongs}
-            onChange={(e) => { setFilterQuery({ ...filterQuery, maxSongs: parseInt(e.target.value) }) }}
-          /> */}
-          <Button>
-            <Search />
-          </Button>
-        </form>
-        {/* <Link href={`/songsets/create/0`}>
+      <form action={onSubmitFilter}>
+        <Row className="filters">
+          <Col xs={12} md={3}>
+            <Input
+              displayName=""
+              name="name"
+              className="nameFilter"
+              autoComplete="off"
+              placeholder="Song set title..."
+              value={filterQuery.name}
+              onChange={(e) => { setFilterQuery({ ...filterQuery, name: e.target.value }) }}
+            />
+          </Col>
+          <Col xs={12} md={3}>
+            <Select
+              displayName=""
+              name="status"
+              className="statusFilter"
+              autoComplete="off"
+              placeholder="Status..."
+              options={statusOptions}
+              value={filterQuery.status}
+              onChange={(e) => { setFilterQuery({ ...filterQuery, status: e.target.value as SongSetStatus }) }}
+            />
+          </Col>
+          <Col xs={12} md={3}>
+            <Select
+              displayName=""
+              name="systemType"
+              className="systemTypeFilter"
+              autoComplete="off"
+              placeholder="System type..."
+              options={systemTypeOptions}
+              value={filterQuery.systemType}
+              onChange={(e) => { setFilterQuery({ ...filterQuery, systemType: e.target.value as SongSetScoreSystemType }) }}
+            />
+          </Col>
+          <Col xs={12} md={1} className="center-div-flex mt-1">
+            <Button>
+              <Search />
+            </Button>
+          </Col>
+
+
+          {/* <Link href={`/songsets/create/0`}>
         </Link> */}
-      </div>
+        </Row>
+      </form>
+
       <TablePaginated
         sets={sets}
         itemsPerPage={8}
         user={user}
         pageType={pageType}
       />
-    </div>
+    </Container>
   )
 }

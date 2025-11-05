@@ -2,6 +2,9 @@ $primaryColor: #800080;
 // $secondaryColor: #00FF00;
 $secondaryColor: #44d62c;
 
+$primaryColorHover: #660066;
+$secondaryColorHover: #238636;
+
 $darkBackground: #333333;
 $darkSecondBackground: #222222;
 $darkTextPrimary: #cccccc;
@@ -21,7 +24,8 @@ $redButton: #cc2424;
 :export {
   primaryColor: $primaryColor;
   secondaryColor: $secondaryColor;
-
+  primaryColorHover: $primaryColorHover;
+  secondaryColorHover: $secondaryColorHover;
   darkBackground: $darkBackground;
   darkSecondBackground: $darkSecondBackground;
   darkTextPrimary: $darkTextPrimary;

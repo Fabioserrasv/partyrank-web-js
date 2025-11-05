@@ -1,79 +1,85 @@
 .main-table {
-  align-self: center;
-  height: 100%;
-  width: 100%;
-  padding: 0rem 1rem 1rem 1rem;
+  // align-self: center;
+  // height: 100%;
+  // width: 100%;
+  // padding: 0rem 1rem 1rem 1rem;
 
-  .title-search-public{
-    font-size: 2rem;
-    font-weight: 700;
-  }
+  // .title-search-public{
+  //   font-size: 2rem;
+  //   font-weight: 700;
+  // }
 
-  .filters {
-    width: 100%;
+  // .filters {
+  //   width: 100%;
 
-    form {
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      margin-bottom: 20px;
-      margin-top: 20px;
+  //   form {
+  //     display: flex;
+  //     justify-content: flex-start;
+  //     align-items: center;
+  //     margin-bottom: 20px;
+  //     margin-top: 20px;
 
-      .inputGroup {
-        margin-right: 10px;
-      }
+  //     .inputGroup {
+  //       margin-right: 10px;
+  //     }
 
-      button {
-        width: 5%;
-        height: 50px;
-        margin-top: 5px;
-        margin-left: 5px;
-      }
-    }
+  //     button {
+  //       width: 5%;
+  //       height: 50px;
+  //       margin-top: 5px;
+  //       margin-left: 5px;
+  //     }
+  //   }
 
-  }
+  // }
 
-  .pagination {
-    display: flex;
-    justify-content: center;
+  // .pagination {
+  //   display: flex;
+  //   justify-content: center;
 
-    li {
-      display: block;
-      margin-inline: 2px;
-      box-sizing: border-box;
-      height: 30px;
-      width: 30px;
-      text-align: center;
-      border-radius: .2rem;
-      cursor: pointer;
+  //   li {
+  //     display: block;
+  //     margin-inline: 2px;
+  //     box-sizing: border-box;
+  //     height: 30px;
+  //     width: 30px;
+  //     text-align: center;
+  //     border-radius: .2rem;
+  //     cursor: pointer;
 
-      // background-color: $primaryColor;
-      border: 1px solid $primaryColor;
+  //     // background-color: $primaryColor;
+  //     border: 1px solid $primaryColor;
 
-      @include dark {
-        // background-color: $secondaryColor;
-        border: 1px solid $secondaryColor;
-      }
+  //     @include dark {
+  //       // background-color: $secondaryColor;
+  //       border: 1px solid $secondaryColor;
+  //     }
 
-      a {
-        padding: 5px;
-        display: block;
-        width: 100%;
-        height: 100%;
-        box-sizing: border-box;
+  //     a {
+  //       padding: 5px;
+  //       display: block;
+  //       width: 100%;
+  //       height: 100%;
+  //       box-sizing: border-box;
 
-        color: $lightTextPrimary;
+  //       color: $lightTextPrimary;
 
-        transition: .5s;
+  //       transition: .5s;
 
-        @include dark {
-          color: $darkTextPrimary;
-        }
+  //       @include dark {
+  //         color: $darkTextPrimary;
+  //       }
 
-        &:hover {
-          background-color: $divisorColor;
-        }
-      }
-    }
-  }
+  //       &:hover {
+  //         background-color: $divisorColor;
+  //       }
+  //     }
+  //   }
+  // }
+}
+
+.center-div-flex{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
