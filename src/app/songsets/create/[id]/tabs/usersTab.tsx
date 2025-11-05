@@ -40,7 +40,24 @@ export function UsersTab({ songSet, setSongSet }: UsersTabProps) {
     }
   }
 
+  function countScores(userId: number) {
+    let scores = 0
 
+    if(!songSet) return 0
+
+    if(!songSet.songs) return 0
+
+    songSet.songs.forEach(song => {
+      song.scores.forEach(score => {
+        if(score.user?.id == userId) {
+          scores++
+        }
+      })
+    })
+
+    return scores
+  }
+  
   return (
     <div className="usersDiv">
 
@@ -68,6 +85,10 @@ export function UsersTab({ songSet, setSongSet }: UsersTabProps) {
                     <span>
                       <Check />
                       {invite.accepted ? 'Accepted' : 'Pending'}
+                    </span>
+                    <span>
+                      <Check />
+                      {countScores(invite.user.id)} scores
                     </span>
                   </div>
                 </div>

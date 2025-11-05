@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 import { scoreVoteSchema } from "@/app/songsets/validations/songSetValidations";
 import { handleScoreFormSubmit } from "@/handlers/score.handlers";
 import { Monitor } from "lucide-react";
+import { withMask } from 'use-mask-input';
 
 type VoteClientPageProps = {
   user: User;
@@ -33,7 +34,7 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
   const { register, handleSubmit, formState: { errors }, setValue } = useForm<FormVote>({
     resolver: zodResolver(scoreVoteSchema)
   });
-
+  const [score, setScore] = useState<string>('0')
 
   async function handleFormSubmit(data: FormVote) {
     try {
@@ -62,9 +63,9 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
   const getSessionDataSong = useCallback((song: Song) => {
     const data = song.scores.filter((score) => score.user?.id === user.id)[0]
     if (data !== undefined) {
-      return ({ score: data.value, timeStamp: data.videoTimeStamp });
+      return ({ score: data.value, timeStamp: data.videoTimeStamp, new: false });
     }
-    return ({ score: 0, timeStamp: 0 });
+    return ({ score: 0, timeStamp: 0, new: true });
   }, [user.id]);
 
   function setSessionDataSong(song: Song, scoreId: number, { score, timeStamp }: FormVote) {
@@ -98,20 +99,17 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
   }
 
   function onScoreInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+    let stringValue = (e.target.value)
     let value = parseFloat(e.target.value)
-
-    if(value == 0 && (e.target.value == '0,' || e.target.value == '0.')) {
-      if(e.target.value.includes(',')) {
-        setSongUserData({ ...songUserData, score: e.target.value.replace(',', '.') })
-      }else{
-        setSongUserData({ ...songUserData, score: e.target.value })
-      }
-      return
+    if(value > 10 && stringValue[0] == '1'){
+      value = 10
+      stringValue = '10.00'
+    }else if(value > 10){
+      return;
     }
 
-    value = Number.isNaN(value) ? 0 : value
-    e.target.value = String(maskValueToDecimal(value).toFixed(2))
-    setSongUserData({ ...songUserData, score: Number(e.target.value) })
+    setScore(stringValue)
+    setSongUserData({ ...songUserData, score: Number(value) })
   }
 
   function onTimeStampInputChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -150,6 +148,21 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
 
   useEffect(() => {
     const userDataForSong = getSessionDataSong(selectedSong);
+
+    if(userDataForSong.new){
+      setScore('')
+      return
+    }
+    
+    if(userDataForSong.score == 10){
+      setScore('10.00')
+    }else if(String(userDataForSong.score).length == 3){
+      setScore(String(userDataForSong.score) + '0')
+    }else if(String(userDataForSong.score).length == 1){
+      setScore(String(userDataForSong.score) + '00')
+    } else{
+      setScore(String(userDataForSong.score))
+    }
     setSongUserData({ score: userDataForSong.score, timeStamp: userDataForSong.timeStamp })
   }, [selectedSong, getSessionDataSong])
 
@@ -174,6 +187,10 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
     return null; // Or throw an error to exit the component
   }
 
+  const test = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setScore(e.target.value)
+  }
+  
   return (
     <div className={`votePage`}>
       <div className={`video`}>
@@ -191,8 +208,9 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
               displayName='Score'
               errorMessage={errors.score?.message}
               {...register('score')}
-              defaultValue={songUserData.score}
-              value={songUserData.score}
+              defaultValue={score}
+              value={score}
+              ref={withMask(['9.99', '99.99'], {max: 10.00, allowMinus: false, clearMaskOnLostFocus: true, showMaskOnFocus: false})}
               onChange={onScoreInputChange}
             />
             {/* <Input

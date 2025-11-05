@@ -83,6 +83,10 @@ export const options: NextAuthOptions = {
       return session;
     },
     async redirect({ url, baseUrl }) {
+      // Se a URL contém 'redirect=false', não redirecione (requisição de API)
+      if (url.includes('redirect=false') || url === baseUrl) {
+        return url; // Retorna a mesma URL para não redirecionar
+      }
       return baseUrl + '/home'
     }
   },

@@ -143,7 +143,9 @@ export function ClientCreateSongPage({ dbSet, user, services }: ClientCreateSong
   }, [dbSet])
 
   useEffect(() => {
-    setIsSetCreator(Boolean(songSet.id && songSet.id != 0 && songSet.user?.id == user.id))
+    let creator = Boolean(songSet.id && songSet.id != 0 && songSet.user?.id == user.id);
+    let admin = Boolean(user.admin && songSet.id && songSet.id != 0);
+    setIsSetCreator(creator || admin);
   }, [songSet, user.id])
 
   return (
