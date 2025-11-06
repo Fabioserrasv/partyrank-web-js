@@ -213,14 +213,14 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
               ref={withMask(['9.99', '99.99'], {max: 10.00, allowMinus: false, clearMaskOnLostFocus: true, showMaskOnFocus: false})}
               onChange={onScoreInputChange}
             />
-            {/* <Input
+            <Input
               displayName='Time suggested'
               errorMessage={errors.timeStamp?.message}
               {...register('timeStamp')}
               defaultValue={songUserData.timeStamp}
               value={songUserData.timeStamp}
               onChange={onTimeStampInputChange}
-            /> */}
+            />
             <Button
               name='Send'
               type="submit"
