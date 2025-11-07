@@ -15,6 +15,7 @@ type SongSet = {
   id: number;
   name: string;
   anilistLink: string;
+  coverImage?: string;
   songs: Song[];
   type: SongSetType;
   status: SongSetStatus;

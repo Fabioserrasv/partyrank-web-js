@@ -1,6 +1,6 @@
 'use client'
-import { FolderSearch2, Home, Library, Users } from "lucide-react"
 import './nav.scss'
+import { FolderSearch2, Home, Library, Users } from "lucide-react"
 import { User } from "next-auth"
 import { NavDropdown } from "./navDropdown/navDropdown"
 import { headers } from "next/headers";
@@ -12,22 +12,25 @@ import Navbar from "react-bootstrap/Navbar";
 import Container from 'react-bootstrap/Container';
 import BootstrapNav from 'react-bootstrap/Nav';
 import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { useTheme } from '@/context/ThemeContext'
 
 type NavProps = {
   user: User;
 }
 
 export function Nav({ user }: NavProps) {
+  const { isDarkMode } = useTheme();
 
   function isActive(path: string) {
     const pathname = usePathname();
     return pathname.includes(path) ? 'active' : '';
   }
-
+    
   return (
-    <Navbar expand="lg">
+    <Navbar expand="lg"  bg={isDarkMode ? 'dark' : ''} data-bs-theme={isDarkMode ? 'dark' : ''}>
       <Container fluid>
-        <Navbar.Brand href="/">Party Rank</Navbar.Brand>
+        {/* <Navbar.Brand href="/">Party Rank</Navbar.Brand> */}
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <BootstrapNav className="me-auto">

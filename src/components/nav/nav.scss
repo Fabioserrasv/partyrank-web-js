@@ -13,7 +13,25 @@ nav {
     background-color: $darkSecondBackground;
   }
 
+  .navbar-nav{
+    .nav-link{
+      margin-left:30px !important;
+      margin-right:30px !important;
+    }
+  }
+
+  @include mobile {
+    #basic-navbar-nav{
+      background-color: $lightBackground;
+
+      @include dark {
+        background-color: $darkBackground;
+      }
+    }
+  }
+
   .me-auto {
+
     span:hover {
       color: $primaryColorHover;
       transition: .5s;
@@ -31,14 +49,12 @@ nav {
           content: "";
           display: block;
           position: absolute;
-          border-radius: 50%;
 
-
-          top: 44%;
+          top: 50%;
           transform: translateY(-50%);
-          left: 2px;
-          width: 5px;
-          height: 5px;
+          left: -5%;
+          width: 3px;
+          height: 60%;
           background-color: $primaryColor;
 
           @include dark {

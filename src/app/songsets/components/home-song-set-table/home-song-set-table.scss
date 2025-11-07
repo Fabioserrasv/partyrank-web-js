@@ -1,4 +1,29 @@
 .main-table {
+  .margin-filter{
+    margin-left: auto;
+  }
+  .pointer{
+    cursor: pointer;
+  }
+  
+  .center-div-flex{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .collapse-filters {
+    margin-left: auto;
+    direction: rtl;
+    
+    > div {
+      direction: ltr;
+    }
+  }
+
+  form{
+    width: 100%;
+  }
   // align-self: center;
   // height: 100%;
   // width: 100%;
@@ -76,10 +101,4 @@
   //     }
   //   }
   // }
-}
-
-.center-div-flex{
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }

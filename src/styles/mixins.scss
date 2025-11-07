@@ -4,6 +4,12 @@
   }
 }
 
+@mixin mobile{
+  @media (max-width: 768px) {
+    @content;
+  }
+}
+
 @mixin animate($animation,$duration,$method,$times){
   animation: $animation $duration $method $times;
 }

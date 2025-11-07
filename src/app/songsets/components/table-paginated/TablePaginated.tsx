@@ -6,7 +6,9 @@ import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { handleJoinPublicSongSet } from '@/handlers/songset.handlers';
 import { SongSetItem } from '../song-set-item/SongSetItem';
-
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Pagination from 'react-bootstrap/Pagination';
 
 type PaginatedItemsProps = {
   itemsPerPage: number;
@@ -58,20 +60,31 @@ export function TablePaginated({ itemsPerPage, pageType, sets, user }: Paginated
   return (
     <>
       <div className='home-table'>
+        <Row>
         {currentItems && currentItems.length > 0 ? currentItems.map((item) => {
           return (
-            // <TableRow>
-            <SongSetItem
-              key={item.id}
-              songSet={item}
-              onJoinPublicSongSet={onJoinPublicSongSet}
-              pageType={pageType}
-            />
-            // </TableRow>
+            <Col md={4} sm={12} className='mb-3' key={item.id}>
+              <SongSetItem
+                songSet={item}
+                onJoinPublicSongSet={onJoinPublicSongSet}
+                pageType={pageType}
+              />
+            </Col>
           )
         }) : <div>No Songs Set Found</div>}
+        </Row>
       </div>
-      <ReactPaginate
+      <div className='d-flex justify-content-center'>
+        <Pagination>
+          {Array.from({ length: pageCount }, (_, index) => (
+            <Pagination.Item key={index} active={index === itemOffset / itemsPerPage}>
+              {index + 1}
+            </Pagination.Item>
+          ))}
+        </Pagination>
+
+      </div>
+      {/* <ReactPaginate
         className='pagination'
         breakLabel="..."
         nextLabel=">"
@@ -80,7 +93,7 @@ export function TablePaginated({ itemsPerPage, pageType, sets, user }: Paginated
         pageCount={pageCount}
         previousLabel="<"
         renderOnZeroPageCount={null}
-      />
+      /> */}
     </>
   )
 }
