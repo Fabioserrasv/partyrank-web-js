@@ -44,12 +44,14 @@ export async function getUserByUsername(username: string) {
   }
 }
 
-export async function getAllUsers() {
+export async function getAllUsers(filters: FiltersQueryUser): Promise<ResultUsers> {
   const userService = new UserService;
 
   try {
-    const users = await userService.getAllUsers();
-    return users
+    const users = await userService.getAllUsers(filters);
+    const count = await userService.getAllUsers(filters, true);
+    
+    return {users: users as User[], count: count as number}
   } catch (error) {
     throw error;
   }

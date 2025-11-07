@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "../validations/authValidations";
 import { handleCreateUserForm } from "@/handlers/user.handlers";
-
+import { useRouter } from "next/navigation";
 type FormRegisterProps = {
 }
 
@@ -17,6 +17,7 @@ type UserRegister = UserPostData & {
 }
 
 export function FormRegister({  }: FormRegisterProps) {
+  const { push } = useRouter();
   const { register, handleSubmit, formState: { errors }, setValue } = useForm<UserRegister>({
     resolver: zodResolver(registerSchema)
   });
@@ -27,7 +28,7 @@ export function FormRegister({  }: FormRegisterProps) {
 
       if (newUser) {
         toast.success("User created successfully")
-        window.location.href = "/login"
+        push("/login");
         return;
       }
 

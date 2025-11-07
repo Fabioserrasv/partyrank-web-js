@@ -32,14 +32,20 @@ const systemTypeOptions = [
 
 type HomeSongSetTableProps = {
   initialSets: SongSet[];
+  initialTotalSets: number;
   user: User;
   pageType: 'home' | 'private';
 }
 
-export function HomeSongSetTable({ initialSets, user, pageType }: HomeSongSetTableProps) {
+export function HomeSongSetTable({ initialSets, user, pageType, initialTotalSets }: HomeSongSetTableProps) {
   const [sets, setSets] = useState<SongSet[]>(initialSets)
-  const [filterQuery, setFilterQuery] = useState<FiltersQuerySongSet>({})
+  const [filterQuery, setFilterQuery] = useState<FiltersQuerySongSet>({
+    name: "",
+    offset: 0,
+    limit: 8
+  })
   const [openFilters, setOpenFilters] = useState(false);
+  const [totalSets, setTotalSets] = useState(initialTotalSets);
 
   const router = useRouter();
   const pathname = usePathname();
@@ -57,13 +63,22 @@ export function HomeSongSetTable({ initialSets, user, pageType }: HomeSongSetTab
 
   async function onSubmitFilter() {
     let filteredSets
+    let count
     if (pageType == 'home') {
-      filteredSets = await handleGetHomeSongSets(filterQuery, user.id);
+      dbSongSets = await handleGetHomeSongSets(filterQuery, user.id);
     } else {
-      filteredSets = await handleGetAllSongSets(filterQuery, user.id);
+      dbSongSets = await handleGetAllSongSets(filterQuery, user.id);
     }
-    console.log(filteredSets)
+    count = dbSongSets.count;
+    filteredSets = dbSongSets.sets;
+
     setSets(filteredSets)
+    setTotalSets(count)
+  }
+
+  function onChangeFilter(filterQuery: FiltersQuerySongSet) {
+    setFilterQuery(filterQuery)
+    // onSubmitFilter()
   }
 
   return (
@@ -131,9 +146,12 @@ export function HomeSongSetTable({ initialSets, user, pageType }: HomeSongSetTab
       </div>
       <TablePaginatedList
         sets={sets}
+        initialTotalSets={totalSets}
         itemsPerPage={8}
         user={user}
         pageType={pageType}
+        initialFilterQuery={filterQuery}
+        onChangeFilter={onChangeFilter}
       />
     </Container>
   )

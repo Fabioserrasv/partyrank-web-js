@@ -43,7 +43,7 @@ export async function handleGetSongSet(id: number, generateJson: boolean = false
   }
 }
 
-export async function handleGetAllSongSets(filters: FiltersQuerySongSet, loggedUserId: number) {
+export async function handleGetAllSongSets(filters: FiltersQuerySongSet, loggedUserId: number): Promise<ResultSongSets> {
   try {
     const sets = await getAllSongSets(filters, loggedUserId);
 
@@ -53,7 +53,7 @@ export async function handleGetAllSongSets(filters: FiltersQuerySongSet, loggedU
   }
 }
 
-export async function handleGetHomeSongSets(filters: FiltersQuerySongSet, loggedUserId: number) {
+export async function handleGetHomeSongSets(filters: FiltersQuerySongSet, loggedUserId: number): Promise<ResultSongSets> {
   try {
     const sets = await getAllSongSetsHomePage(filters, loggedUserId);
 

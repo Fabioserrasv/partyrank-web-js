@@ -37,12 +37,13 @@ export async function getSong(id: number) {
   }
 }
 
-export async function getAllSongs() {
+export async function getAllSongs(filters: FiltersQuerySong): Promise<ResultSongs> {
   const songService = new SongService;
   try {
-    const songs = await songService.getAll();
-
-    return songs
+    const songs = await songService.getAll(filters);
+    const count = await songService.getAll(filters, true);
+    
+    return {songs: songs as Song[], count: count as number}
   } catch (error) {
     throw error
   }

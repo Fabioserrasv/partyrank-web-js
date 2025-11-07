@@ -16,6 +16,7 @@ type SongSet = {
   name: string;
   anilistLink: string;
   coverImage?: string;
+  isPlaceholder?: boolean;
   songs: Song[];
   type: SongSetType;
   status: SongSetStatus;
@@ -66,11 +67,14 @@ type JsonToGenerateVideo = {
   cut_time: number[];
 }
 
-type FiltersQuerySongSet = {
+type FiltersQuerySongSet = BaseFilters & {
   name?: string;
   creatorName?: string;
   status?: SongSetStatus;
   systemType?: SongSetScoreSystemType;
-  minSongs?: number;
-  maxSongs?: number;
+} 
+
+type ResultSongSets = {
+  sets: SongSet[];
+  count: number;
 }

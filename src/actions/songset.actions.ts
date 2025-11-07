@@ -50,34 +50,36 @@ export async function getSongSet(id: number, generateJson: boolean = false) {
   }
 }
 
-export async function getAllSongSets(filters: FiltersQuerySongSet, loggedUserId: number) {
+export async function getAllSongSets(filters: FiltersQuerySongSet, loggedUserId: number): Promise<{sets: SongSet[], count: number}> {
   const setService = new SongSetService;
   try {
     const sets = await setService.getAll(filters, loggedUserId);
-
-    return sets
+    const count = await setService.getAll(filters, loggedUserId, {count: true});
+    return {sets: sets, count: count}
   } catch (error) {
     throw error
   }
 }
 
-export async function getAllSongSetsHomePage(filters: FiltersQuerySongSet, loggedUserId: number) {
+export async function getAllSongSetsHomePage(filters: FiltersQuerySongSet, loggedUserId: number): Promise<ResultSongSets> {
   const setService = new SongSetService;
   try {
     const sets = await setService.getAllPublic(filters, loggedUserId);
-
-    return sets
+    const count = await setService.getAllPublic(filters, loggedUserId, {count: true});
+    
+    return {sets: sets, count: count}
   } catch (error) {
     throw error
   }
 }
 
-export async function getAllMySongSetsPage(filters: FiltersQuerySongSet, loggedUserId: number) {
+export async function getAllMySongSetsPage(filters: FiltersQuerySongSet, loggedUserId: number): Promise<ResultSongSets> {
   const setService = new SongSetService;
   try {
     const sets = await setService.getAll(filters, loggedUserId);
+    const count = await setService.getAll(filters, loggedUserId, {count: true});
 
-    return sets
+    return {sets: sets, count: count}
   } catch (error) {
     throw error
   }

@@ -31,3 +31,16 @@ type Song = {
   updatedAt?: Date;
   deletedAt?: Date;
 }
+
+type FiltersQuerySong = BaseFilters & {
+  name?: string;
+  anime?: string;
+  artist?: string;
+  type?: SongType;
+  songSetId?: number;
+}
+
+type ResultSongs = {
+  songs: Song[];
+  count: number;
+}

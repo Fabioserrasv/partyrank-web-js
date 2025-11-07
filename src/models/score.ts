@@ -14,3 +14,13 @@ type Score = {
   videoTimeStamp: number;
   valid: number;
 }
+
+type FiltersQueryScore = BaseFilters & {
+  songId?: number;
+  userId?: number;
+}
+
+type ResultScores = {
+  scores: Score[];
+  count: number;
+}

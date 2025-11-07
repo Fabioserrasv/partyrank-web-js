@@ -31,3 +31,12 @@ type User = {
   createdAt?: Date;
   updatedAt?: Date;
 }
+
+type FiltersQueryUser = BaseFilters & {
+  username?: string;
+}
+
+type ResultUsers = {
+  users: User[];
+  count: number;
+}

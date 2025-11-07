@@ -4,7 +4,8 @@ import { createUser, getAllUsers } from '@/actions/user.actions';
 
 export async function GET() {
   try {
-    const users = await getAllUsers();
+    const resultUsers = await getAllUsers({});
+    const users = resultUsers.users;
   
     return NextResponse.json(users)
   } catch (error) {

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
-import { handleJoinPublicSongSet } from '@/handlers/songset.handlers';
+import { handleGetAllSongSets, handleGetHomeSongSets, handleJoinPublicSongSet } from '@/handlers/songset.handlers';
 import { SongSetItem } from '../song-set-item/SongSetItem';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -17,30 +17,74 @@ import { handleGetCoverImageFromAnilistUrl } from '@/handlers/anilist-api.handle
 import { handleAddImageAnimeFormSubmit, handleGetImageAnime } from '@/handlers/image.anime.handleres';
 import Image from 'next/image';
 import { convertSongSetScoreSystemToString } from '@/repositories/songset.repository';
+import Link from 'next/link';
+
+export const dynamic = 'force-dynamic';
 
 type PaginatedItemsProps = {
   itemsPerPage: number;
+  initialTotalSets: number;
   sets: SongSet[];
   user: User;
   pageType: 'home' | 'private';
+  initialFilterQuery: FiltersQuerySongSet;
+  onChangeFilter: (filterQuery: FiltersQuerySongSet) => void;
 }
 
 type handlePageClickProps = {
   selected: number;
 }
 
-export function TablePaginatedList({ itemsPerPage, pageType, sets, user }: PaginatedItemsProps) {
+export function TablePaginatedList({ itemsPerPage, pageType, sets, user, initialTotalSets, onChangeFilter, initialFilterQuery }: PaginatedItemsProps) {
   const { isDarkMode } = useTheme();
   const [itemOffset, setItemOffset] = useState(0);
   const [songSets, setSongSets] = useState<SongSet[]>(sets);
-  const [currentItems, setCurrentItems] = useState<SongSet[]>(songSets.slice(itemOffset, (itemOffset + itemsPerPage)));
-  const pageCount = Math.ceil(sets.length / itemsPerPage);
+  const pageCount = Math.ceil(initialTotalSets / itemsPerPage);
+  const [totalSets, setTotalSets] = useState(initialTotalSets);
   const { push } = useRouter();
+  const [filterQuery, setFilterQuery] = useState<FiltersQuerySongSet>(initialFilterQuery);
 
   const handlePageClick = ({ selected }: handlePageClickProps) => {
-    const newOffset = (selected * itemsPerPage) % sets.length;
+    const newOffset = (selected * itemsPerPage) % totalSets;
     setItemOffset(newOffset);
+    changePage(selected);
   };
+
+  async function changePage(page: number) {
+    const newFilterQuery = { ...filterQuery };
+    
+    newFilterQuery.offset = page * itemsPerPage;
+
+    onChangeFilter(newFilterQuery);
+    setFilterQuery(newFilterQuery);
+    
+    let resultSongSets;
+    if (pageType == 'home') {
+      resultSongSets = await handleGetHomeSongSets(newFilterQuery, user.id);
+    } else {
+      resultSongSets = await handleGetAllSongSets(newFilterQuery, user.id);
+    }
+
+    if (resultSongSets.sets.length < itemsPerPage) {
+      console.log(itemsPerPage - resultSongSets.sets.length)
+      const diff = itemsPerPage - resultSongSets.sets.length;
+      for (let i = 0; i < diff; i++) {
+        resultSongSets.sets.push({
+          id: Math.random() + i * 10,
+          name: `-`,
+          isPlaceholder: true,
+          coverImage: '',
+          songs: [],
+          user: null,
+        });
+      }
+    }
+
+    console.log('resultSongSets', resultSongSets)
+
+    setSongSets(resultSongSets.sets)
+    setTotalSets(resultSongSets.count)
+  }
 
   async function onJoinPublicSongSet(songSet: SongSet) {
     try {
@@ -61,13 +105,20 @@ export function TablePaginatedList({ itemsPerPage, pageType, sets, user }: Pagin
   }
 
   useEffect(() => {
-    setSongSets(sets);
     const endOffset = itemOffset + itemsPerPage;
-    songSets.forEach(async (songSet) => {
+    
+    const newSongSets = [...songSets];
+    let hasChanged = false;
+    newSongSets.forEach(async (songSet) => {
       songSet.coverImage = await getCoverImageFromAnilist(songSet.anilistLink);
+      // if (songSet.coverImage == '') {
+      //   hasChanged = true;
+      // }
     });
-    setCurrentItems(songSets.slice(itemOffset, endOffset))
-  }, [sets, songSets, itemOffset, itemsPerPage])
+    if (hasChanged) {
+      setSongSets(newSongSets)
+    }
+  }, [songSets])
 
   async function getCoverImageFromAnilist(link: string): Promise<string> {
     return handleGetImageAnime(link).then((res) => {
@@ -82,7 +133,7 @@ export function TablePaginatedList({ itemsPerPage, pageType, sets, user }: Pagin
                 link: coverImageUrl
               });
             }
-            return coverImageUrl || '';
+            return coverImageUrl || '-';
           })
           .catch(error => {
             console.log(error);
@@ -100,13 +151,20 @@ export function TablePaginatedList({ itemsPerPage, pageType, sets, user }: Pagin
       <div className='home-table'>
         <Table className='table-home-song-sets' striped variant={isDarkMode ? 'dark' : 'light'}>
           <tbody>
-            {currentItems && currentItems.length > 0 ? currentItems.map((songSet) => {
+            {songSets && songSets.length > 0 ? songSets.map((songSet) => {
               return (
+                songSet.isPlaceholder ? (
+                  <tr key={songSet.id}>
+                    <td colSpan={5}>
+                      
+                    </td>
+                  </tr>
+                ) : (
                 <tr key={songSet.id}>
                   <td style={{ width: '40%' }}>
                     <div className='first-column d-flex align-items-center'>
                       {
-                        songSet.coverImage ?
+                        songSet.coverImage  && songSet.coverImage != '-' ?
                           <Image width={47} height={70} src={songSet.coverImage} alt="" /> :
                           <Image width={47} height={70} src={'https://cdn.discordapp.com/attachments/1104912890802225204/1436151459858092163/image.png?ex=690e8fc6&is=690d3e46&hm=229674b3996937f0ceb1a63cab0271c44cfe7286e0a97d56b3ff4fda7eba4133&'} alt="" />
                       }
@@ -162,6 +220,7 @@ export function TablePaginatedList({ itemsPerPage, pageType, sets, user }: Pagin
                   pageType={pageType}
                 /> */}
                 </tr>
+                )
               )
             }) : <div>No Songs Set Found</div>}
           </tbody>

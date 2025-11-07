@@ -5,7 +5,8 @@ import './user.scss';
 import Image from "next/image";
 
 export default async function Users() {
-  const users = await getAllUsers();
+  const resultUsers = await getAllUsers({});
+  const users = resultUsers.users;
   return (<div className="users-page">
     <h3>Ranking</h3>
     <Table>

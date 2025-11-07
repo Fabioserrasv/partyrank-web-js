@@ -19,12 +19,13 @@ export async function createScore(score: ScorePost) {
 }
 
 
-export async function getAllScoreFromSong(id: number) {
+export async function getAllScoreFromSong(filters: FiltersQueryScore): Promise<ResultScores> {
   const scoreService = new ScoreService;
   try {
-    const scores = await scoreService.getAllScoreFromSong(id);
-
-    return scores
+    const scores = await scoreService.getAllScoreFromSong(filters);
+    const count = await scoreService.getAllScoreFromSong(filters, true);
+    
+    return {scores: scores as Score[], count: count as number}
   } catch (error) {
     throw error;
   }

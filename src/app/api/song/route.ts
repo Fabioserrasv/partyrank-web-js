@@ -4,7 +4,8 @@ import { createSong, getAllSongs } from '@/actions/song.actions';
 
 export async function GET() {
   try {
-    const songs = await getAllSongs();
+    const resultSongs = await getAllSongs({});
+    const songs = resultSongs.songs;
   
     return NextResponse.json(songs)
   } catch (error) {
