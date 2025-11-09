@@ -68,3 +68,19 @@ export function generatePlaceholderSets(songSets: SongSet[], itemsPerPage: numbe
     }
   }
 }
+
+export function generatePlaceholderUsers(users: User[], itemsPerPage: number) {
+  if (users.length < itemsPerPage) {
+    const diff = itemsPerPage - users.length;
+    for (let i = 0; i < diff; i++) {
+      users.push({
+        id: Math.random() + i * 10,
+        username: '-',
+        animeList: '',
+        isPlaceholder: true,
+        imageUrl: undefined,
+        average: undefined,
+      });
+    }
+  }
+}

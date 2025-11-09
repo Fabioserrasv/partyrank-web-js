@@ -55,3 +55,10 @@ body {
   background: #3a3d42;
   /* Cor do polegar quando ativo */
 }
+
+.page-item.active .page-link {
+  // color: #fff !important;
+  background: $secondaryColorHover !important;
+  box-shadow: unset;
+  border: 1px solid transparent;
+}

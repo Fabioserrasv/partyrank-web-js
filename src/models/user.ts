@@ -28,6 +28,7 @@ type User = {
   average?: number;
   admin?: boolean;
   imageUrl?: string;
+  isPlaceholder?: boolean;
   invites?: UserOn[];
   scores?: Score[];
   createdAt?: Date;
