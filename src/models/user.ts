@@ -25,6 +25,7 @@ type User = {
   username: string;
   password?: string;
   animeList: string;
+  average?: number;
   admin?: boolean;
   imageUrl?: string;
   invites?: UserOn[];
