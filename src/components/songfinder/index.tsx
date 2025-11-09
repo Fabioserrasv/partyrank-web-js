@@ -22,7 +22,7 @@ export default function SongFinderComponent({ actions, addSongFromSongFinder, re
         populateTableSongsWeb={populateTableSongsWeb}
         services={services}
       />
-      <div className="result">
+      <div className="result table-songfinder">
         <Table>
           {
             songsFind.map((song, index) => {

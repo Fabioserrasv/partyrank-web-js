@@ -94,7 +94,7 @@ export function CreateUpdateSongSetForm({ songSet, user, setTab, setSongSet, but
           firstButton={
             {
               description: "Yes",
-              color: "#4bf313",
+              color: "#238636",
               func: () => { onSubmitDeleteSongSet() }
             }
           }

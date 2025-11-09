@@ -53,7 +53,7 @@ export function NavUser({ user }: NavUserProps) {
         <span className="avg">Average: {user.average}</span>
       </div>
       <div className="pfp" onClick={() => { setIsDropdownOpen(!isDropdownOpen); }}>
-        <Image width={0} height={0} style={{ width: '100%', height: '100%' }}  src={getUserImageUrlPath(user.imageUrl)} alt="Profile Picture" ref={imgRef} />
+        <Image width={0} height={0} src={getUserImageUrlPath(user.imageUrl)} alt="Profile Picture" ref={imgRef} />
       </div>
 
       <NavDropdown isOpen={isDropdownOpen} ref={menuRef} />

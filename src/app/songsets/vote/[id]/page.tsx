@@ -26,6 +26,14 @@ export default async function Vote({ params }: VotePageProps) {
     redirect("/songsets?error=not_allowed");
   }
 
+  if(set.songs.length == 0) {
+    if(set.user?.id == session.user.id) {
+      redirect("/songsets/create/" + params.id);
+      return;
+    }
+    redirect("/songsets?error=no_songs_in_set");
+  }
+
   return (
     <div className="pageserv">
       <VoteClientPage

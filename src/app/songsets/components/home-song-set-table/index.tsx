@@ -4,11 +4,17 @@ import { useEffect, useState } from 'react';
 import { handleGetAllSongSets, handleGetHomeSongSets, handleJoinPublicSongSet } from '@/handlers/songset.handlers';
 import { Input } from '@/components/input';
 import { Button } from '@/components/button/Button';
-import { Search } from 'lucide-react';
+import { Filter, Search } from 'lucide-react';
 import { TablePaginated } from '../table-paginated/TablePaginated';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import toast from 'react-hot-toast';
 import { Select } from '@/components/select';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Collapse from 'react-bootstrap/Collapse';
+import { TablePaginatedList } from '../table-paginated-list/TablePaginatedList';
+import { generatePlaceholderSets } from '@/lib/utils';
 
 const statusOptions = [
   { value: "", display: "Select Status" },
@@ -27,13 +33,20 @@ const systemTypeOptions = [
 
 type HomeSongSetTableProps = {
   initialSets: SongSet[];
+  initialTotalSets: number;
   user: User;
   pageType: 'home' | 'private';
 }
 
-export function HomeSongSetTable({ initialSets, user, pageType }: HomeSongSetTableProps) {
+export function HomeSongSetTable({ initialSets, user, pageType, initialTotalSets }: HomeSongSetTableProps) {
   const [sets, setSets] = useState<SongSet[]>(initialSets)
-  const [filterQuery, setFilterQuery] = useState<FiltersQuerySongSet>({})
+  const [filterQuery, setFilterQuery] = useState<FiltersQuerySongSet>({
+    name: "",
+    offset: 0,
+    limit: 8
+  })
+  const [openFilters, setOpenFilters] = useState(false);
+  const [totalSets, setTotalSets] = useState(initialTotalSets);
 
   const router = useRouter();
   const pathname = usePathname();
@@ -47,98 +60,108 @@ export function HomeSongSetTable({ initialSets, user, pageType }: HomeSongSetTab
       toast.error("You don't have permission to vote on this songset");
       router.replace('/songsets', { scroll: false });
     }
+    if (error === 'no_songs_in_set') {
+      toast.error("You can't vote on a song set with no songs");
+      router.replace('/songsets', { scroll: false });
+    }
   }, [router, pathname, searchParams]);
 
   async function onSubmitFilter() {
     let filteredSets
-    if(pageType == 'home'){
-      filteredSets = await handleGetHomeSongSets(filterQuery, user.id);
-    }else{
-      filteredSets = await handleGetAllSongSets(filterQuery, user.id);
+    let count
+    if (pageType == 'home') {
+      dbSongSets = await handleGetHomeSongSets(filterQuery, user.id);
+    } else {
+      dbSongSets = await handleGetAllSongSets(filterQuery, user.id);
     }
-    console.log(filteredSets)
+    count = dbSongSets.count;
+    filteredSets = dbSongSets.sets;
+
     setSets(filteredSets)
+    setTotalSets(count)
+  }
+
+  useEffect(() => {
+    generatePlaceholderSets(sets, 8)
+  }, [sets])
+
+  function onChangeFilter(filterQuery: FiltersQuerySongSet) {
+    setFilterQuery(filterQuery)
+    // onSubmitFilter()
   }
 
   return (
-    <div className="main-table">
-      {
-        pageType == 'home' &&
-        <>
-          <span className='title-search-public'>Search Public Song Sets</span>
-        </>
-      }
-      <div className="filters">
-        <form action={onSubmitFilter}>
-          <Input
-            displayName=""
-            name="name"
-            className="nameFilter"
-            autoComplete="off"
-            placeholder="Song set title..."
-            value={filterQuery.name}
-            onChange={(e) => { setFilterQuery({ ...filterQuery, name: e.target.value }) }}
-          />
-          <Input
-            displayName=""
-            name="creatorName"
-            className="creatorNameFilter"
-            autoComplete="off"
-            placeholder="Creator name..."
-            value={filterQuery.creatorName}
-            onChange={(e) => { setFilterQuery({ ...filterQuery, creatorName: e.target.value }) }}
-          />
-          <Select
-            displayName=""
-            name="status"
-            className="statusFilter"
-            autoComplete="off"
-            placeholder="Status..."
-            options={statusOptions}
-            value={filterQuery.status}
-            onChange={(e) => { setFilterQuery({ ...filterQuery, status: e.target.value as SongSetStatus }) }}
-          />
-          <Select
-            displayName=""
-            name="systemType"
-            className="systemTypeFilter"
-            autoComplete="off"
-            placeholder="System type..."
-            options={systemTypeOptions}
-            value={filterQuery.systemType}
-            onChange={(e) => { setFilterQuery({ ...filterQuery, systemType: e.target.value as SongSetScoreSystemType }) }}
-          />
-          {/* <Input
-            displayName=""
-            name="minSongs"
-            className="minSongsFilter"
-            autoComplete="off"
-            placeholder="Min songs..."
-            value={filterQuery.minSongs}
-            onChange={(e) => { setFilterQuery({ ...filterQuery, minSongs: parseInt(e.target.value) }) }}
-          />
-          <Input
-            displayName=""
-            name="maxSongs"
-            className="maxSongsFilter"
-            autoComplete="off"
-            placeholder="Max songs..."
-            value={filterQuery.maxSongs}
-            onChange={(e) => { setFilterQuery({ ...filterQuery, maxSongs: parseInt(e.target.value) }) }}
-          /> */}
-          <Button>
-            <Search />
-          </Button>
-        </form>
-        {/* <Link href={`/songsets/create/0`}>
-        </Link> */}
+    <Container className="main-table">
+      <div className='d-flex align-items-center p-2'>
+        <div className='d-flex w-100 div-filters-home' style={{ minHeight: '40px' }}>
+          <Collapse className='collapse-filters' in={openFilters} dimension="width">
+            <form action={onSubmitFilter}>
+              <Row className="filters">
+                <Col xs={12} md={3}>
+                  <Input
+                    displayName=""
+                    name="name"
+                    className="nameFilter"
+                    autoComplete="off"
+                    placeholder="Song set title..."
+                    value={filterQuery.name}
+                    onChange={(e) => { setFilterQuery({ ...filterQuery, name: e.target.value }) }}
+                  />
+                </Col>
+                <Col xs={12} md={3}>
+                  <Select
+                    displayName=""
+                    name="status"
+                    className="statusFilter"
+                    autoComplete="off"
+                    placeholder="Status..."
+                    options={statusOptions}
+                    value={filterQuery.status}
+                    onChange={(e) => { setFilterQuery({ ...filterQuery, status: e.target.value as SongSetStatus }) }}
+                  />
+                </Col>
+                <Col xs={12} md={3}>
+                  <Select
+                    displayName=""
+                    name="systemType"
+                    className="systemTypeFilter"
+                    autoComplete="off"
+                    placeholder="System type..."
+                    options={systemTypeOptions}
+                    value={filterQuery.systemType}
+                    onChange={(e) => { setFilterQuery({ ...filterQuery, systemType: e.target.value as SongSetScoreSystemType }) }}
+                  />
+                </Col>
+                <Col xs={12} md={1} className="center-div-flex mt-1">
+                  <Button>
+                    <Search />
+                  </Button>
+                </Col>
+
+
+                {/* <Link href={`/songsets/create/0`}>
+          </Link> */}
+              </Row>
+            </form>
+          </Collapse>
+        </div>
+        <Filter
+          onClick={() => setOpenFilters(!openFilters)}
+          aria-controls="example-collapse-text"
+          aria-expanded={openFilters}
+          className='pointer margin-filter'
+          size={30}
+        />
       </div>
-      <TablePaginated
+      <TablePaginatedList
         sets={sets}
+        initialTotalSets={totalSets}
         itemsPerPage={8}
         user={user}
         pageType={pageType}
+        initialFilterQuery={filterQuery}
+        onChangeFilter={onChangeFilter}
       />
-    </div>
+    </Container>
   )
 }

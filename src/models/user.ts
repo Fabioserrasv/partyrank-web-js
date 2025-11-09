@@ -2,6 +2,7 @@ type UserPostData = {
   username: string;
   password: string;
   animeList: string;
+  email: string;
 }
 
 type UserUpdateData = {
@@ -30,4 +31,13 @@ type User = {
   scores?: Score[];
   createdAt?: Date;
   updatedAt?: Date;
+}
+
+type FiltersQueryUser = BaseFilters & {
+  username?: string;
+}
+
+type ResultUsers = {
+  users: User[];
+  count: number;
 }

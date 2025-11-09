@@ -10,10 +10,11 @@ import { handleDeleteSong } from "@/handlers/song.handlers";
 import { SongSetTabs, tabs } from "@/components/songset-tabs";
 import ResultTab from "./tabs/resultTab";
 import { Button } from "@/components/button/Button";
-import { handleLeaveSongSet } from "@/handlers/songset.handlers";
+import { handleJoinPublicSongSet, handleLeaveSongSet } from "@/handlers/songset.handlers";
 import { useRouter } from "next/navigation";
 import { Plus, Search } from "lucide-react";
 import { AddMultipleSongsModal } from "./modals/addMultipleSongsModal";
+import ConfirmDeleteModal from '@/components/confirm-delete-modal';
 
 type ClientCreateSongPageProps = {
   dbSet: SongSet | null;
@@ -54,6 +55,7 @@ export function ClientCreateSongPage({ dbSet, user, services }: ClientCreateSong
   const [song, setSong] = useState<AddSongFormSchema>(initialSongValue)
   const [songFinderModalOpen, setSongFinderModalOpen] = useState<boolean>(false);
   const [addMultipleSongsModalOpen, setAddMultipleSongsModalOpen] = useState<boolean>(false);
+  const [isLeaveModalOpen, setIsLeaveModalOpen] = useState<boolean>(false);
   const [tab, setTab] = useState<tabs>("");
   const [isSetCreator, setIsSetCreator] = useState<boolean>(false);
   const { push, refresh } = useRouter();
@@ -120,17 +122,43 @@ export function ClientCreateSongPage({ dbSet, user, services }: ClientCreateSong
     })
   }
 
-  async function onLeaveSongSet(){
+  function openLeaveModal() {
+    setIsLeaveModalOpen(true);
+  }
+
+  function closeLeaveModal() {
+    setIsLeaveModalOpen(false);
+  }
+
+  async function onLeaveSongSet() {
     try {
       const result = await handleLeaveSongSet(songSet.id, user.id);
 
-      if(result) {
+      if (result) {
         toast.success("Leaved song set successfully");
         refresh();
         push("/songsets");
       }
     } catch (error) {
-      
+
+    }
+  }
+
+  async function handleConfirmLeave() {
+    await onLeaveSongSet();
+    closeLeaveModal();
+  }
+
+  async function onJoinPublicSongSet(songSet: SongSet) {
+    try {
+      const response = await handleJoinPublicSongSet(songSet.id, user.id)
+      if (response) {
+        toast.success("Joined song set successfully!")
+        push("/songsets/vote/" + songSet.id);
+      }
+    } catch (error) {
+      toast.error("Something went wrong!")
+      console.log(error)
     }
   }
 
@@ -196,7 +224,7 @@ export function ClientCreateSongPage({ dbSet, user, services }: ClientCreateSong
                     <Search className="icon" />
                   </Button>
                   <Button type="button" title="Add Multiple Songs" className="search-button" onClick={() => { setAddMultipleSongsModalOpen(true) }}>
-                    <Plus className="icon"  />
+                    <Plus className="icon" />
                   </Button>
                   {/* <Search className="icon" onClick={() => { setSongFinderModalOpen(true) }} /> */}
                   {/* <span onClick={() => { setSongFinderModalOpen(true) }}>
@@ -210,18 +238,29 @@ export function ClientCreateSongPage({ dbSet, user, services }: ClientCreateSong
                   updateSongState={setSong}
                 />
               </div>
-            </> : 
+            </> :
             (
               songSet.id != 0 &&
               <div className="not-creator-div">
-              <span className="titleSongSet">{songSet.name}</span>
-              <Button
-                name='Leave Song Set'
-                className="leave-button"
-                type="button"
-                onClick={onLeaveSongSet}
-              />
-            </div>
+                <span className="titleSongSet">{songSet.name}</span>
+                <div className="d-flex gap-2 buttons">
+                  {songSet.usersOn?.some(userOn => userOn.user.id == user.id) ? (
+                    <Button
+                      name='Leave Song Set'
+                      className="leave-button"
+                      type="button"
+                      onClick={openLeaveModal}
+                    />
+                  ) : (
+                    <Button
+                      name='Join Song Set'
+                      className="join-button"
+                      type="button"
+                      onClick={() => onJoinPublicSongSet(songSet)}
+                    />
+                  )}
+                </div>
+              </div>
             )
         }
       </div>
@@ -247,6 +286,15 @@ export function ClientCreateSongPage({ dbSet, user, services }: ClientCreateSong
             return <></>
         }
       })()}
+
+      {isLeaveModalOpen && (
+        <ConfirmDeleteModal
+          title="Leave song set"
+          message={`Are you sure you want to leave the song set "${songSet.name}"?`}
+          onConfirm={handleConfirmLeave}
+          onCancel={closeLeaveModal}
+        />
+      )}
     </>
   )
 }

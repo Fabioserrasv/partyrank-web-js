@@ -4,7 +4,8 @@ import { getAllScoreFromSong } from '@/actions/score.actions';
 export async function GET(req: Request, res: Response){
   try {
     const id = Number(req.url.slice(req.url.lastIndexOf('/') + 1));
-    const scores = await getAllScoreFromSong(id);
+    const resultScores = await getAllScoreFromSong({ songId: id });
+    const scores = resultScores.scores;
   
     return NextResponse.json(scores)
   } catch (error) {

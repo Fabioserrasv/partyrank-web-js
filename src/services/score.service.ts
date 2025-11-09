@@ -1,5 +1,6 @@
 import { prisma } from '../lib/prisma';
 import { convertDbScoreToModel } from '../repositories/score.repository';
+import { Prisma } from '@prisma/client';
 
 export class ScoreService {
   constructor() { }
@@ -80,16 +81,42 @@ export class ScoreService {
     }
   }
 
-  async getAllScoreFromSong(songId: number){
+  async getAllScoreFromSong(filters: FiltersQueryScore, count: boolean = false): Promise<Score[] | number> {
     try {
-      const songs = await prisma.score.findMany({
-        where: {
-          deletedAt: null,
-          songId: songId
-        }
-      });
+      const where: Prisma.ScoreWhereInput = {
+        ...(filters.songId && {
+          songId: filters.songId
+        }),
+        ...(filters.userId && {
+          userId: filters.userId
+        }),
+        deletedAt: null
+      };
 
-      return songs.map(convertDbScoreToModel);
+      let scores: Score[] | number;
+
+      if(count){
+        scores = await prisma.score.count({
+          where: where
+        });
+      }else{
+        const dbScores = await prisma.score.findMany({
+          where: where,
+          skip: filters.offset,
+          take: filters.limit,
+          orderBy: {
+            [filters.orderBy || 'createdAt']: filters.orderDirection || 'desc'
+          }
+        });
+
+        scores = dbScores.map(convertDbScoreToModel);
+      }
+
+      if(!count){
+        return scores as Score[];
+      }
+
+      return Number(scores);
     } catch (error) {
       throw error;
     }

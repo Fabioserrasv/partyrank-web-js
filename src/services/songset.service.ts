@@ -3,6 +3,7 @@ import { prisma } from '../lib/prisma';
 import { convertDbSetToModel } from '../repositories/songset.repository';
 import { options } from '../app/api/auth/[...nextauth]/options';
 import { UserService } from './user.service';
+import { Prisma } from '@prisma/client';
 export class SongSetService {
   constructor() { }
 
@@ -27,71 +28,89 @@ export class SongSetService {
     }
   }
 
-  async getAll(filters: FiltersQuerySongSet, loggedUserId?: number): Promise<SongSet[]> {
+  async getAll(filters: FiltersQuerySongSet, loggedUserId?: number, count: boolean = false): Promise<SongSet[] | number> {
     try {
-      const sets = await prisma.songSet.findMany({
-        include: {
-          songs: {
-            where: {
-              deletedAt: null
-            }
-          },
-          user: {
-            select: {
-              username: true,
-              id: true,
-              imageUrl: true
-            }
-          },
-          users: {
-            select: {
-              accepted: true,
-              user: {
-                select: {
-                  id: true,
-                  username: true,
-                  animeList: true,
-                  imageUrl: true
+      const where: Prisma.SongSetWhereInput = {
+        name: {
+          contains: filters.name
+        },
+        user: {
+          username: {
+            contains: filters.creatorName
+          }
+        },
+        status: filters.status,
+        scoreSystem: filters.systemType,
+        OR: [
+          {
+            users: {
+              some: {
+                user: {
+                  id: loggedUserId
                 }
               }
             }
-          }
-        },
-        where: {
-          name: {
-            contains: filters.name
           },
-          user: {
-            username: {
-              contains: filters.creatorName
+          {
+            user: {
+              id: loggedUserId
             }
-          },
-          status: filters.status,
-          scoreSystem: filters.systemType,
-          OR: [
-            {
-              users: {
-                some: {
-                  user: {
-                    id: loggedUserId
+          }
+        ],
+        deletedAt: null
+      };
+
+      let sets: SongSet[] | number;
+
+      if(count){
+        sets = await prisma.songSet.count({
+          where: where
+        });
+      }else{
+        sets = await prisma.songSet.findMany({
+          include: {
+            songs: {
+              where: {
+                deletedAt: null
+              }
+            },
+            user: {
+              select: {
+                username: true,
+                id: true,
+                imageUrl: true
+              }
+            },
+            users: {
+              select: {
+                accepted: true,
+                user: {
+                  select: {
+                    id: true,
+                    username: true,
+                    animeList: true,
+                    imageUrl: true
                   }
                 }
               }
-            },
-            {
-              user: {
-                id: loggedUserId
-              }
             }
-          ],
-          deletedAt: null
-        }
-      });
+          },
+          where: where,
+          skip: filters.offset,
+          take: filters.limit,
+          orderBy: {
+            [filters.orderBy || 'createdAt']: filters.orderDirection || 'desc'
+          }
+        });
+      }
 
+      if(!count){
+        const result = await Promise.all(sets.map(async (s) => await convertDbSetToModel(s)));
 
-      const result = await Promise.all(sets.map(async (s) => await convertDbSetToModel(s)));
+        return result;
+      }
 
-      return result;
+      return Number(sets);
     } catch (error) {
       throw error;
     }
@@ -154,6 +173,11 @@ export class SongSetService {
             }
           ],
           deletedAt: null
+        },
+        take: filters.filters?.limit,
+        skip: filters.filters?.offset,
+        orderBy: {
+          [filters.filters?.orderBy || 'createdAt']: filters.filters?.orderDirection || 'desc'
         }
       });
 

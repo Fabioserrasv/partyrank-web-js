@@ -8,15 +8,18 @@ import toast from "react-hot-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "../validations/authValidations";
 import { handleCreateUserForm } from "@/handlers/user.handlers";
-
+import { useRouter } from "next/navigation";
 type FormRegisterProps = {
 }
 
 type UserRegister = UserPostData & {
   repassword: string
+  // email: string
+  // confirmEmail: string
 }
 
 export function FormRegister({  }: FormRegisterProps) {
+  const { push } = useRouter();
   const { register, handleSubmit, formState: { errors }, setValue } = useForm<UserRegister>({
     resolver: zodResolver(registerSchema)
   });
@@ -27,7 +30,7 @@ export function FormRegister({  }: FormRegisterProps) {
 
       if (newUser) {
         toast.success("User created successfully")
-        window.location.href = "/login"
+        push("/login");
         return;
       }
 
@@ -48,6 +51,24 @@ export function FormRegister({  }: FormRegisterProps) {
         placeholder="xxNarutoxx..."
         {...register("username")}
       />
+
+      {/* <Input
+        displayName="Email"
+        type="email"
+        className="emailInput"
+        errorMessage={errors.email?.message}
+        placeholder="example@example.com"
+        {...register("email")}
+      />
+
+      <Input
+        displayName="Confirm Email"
+        type="email"
+        className="confirmEmailInput"
+        errorMessage={errors.confirmEmail?.message}
+        placeholder="example@example.com"
+        {...register("confirmEmail")}
+      /> */}
 
       <div className="inputPass">
         <Input

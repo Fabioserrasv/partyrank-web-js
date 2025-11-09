@@ -195,8 +195,12 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
     <div className={`votePage`}>
       <div className={`video`}>
         {selectedSong?.link ? 
-        // <video src={selectedSong.link} width="320" height="240" controls></video>
-        <iframe src={selectedSong.link} ></iframe>
+        <>
+          <iframe src={selectedSong.link} ></iframe>
+          <div className="video-controls">
+            <Monitor onClick={() => { setIsTheaterMode(!isTheaterMode) }} />
+          </div>
+        </>
         : <div>Song Not Found</div>}
       </div>
 
@@ -232,7 +236,6 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
       <div className="aside">
         <div className="top-list">
           <h2>{`${set.name} | Score: ${average ? average : 0}`}</h2> 
-          <Monitor onClick={() => { setIsTheaterMode(!isTheaterMode) }} />
         </div>
         <div className='list'>
           <Table>

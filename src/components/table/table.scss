@@ -1,5 +1,5 @@
-.table {
-  width: 60%;
+.table-container {
+  // width: 60%;
   height: 100%;
 
   .cell {
@@ -9,9 +9,14 @@
       height: 100px;
     }
 
+
+    @include mobile {
+      height: 110px;
+    }
+
     display: flex;
     justify-content: center;
-    
+      
     border-radius: .4rem;
     margin-bottom: 10px;
     padding: 10px;
@@ -27,6 +32,7 @@
       flex-direction: column;
       justify-content: center;
       margin-right: auto;
+
 
       &.edit{
         cursor: pointer;
@@ -44,9 +50,25 @@
       }
     }
 
+    .song-anime-mobile{
+      display: none;
+    }
+
+    @include mobile {
+      .song-anime-mobile{
+        display: block;
+      }
+    }
+
+    .song-title {
+      font-size: 2rem;
+      @include mobile {
+        font-size: 1rem !important;
+      }
+    }
+
     span {
       color: $primaryColor;
-      font-size: 2rem;
       
       @include dark{
         color: $secondaryColor;
@@ -56,6 +78,11 @@
     .extraInfo{
       display: flex;
       margin-top: 10px;
+      
+      @include mobile {
+        display: none;
+
+      }
 
       span{
         svg{
@@ -63,8 +90,16 @@
         }
 
         color: $lightTextPrimary;
-        font-size: 1rem;
-      
+        // font-size: 1rem;
+
+        @media (max-width: $notebook-width) {
+          font-size: .8rem !important;
+        }
+
+        @media (max-width: $tablet-width) {
+          font-size: .4rem !important;
+        }
+
         &:not(:first-child){
           margin-left: 20px;
         }

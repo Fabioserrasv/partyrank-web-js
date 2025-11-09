@@ -1,14 +1,14 @@
 .content {
-  min-height: 100vh;
-  min-width: 100vh;
+  // min-height: 100vh;
+  // min-width: 100vh;
 
-  width: 100%;
-  height: 100%;
+  // width: 100%;
+  // height: 100%;
 
-  display: grid;
-  grid-template-areas: "top top top"
-    "center center center"
-  ;
+  // display: grid;
+  // grid-template-areas: "top top top"
+  //   "center center center"
+  // ;
 
   header {
     grid-area: top;

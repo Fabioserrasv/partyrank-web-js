@@ -13,10 +13,17 @@
   ;
   grid-template-columns: 2fr 2fr 1fr 1fr;
 
+  @include mobile {
+    grid-template-areas: "video video video video"
+                          "info info info info"
+                          "aside aside aside aside";
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+
   &.not-theater{
-    grid-template-areas: "video video video aside"
-                          "video video video aside"
-                          "info info info aside";
+    grid-template-areas: "video video aside aside"
+                          "video video aside aside"
+                          "info info aside aside";
     grid-template-columns: 2fr 2fr 1fr 1fr;
 
     .aside{
@@ -31,11 +38,17 @@
     }
 
     .video{
-      padding: 5px 5px 5px 20px;
+      // padding: 5px 5px 5px 20px;
+      width: 100%;
       background-color: unset !important;
-      video{
-        width: 100%;
-        height: 100%;
+      padding-top: -25px;
+
+      video, iframe{
+        border: none;
+        aspect-ratio: 16/9;
+        width: 100% !important;
+        height: unset !important;
+        padding-bottom: 17px;
       }
     }
   }
@@ -44,6 +57,7 @@
     grid-area: video;
     display: flex;
     justify-content: center;
+    position: relative;
     background-color: black;
 
     @include dark {
@@ -54,12 +68,58 @@
       border: none;
       height: 660px;
       aspect-ratio: 16/9;
+
+      @include mobile {
+        height: 100%;
+        width: 100%;
+      }
     }
 
     video{
       border: none;
       width: 1244px;
       height: 700px;
+    }
+
+    .video-controls {
+      position: absolute;
+      top: 60px;
+      right: 15px;
+      z-index: 10;
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 4px;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background-color 0.2s;
+
+      @include mobile {
+        display: none;
+      }
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+
+      svg {
+        color: white;
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+      }
+
+      @include mobile {
+        top: 5px;
+        right: 5px;
+        padding: 6px;
+
+        svg {
+          width: 20px;
+          height: 20px;
+        }
+      }
     }
   }
 
@@ -76,6 +136,16 @@
     span {
       font-weight: bold;
       font-size: 1.5rem;
+
+      @include mobile {
+        font-size: 1rem;
+      }
+    }
+
+    @include mobile {
+      form{
+        padding-top: 10px;
+      }
     }
 
     .inputsvote {
@@ -83,8 +153,18 @@
       display: flex;
       align-items: flex-end;
 
+      @include mobile {
+        padding-top: 0px;
+      }
+
       .inputGroup {
         width: 30%;
+
+        @include mobile {
+          label{
+            font-size: .7rem;
+          }
+        }
 
         &:not(:first-child) {
           margin-left: 20px;
@@ -112,15 +192,19 @@
       display: flex;
       align-items: center;
 
-      svg{
-        padding-top: 5px;
-        margin-left: 15px;
-        cursor: pointer;
-      }      
+      @include mobile {
+        h2{
+          font-size: 1.2rem;
+          margin-bottom: unset !important;
+        }
+      }
     }
 
     h2 {
       padding: .5rem 0px 0px 1rem;
+      @include mobile {
+        padding: 0.5rem 1rem 0px 1rem;
+      }
     }
 
     .list {
@@ -129,10 +213,15 @@
       max-height: 600px;
       overflow: auto;
       width: 90%;
+
+      @include mobile {
+        width: 98%;
+      }
+
       // border: 1px solid blue;
       padding: 10px 1rem 1rem 1rem;
 
-      .table {
+      .table-container {
         width: 100%;
 
         .cell {

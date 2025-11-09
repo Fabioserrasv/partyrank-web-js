@@ -81,15 +81,41 @@ export class UserService {
     });
   }
 
-  async getAllUsers(): Promise<User[]> {
+  async getAllUsers(filters: FiltersQueryUser, count: boolean = false): Promise<User[] | number> {
     try {
-      const users = await prisma.user.findMany({
-        where: {
-          deletedAt: null
-        }
-      });
+      const where: Prisma.UserWhereInput = {
+        ...(filters.username && {
+          username: {
+            contains: filters.username
+          }
+        }),
+        deletedAt: null
+      };
 
-      return users.map(convertDbUserToModel);
+      let users: User[] | number;
+
+      if(count){
+        users = await prisma.user.count({
+          where: where
+        });
+      }else{
+        const dbUsers = await prisma.user.findMany({
+          where: where,
+          skip: filters.offset,
+          take: filters.limit,
+          orderBy: {
+            [filters.orderBy || 'createdAt']: filters.orderDirection || 'desc'
+          }
+        });
+
+        users = dbUsers.map(convertDbUserToModel);
+      }
+
+      if(!count){
+        return users as User[];
+      }
+
+      return Number(users);
     } catch (error) {
       throw error;
     }

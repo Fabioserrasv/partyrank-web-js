@@ -1,6 +1,7 @@
 import { prisma } from '../lib/prisma';
 import { SongSetService } from './songset.service';
 import { convertDbSongToModel, convertType } from '../repositories/song.repository';
+import { Prisma } from '@prisma/client';
 
 export class SongService {
   constructor() { }
@@ -92,15 +93,57 @@ export class SongService {
     }
   }
 
-  async getAll(): Promise<Song[]> {
+  async getAll(filters: FiltersQuerySong, count: boolean = false): Promise<Song[] | number> {
     try {
-      const songs = await prisma.song.findMany({
-        where: {
-          deletedAt: null
-        }
-      });
+      const where: Prisma.SongWhereInput = {
+        ...(filters.name && {
+          name: {
+            contains: filters.name
+          }
+        }),
+        ...(filters.anime && {
+          anime: {
+            contains: filters.anime
+          }
+        }),
+        ...(filters.artist && {
+          artist: {
+            contains: filters.artist
+          }
+        }),
+        ...(filters.type && {
+          type: filters.type
+        }),
+        ...(filters.songSetId && {
+          songSetId: filters.songSetId
+        }),
+        deletedAt: null
+      };
 
-      return songs.map(convertDbSongToModel);
+      let songs: Song[] | number;
+
+      if(count){
+        songs = await prisma.song.count({
+          where: where
+        });
+      }else{
+        const dbSongs = await prisma.song.findMany({
+          where: where,
+          skip: filters.offset,
+          take: filters.limit,
+          orderBy: {
+            [filters.orderBy || 'createdAt']: filters.orderDirection || 'desc'
+          }
+        });
+
+        songs = dbSongs.map(convertDbSongToModel);
+      }
+
+      if(!count){
+        return songs as Song[];
+      }
+
+      return Number(songs);
     } catch (error) {
       throw error;
     }

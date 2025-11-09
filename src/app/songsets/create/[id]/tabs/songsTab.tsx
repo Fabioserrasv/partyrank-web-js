@@ -4,6 +4,7 @@ import { Table, TableRow } from "@/components/table";
 import { reverseArray } from "@/lib/utils";
 import { Globe, Mic2, Monitor, X } from "lucide-react";
 import { useEffect, useState } from "react";
+import ConfirmDeleteModal from '@/components/confirm-delete-modal';
 
 type SongsTabProps = {
   isSetCreator: boolean;
@@ -27,6 +28,8 @@ const sortOptions = [
 
 export function SongsTab({ onDeleteSong, onSongClick, songs, isSetCreator }: SongsTabProps) {
   const [songsTab, setSongsTab] = useState<Song[]>(songs);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+  const [songIdToRemove, setSongIdToRemove] = useState<number | null>(null);
 
   function onChangeSort(e: React.ChangeEvent<HTMLSelectElement>) {
     let cloneSongs = [...songs]
@@ -59,6 +62,23 @@ export function SongsTab({ onDeleteSong, onSongClick, songs, isSetCreator }: Son
     setSongsTab(reverseArray(s))
   }, [songs])
 
+  function openDeleteModal(songId: number) {
+    setSongIdToRemove(songId);
+    setIsDeleteModalOpen(true);
+  }
+
+  function closeDeleteModal() {
+    setIsDeleteModalOpen(false);
+    setSongIdToRemove(null);
+  }
+
+  async function handleConfirmDelete() {
+    if (songIdToRemove !== null) {
+      await onDeleteSong(songIdToRemove);
+      closeDeleteModal();
+    }
+  }
+
   return (
     <div className="songsDiv">
       <Select
@@ -73,7 +93,8 @@ export function SongsTab({ onDeleteSong, onSongClick, songs, isSetCreator }: Son
             return (
               <TableRow key={song.id}>
                 <div className='info edit' onClick={() => { onSongClick(song) }}>
-                  <span>{`${song.artist} - ${song.name}`}</span>
+                  <span className="song-title">{`${song.artist} - ${song.name}`}</span>
+                  <small className="song-anime-mobile">{song.anime}</small>
                   <div className="extraInfo">
                     <span>
                       <Monitor />
@@ -92,7 +113,7 @@ export function SongsTab({ onDeleteSong, onSongClick, songs, isSetCreator }: Son
                 {
                   isSetCreator &&
                   <div className='actions'>
-                    <X className="icon" onClick={() => { onDeleteSong(song.id) }} />
+                    <X className="icon" onClick={() => { openDeleteModal(song.id) }} />
                   </div>
                 }
               </TableRow>
@@ -100,6 +121,15 @@ export function SongsTab({ onDeleteSong, onSongClick, songs, isSetCreator }: Son
           })
         }
       </Table>
+
+      {isDeleteModalOpen && songIdToRemove !== null && (
+        <ConfirmDeleteModal
+          title="Delete song"
+          message={`Are you sure you want to delete the song ${songsTab.find(s => s.id === songIdToRemove)?.artist} - ${songsTab.find(s => s.id === songIdToRemove)?.name}?`}
+          onConfirm={handleConfirmDelete}
+          onCancel={closeDeleteModal}
+        />
+      )}
     </div>
   )
 }

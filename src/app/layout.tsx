@@ -1,13 +1,14 @@
 import type { Metadata } from 'next'
-import { Roboto } from 'next/font/google'
+import { Noto_Sans } from 'next/font/google'
 import { ThemeProvider } from '../context/ThemeContext'
+import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/layout.scss';
 import AuthProvider from '../context/AuthProvider';
 import { getServerSession } from 'next-auth';
 import { options } from './api/auth/[...nextauth]/options';
 import { Page } from '@/components/page';
 
-const roboto = Roboto({
+const notoSans = Noto_Sans({
   weight: '400',
   subsets: ['latin'],
 })
@@ -27,7 +28,7 @@ export default async function RootLayout({
 
   return (
     <html lang="pt-BR" className={theme}>
-      <body className={roboto.className}>
+      <body className={notoSans.className}>
         <AuthProvider>
           <ThemeProvider theme={theme}>
             <Page>
