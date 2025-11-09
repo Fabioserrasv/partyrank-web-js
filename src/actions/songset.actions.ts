@@ -54,8 +54,8 @@ export async function getAllSongSets(filters: FiltersQuerySongSet, loggedUserId:
   const setService = new SongSetService;
   try {
     const sets = await setService.getAll(filters, loggedUserId);
-    const count = await setService.getAll(filters, loggedUserId, {count: true});
-    return {sets: sets, count: count}
+    const count = await setService.getAll(filters, loggedUserId, true);
+    return {sets: sets as SongSet[], count: count as number}
   } catch (error) {
     throw error
   }
@@ -65,9 +65,9 @@ export async function getAllSongSetsHomePage(filters: FiltersQuerySongSet, logge
   const setService = new SongSetService;
   try {
     const sets = await setService.getAllPublic(filters, loggedUserId);
-    const count = await setService.getAllPublic(filters, loggedUserId, {count: true});
+    const count = await setService.getAllPublic(filters, loggedUserId, true);
     
-    return {sets: sets, count: count}
+    return {sets: sets as SongSet[], count: count as number}
   } catch (error) {
     throw error
   }
@@ -77,9 +77,9 @@ export async function getAllMySongSetsPage(filters: FiltersQuerySongSet, loggedU
   const setService = new SongSetService;
   try {
     const sets = await setService.getAll(filters, loggedUserId);
-    const count = await setService.getAll(filters, loggedUserId, {count: true});
+    const count = await setService.getAll(filters, loggedUserId, true);
 
-    return {sets: sets, count: count}
+    return {sets: sets as SongSet[], count: count as number}
   } catch (error) {
     throw error
   }

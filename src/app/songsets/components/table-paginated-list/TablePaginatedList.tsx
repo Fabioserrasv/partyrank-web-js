@@ -66,10 +66,10 @@ export function TablePaginatedList({ itemsPerPage, pageType, sets, user, initial
       resultSongSets = await handleGetAllSongSets(newFilterQuery, user.id);
     }
 
-    generatePlaceholderSets(resultSongSets.sets, itemsPerPage)
+    generatePlaceholderSets(resultSongSets.sets || [], itemsPerPage)
 
-    setSongSets(resultSongSets.sets)
-    setTotalSets(resultSongSets.count)
+    setSongSets(resultSongSets.sets || [])
+    setTotalSets(resultSongSets.count || 0)
   }
 
   async function onJoinPublicSongSet(songSet: SongSet) {
@@ -151,7 +151,7 @@ export function TablePaginatedList({ itemsPerPage, pageType, sets, user, initial
     }
   }
 
-  function srcImage(link: string) {
+  function srcImage(link: string | undefined) {
     if (link != '' && link != null && link != undefined) {
       return link;
     } else {

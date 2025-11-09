@@ -21,9 +21,9 @@ type NavProps = {
 
 export function Nav({ user }: NavProps) {
   const { isDarkMode } = useTheme();
+  const pathname = usePathname();
 
   function isActive(path: string) {
-    const pathname = usePathname();
     return pathname.includes(path) ? 'active' : '';
   }
     

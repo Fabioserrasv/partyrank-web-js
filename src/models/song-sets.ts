@@ -75,6 +75,6 @@ type FiltersQuerySongSet = BaseFilters & {
 } 
 
 type ResultSongSets = {
-  sets: SongSet[];
-  count: number;
+  sets?: SongSet[];
+  count?: number;
 }

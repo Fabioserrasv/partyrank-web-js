@@ -20,14 +20,14 @@ export default async function SongSets() {
   let sets = resultSongSets.sets;
   let count = resultSongSets.count;
 
-  generatePlaceholderSets(sets, 8);
+  generatePlaceholderSets(sets || [], 8);
 
   return (
     <div className="songSetPage">
       <HomeSongSetTable
         user={user}
-        initialSets={sets}
-        initialTotalSets={count}
+        initialSets={sets || []}
+        initialTotalSets={count || 0}
         pageType="private"
       />
     </div>

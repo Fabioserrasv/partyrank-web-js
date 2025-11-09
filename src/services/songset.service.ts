@@ -60,7 +60,7 @@ export class SongSetService {
         deletedAt: null
       };
 
-      let sets: SongSet[] | number;
+      let sets: any;
 
       if(count){
         sets = await prisma.songSet.count({
@@ -105,7 +105,8 @@ export class SongSetService {
       }
 
       if(!count){
-        const result = await Promise.all(sets.map(async (s) => await convertDbSetToModel(s)));
+        sets = sets as SongSet[];
+        const result = await Promise.all(sets.map(async (s:SongSet) => await convertDbSetToModel(s)));
 
         return result;
       }
@@ -116,74 +117,89 @@ export class SongSetService {
     }
   }
 
-  async getAllPublic(filters: FiltersQuerySongSet, loggedUserId: number): Promise<SongSet[]> {
+  async getAllPublic(filters: FiltersQuerySongSet, loggedUserId: number, count: boolean = false): Promise<SongSet[] | number> {
     try {
-      const sets = await prisma.songSet.findMany({
-        include: {
-          songs: {
-            where: {
-              deletedAt: null
+      const where: Prisma.SongSetWhereInput = {
+        name: {
+          contains: filters.name
+        },
+        user: {
+          username: {
+            contains: filters.creatorName
+          }
+        },
+        status: filters.status,
+        scoreSystem: filters.systemType,
+        type: 'PUBLIC',
+        NOT: [
+          {
+            user: {
+              id: loggedUserId
             }
           },
-          user: {
-            select: {
-              username: true,
-              id: true
-            }
-          },
-          users: {
-            select: {
-              accepted: true,
-              user: {
-                select: {
-                  id: true,
-                  username: true,
-                  animeList: true
+          {
+            users: {
+              some: {
+                user: {
+                  id: loggedUserId
                 }
               }
             }
           }
-        },
-        where: {
-          name: {
-            contains: filters.name
-          },
-          user: {
-            username: {
-              contains: filters.creatorName
-            }
-          },
-          status: filters.status,
-          scoreSystem: filters.systemType,
-          type: 'PUBLIC',
-          NOT: [
-            {
-              user: {
-                id: loggedUserId
+        ],
+        deletedAt: null
+      };
+
+      let sets: any;
+
+      if(count){
+        sets = await prisma.songSet.count({
+          where: where
+        });
+      }else{
+        sets = await prisma.songSet.findMany({
+          include: {
+            songs: {
+              where: {
+                deletedAt: null
               }
             },
-            {
-              users: {
-                some: {
-                  user: {
-                    id: loggedUserId
+            user: {
+              select: {
+                username: true,
+                id: true
+              }
+            },
+            users: {
+              select: {
+                accepted: true,
+                user: {
+                  select: {
+                    id: true,
+                    username: true,
+                    animeList: true
                   }
                 }
               }
             }
-          ],
-          deletedAt: null
-        },
-        take: filters.filters?.limit,
-        skip: filters.filters?.offset,
-        orderBy: {
-          [filters.filters?.orderBy || 'createdAt']: filters.filters?.orderDirection || 'desc'
-        }
-      });
+          },
+          where: where,
+          skip: filters.offset,
+          take: filters.limit,
+          orderBy: {
+            [filters.orderBy || 'createdAt']: filters.orderDirection || 'desc'
+          }
+        });
+      }
 
-      const result = await Promise.all(sets.map(async (s) => await convertDbSetToModel(s)));
+      if(!count){
+        sets = sets as SongSet[];
+        const result = await Promise.all(sets.map(async (s:SongSet) => await convertDbSetToModel(s)));
 
-      return result;
+        return result;
+      }
+
+      return Number(sets);
     } catch (error) {
       throw error;
     }

@@ -7,18 +7,18 @@ import { Button } from "@/components/button/Button";
 import { handleGetAllSongSets } from "@/handlers/songset.handlers";
 
 type TableWithFilterProps = {
-  initialSets: SongSet[];
+  initialSets?: SongSet[];
   user: User;
   pageType: 'home' | 'private';
 }
 
 export function TableWithFilter({ initialSets, user, pageType }: TableWithFilterProps) {
-  const [sets, setSets] = useState<SongSet[]>(initialSets)
+  const [sets, setSets] = useState<SongSet[]>(initialSets || [])
   const [filterQuery, setFilterQuery] = useState<FiltersQuerySongSet>({})
 
   async function onSubmitFilter() {
     const filteredSets = await handleGetAllSongSets(filterQuery, user?.id);
-    setSets(filteredSets)
+    setSets(filteredSets.sets || [])
   }
 
   return (

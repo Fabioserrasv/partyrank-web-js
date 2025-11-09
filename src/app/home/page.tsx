@@ -14,15 +14,13 @@ export default async function Home() {
   let resultSongSets = await getAllSongSetsHomePage({
     name: "",
     creatorName: "",
-    filters: {
-      offset: 0,
-      limit: 8
-    }
+    offset: 0,
+    limit: 8
   }, user?.id);
   let sets = resultSongSets.sets;
   let count = resultSongSets.count;
 
-  generatePlaceholderSets(sets, 8);
+  generatePlaceholderSets(sets || [], 8);
 
   return (
     <div className='homePage'>

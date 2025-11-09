@@ -56,10 +56,14 @@ export function generatePlaceholderSets(songSets: SongSet[], itemsPerPage: numbe
       songSets.push({
         id: Math.random() + i * 10,
         name: `-`,
+        anilistLink: '',
         isPlaceholder: true,
         coverImage: '',
         songs: [],
-        user: null,
+        type: 'PRIVATE',
+        status: 'PAUSED',
+        scoreSystem: 'RANKING',
+        user: undefined,
       });
     }
   }

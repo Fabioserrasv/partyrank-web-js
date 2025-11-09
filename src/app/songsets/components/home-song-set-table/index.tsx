@@ -32,21 +32,21 @@ const systemTypeOptions = [
 ]
 
 type HomeSongSetTableProps = {
-  initialSets: SongSet[];
-  initialTotalSets: number;
+  initialSets?: SongSet[];
+  initialTotalSets?: number;
   user: User;
   pageType: 'home' | 'private';
 }
 
 export function HomeSongSetTable({ initialSets, user, pageType, initialTotalSets }: HomeSongSetTableProps) {
-  const [sets, setSets] = useState<SongSet[]>(initialSets)
+  const [sets, setSets] = useState<SongSet[]>(initialSets || [])
   const [filterQuery, setFilterQuery] = useState<FiltersQuerySongSet>({
     name: "",
     offset: 0,
     limit: 8
   })
   const [openFilters, setOpenFilters] = useState(false);
-  const [totalSets, setTotalSets] = useState(initialTotalSets);
+  const [totalSets, setTotalSets] = useState(initialTotalSets || 0);
 
   const router = useRouter();
   const pathname = usePathname();
@@ -69,20 +69,21 @@ export function HomeSongSetTable({ initialSets, user, pageType, initialTotalSets
   async function onSubmitFilter() {
     let filteredSets
     let count
+    let dbSongSets: ResultSongSets;
     if (pageType == 'home') {
       dbSongSets = await handleGetHomeSongSets(filterQuery, user.id);
     } else {
       dbSongSets = await handleGetAllSongSets(filterQuery, user.id);
     }
-    count = dbSongSets.count;
+    count = dbSongSets.count || 0;
     filteredSets = dbSongSets.sets;
 
-    setSets(filteredSets)
+    setSets(filteredSets || [])
     setTotalSets(count)
   }
 
   useEffect(() => {
-    generatePlaceholderSets(sets, 8)
+    generatePlaceholderSets(sets || [], 8)
   }, [sets])
 
   function onChangeFilter(filterQuery: FiltersQuerySongSet) {
