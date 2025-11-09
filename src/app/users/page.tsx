@@ -1,23 +1,17 @@
 import { getAllUsers } from "@/actions/user.actions";
-import { Table, TableRow } from "@/components/table";
-import { getUserImageUrlPath, getUserImageUrlPathFromUsername } from "@/lib/utils";
 import './user.scss';
-import Image from "next/image";
+import { UsersTable } from './components/UsersTable';
+
+export const dynamic = 'force-dynamic';
 
 export default async function Users() {
   const resultUsers = await getAllUsers({});
   const users = resultUsers.users;
-  return (<div className="users-page">
-    <h3>Ranking</h3>
-    <Table>
-      {
-        users.map((u) => {
-          return (<TableRow key={u.id}>
-            <Image width={0} height={0}  src={getUserImageUrlPath(u.imageUrl!)} alt="" />
-            <span>{u.username}</span>
-          </TableRow>)
-        })
-      }
-    </Table>
-  </div>)
+
+  return (
+    <div className="users-page">
+      <h3>Ranking</h3>
+      <UsersTable users={users} />
+    </div>
+  )
 }

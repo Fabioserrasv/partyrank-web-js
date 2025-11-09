@@ -23,9 +23,16 @@ export function convertDbUserToModel(dbUser: any): User {
     id: dbUser.id,
     username: dbUser.username,
     animeList: dbUser.animeList,
+    average: calculateAverage(dbUser.scores),
     admin: dbUser.admin,
-    scores: dbUser.scores,
+    // scores: dbUser.scores,
     invites: dbUser.SongSetsOn && dbUser.SongSetsOn.length > 0 ? dbUser.SongSetsOn.map(convertDbUsersOn) : [],
     imageUrl: dbUser.imageUrl
   }
+}
+
+function calculateAverage(scores: Score[]): number {
+  const avg = scores.map(score => score.value).reduce((acc: number, score: number) => acc + score, 0) / scores.length;
+  if(isNaN(avg)) return 0;
+  return Number(avg.toFixed(2));
 }

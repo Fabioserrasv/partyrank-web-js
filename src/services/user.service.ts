@@ -100,6 +100,9 @@ export class UserService {
         });
       }else{
         const dbUsers = await prisma.user.findMany({
+          include: {
+            scores: true
+          },
           where: where,
           skip: filters.offset,
           take: filters.limit,
