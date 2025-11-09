@@ -14,6 +14,8 @@ type FormRegisterProps = {
 
 type UserRegister = UserPostData & {
   repassword: string
+  // email: string
+  // confirmEmail: string
 }
 
 export function FormRegister({  }: FormRegisterProps) {
@@ -49,6 +51,24 @@ export function FormRegister({  }: FormRegisterProps) {
         placeholder="xxNarutoxx..."
         {...register("username")}
       />
+
+      {/* <Input
+        displayName="Email"
+        type="email"
+        className="emailInput"
+        errorMessage={errors.email?.message}
+        placeholder="example@example.com"
+        {...register("email")}
+      />
+
+      <Input
+        displayName="Confirm Email"
+        type="email"
+        className="confirmEmailInput"
+        errorMessage={errors.confirmEmail?.message}
+        placeholder="example@example.com"
+        {...register("confirmEmail")}
+      /> */}
 
       <div className="inputPass">
         <Input

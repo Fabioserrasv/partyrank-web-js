@@ -6,6 +6,12 @@
     "info songs songs"
   ;
 
+  @include mobile {
+    grid-template-areas: "info info info"
+                          "songs songs songs";
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
   grid-template-columns: 1fr 2fr 2fr;
   padding: 0px 1rem 0px 1rem;
 
@@ -86,11 +92,18 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
-      button{
-        width: 40%;
-        background-color: $redButton;
-        color: $darkTextPrimary;
+      
+      .buttons{
+        .leave-button{
+          width: 40%;
+          background-color: $redButton;
+          color: $darkTextPrimary;
+        }
+        .join-button{
+          background-color: $secondaryColorHover;
+        } 
       }
+
     }
 
     .songFormSection {
@@ -160,15 +173,26 @@
 
     .inputGroup {
       width: 10%;
+
+      @include mobile {
+        width: 30%;
+      }
+      
       margin-bottom: 5px;
       // margin-left: auto;
     }
 
     // margin-top: 10px;
-    .table {
+    .table-container {
       width: 100%;
 
       .cell {
+        @include mobile {
+          &>*{
+            font-size: 1rem
+          };
+        }
+
         .info {
           width: 100%;
         }
@@ -241,16 +265,23 @@
     }
 
     .table {
-      margin-top: 10px;
-      display: grid;
-      // grid-template-columns: 1fr 1fr;
-      gap: 5px;
-
-      width: 100%;
-
-      .cell {
-        flex: 50% 2;
-        // width: 100%;
+      
+      tbody {
+        tr:last-child td:first-child {
+          border-bottom-left-radius: 15px;
+        }
+  
+        tr:last-child td:last-child {
+          border-bottom-right-radius: 15px;
+        }
+  
+        tr:first-child td:first-child {
+          border-top-left-radius: 15px;
+        }
+  
+        tr:first-child td:last-child {
+          border-top-right-radius: 15px;
+        }
       }
     }
   }
@@ -361,4 +392,8 @@
       }
     }
   }
+}
+
+.pointer{
+  cursor: pointer;
 }

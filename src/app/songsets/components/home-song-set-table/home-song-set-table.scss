@@ -21,6 +21,13 @@
     }
   }
 
+  .div-filters-home{
+    max-height: 40px;
+    @include mobile {
+      max-height: unset;
+    }
+  }
+
   form{
     width: 100%;
   }

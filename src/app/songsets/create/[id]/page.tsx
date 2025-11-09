@@ -25,9 +25,9 @@ export default async function CreateSongSet({ params }: CreateSongSetProps) {
   if (params.id != 0) {
     const allowed = await checkIsAllowed(params.id);
 
-    if (!allowed) {
-      redirect("/songsets")
-    }
+    // if (!allowed) {
+    //   redirect("/songsets")
+    // }
   }
 
   return (

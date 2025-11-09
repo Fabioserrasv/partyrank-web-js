@@ -28,6 +28,7 @@ export default function ActionModal({ title, firstButton, secondButton, classNam
       title="Confirm Action"
       className="sm"
       closeModal={closeModal}
+      footer={false}
     >
       <span>{title}</span>
 

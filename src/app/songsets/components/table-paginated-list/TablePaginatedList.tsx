@@ -18,6 +18,7 @@ import { handleAddImageAnimeFormSubmit, handleGetImageAnime } from '@/handlers/i
 import Image from 'next/image';
 import { convertSongSetScoreSystemToString } from '@/repositories/songset.repository';
 import Link from 'next/link';
+import { generatePlaceholderSets } from '@/lib/utils';
 
 export const dynamic = 'force-dynamic';
 
@@ -52,12 +53,12 @@ export function TablePaginatedList({ itemsPerPage, pageType, sets, user, initial
 
   async function changePage(page: number) {
     const newFilterQuery = { ...filterQuery };
-    
+    console.log('passou aq')
     newFilterQuery.offset = page * itemsPerPage;
 
     onChangeFilter(newFilterQuery);
     setFilterQuery(newFilterQuery);
-    
+
     let resultSongSets;
     if (pageType == 'home') {
       resultSongSets = await handleGetHomeSongSets(newFilterQuery, user.id);
@@ -65,22 +66,7 @@ export function TablePaginatedList({ itemsPerPage, pageType, sets, user, initial
       resultSongSets = await handleGetAllSongSets(newFilterQuery, user.id);
     }
 
-    if (resultSongSets.sets.length < itemsPerPage) {
-      console.log(itemsPerPage - resultSongSets.sets.length)
-      const diff = itemsPerPage - resultSongSets.sets.length;
-      for (let i = 0; i < diff; i++) {
-        resultSongSets.sets.push({
-          id: Math.random() + i * 10,
-          name: `-`,
-          isPlaceholder: true,
-          coverImage: '',
-          songs: [],
-          user: null,
-        });
-      }
-    }
-
-    console.log('resultSongSets', resultSongSets)
+    generatePlaceholderSets(resultSongSets.sets, itemsPerPage)
 
     setSongSets(resultSongSets.sets)
     setTotalSets(resultSongSets.count)
@@ -106,11 +92,18 @@ export function TablePaginatedList({ itemsPerPage, pageType, sets, user, initial
 
   useEffect(() => {
     const endOffset = itemOffset + itemsPerPage;
-    
+
     const newSongSets = [...songSets];
     let hasChanged = false;
     newSongSets.forEach(async (songSet) => {
-      songSet.coverImage = await getCoverImageFromAnilist(songSet.anilistLink);
+      if(songSet.anilistLink != null && songSet.anilistLink != undefined && songSet.anilistLink != '') {
+        if(songSet.anilistLink.includes('https://anilist.co/')) {
+          songSet.coverImage = await getCoverImageFromAnilist(songSet.anilistLink);
+        } else {
+          songSet.coverImage = songSet.anilistLink;
+        }
+      }
+      // songSet.coverImage = await getCoverImageFromAnilist(songSet.anilistLink);
       // if (songSet.coverImage == '') {
       //   hasChanged = true;
       // }
@@ -119,6 +112,10 @@ export function TablePaginatedList({ itemsPerPage, pageType, sets, user, initial
       setSongSets(newSongSets)
     }
   }, [songSets])
+
+  // useEffect(() => {
+  //   generatePlaceholderSets(sets)
+  // }, [sets])
 
   async function getCoverImageFromAnilist(link: string): Promise<string> {
     return handleGetImageAnime(link).then((res) => {
@@ -146,80 +143,96 @@ export function TablePaginatedList({ itemsPerPage, pageType, sets, user, initial
     });
   }
 
+  function onCLickTr(songSet: SongSet) {
+    if (pageType == 'private') {
+      push(`/songsets/vote/${songSet.id}`)
+    } else {
+      push(`/songsets/create/${songSet.id}`)
+    }
+  }
+
+  function srcImage(link: string) {
+    if (link != '' && link != null && link != undefined) {
+      return link;
+    } else {
+      return 'https://cdn.discordapp.com/attachments/1104912890802225204/1436151459858092163/image.png?ex=690e8fc6&is=690d3e46&hm=229674b3996937f0ceb1a63cab0271c44cfe7286e0a97d56b3ff4fda7eba4133&';
+    }
+  }
+
   return (
     <>
       <div className='home-table'>
-        <Table className='table-home-song-sets' striped variant={isDarkMode ? 'dark' : 'light'}>
-          <tbody>
+        <Table className='table-home-song-sets mw-100' striped variant={isDarkMode ? 'dark' : 'light'}>
+          <tbody style={{ overflow: 'overlay' }}>
             {songSets && songSets.length > 0 ? songSets.map((songSet) => {
               return (
                 songSet.isPlaceholder ? (
                   <tr key={songSet.id}>
                     <td colSpan={5}>
-                      
+
                     </td>
                   </tr>
                 ) : (
-                <tr key={songSet.id}>
-                  <td style={{ width: '40%' }}>
-                    <div className='first-column d-flex align-items-center'>
-                      {
-                        songSet.coverImage  && songSet.coverImage != '-' ?
-                          <Image width={47} height={70} src={songSet.coverImage} alt="" /> :
-                          <Image width={47} height={70} src={'https://cdn.discordapp.com/attachments/1104912890802225204/1436151459858092163/image.png?ex=690e8fc6&is=690d3e46&hm=229674b3996937f0ceb1a63cab0271c44cfe7286e0a97d56b3ff4fda7eba4133&'} alt="" />
-                      }
-                      <div>
-                        <span className='title'>{songSet.name}</span>
-                        <span className='songs'>Songs: {songSet.songs?.length}</span>
-                        {/* <span className='created-at'>
+                  <tr className='pointer' key={songSet.id}>
+                    <td style={{ width: '40%' }} onClick={() => { onCLickTr(songSet) }}>
+                      <div className='first-column d-flex align-items-center'>
+                        <Image width={47} height={70} src={srcImage(songSet.coverImage)} alt="" />
+                        <div>
+                          <span className='title'>{songSet.name}</span>
+                          <span className='songs'>Songs: {songSet.songs?.length}</span>
+                          {/* <span className='created-at'>
                           <Calendar size={16} />
                           {moment(songSet.createdAt).format('DD/MM/YYYY')}
                         </span> */}
-                      </div>
-                    </div>
-                  </td>
-                  <td>
-                    <div className='d-flex align-items-center justify-content-center'>
-                      <span>
-                        <AlignEndHorizontal />
-                        {convertSongSetScoreSystemToString(songSet.scoreSystem)}
-                      </span>
-                    </div>
-                  </td>
-                  <td>
-                    <div className='d-flex align-items-center'>
-                      <span>
-                        <User />
-                        {songSet.user?.username}
-                      </span>
-                    </div>
-                  </td>
-                  <td>
-                    {
-                      pageType == 'private' ?
-                        <>
-                          <Link href={`/songsets/create/${songSet.id}`}>
-                            <FolderEdit />
-                          </Link>
-                          <Link href={`/songsets/vote/${songSet.id}`}>
-                            <Play />
-                          </Link>
-                        </>
-                        :
-                        <div className='icon-button d-flex align-items-center justify-content-center'>
-                          <DoorClosed className='closed' onClick={() => { onJoinPublicSongSet(songSet) }} />
-                          <DoorOpen className='open' onClick={() => { onJoinPublicSongSet(songSet) }} />
                         </div>
-                    }
-                  </td>
-                  {/* <td>{item.createdAt}</td> */}
-                  {/* <SongSetItem
+                      </div>
+                    </td>
+                    <td className='score-td' onClick={() => { onCLickTr(songSet) }}>
+                      <div className='d-flex align-items-center justify-content-center'>
+                        <span>
+                          <AlignEndHorizontal />
+                          {convertSongSetScoreSystemToString(songSet.scoreSystem)}
+                        </span>
+                      </div>
+                    </td>
+                    <td className='user-td' onClick={() => { onCLickTr(songSet) }}>
+                      <div className='d-flex align-items-center'>
+                        <span>
+                          <User />
+                          {songSet.user?.username}
+                        </span>
+                      </div>
+                    </td>
+                    <td>
+                      {
+                        pageType == 'private' ?
+                          <div className='icon-button d-flex align-items-center justify-content-center'>
+                            <Link href={`/songsets/create/${songSet.id}`} title='Edit Song Set'>
+                              <div className='icon-edit'>
+                                <FolderEdit />
+                              </div>
+                            </Link>
+                            <Link className='ms-3' href={`/songsets/vote/${songSet.id}`} title='Vote on Song Set'>
+                              <div>
+                                <Play />
+                              </div>
+                            </Link>
+                          </div>
+                          :
+                          <div className='icon-button d-flex align-items-center justify-content-center'>
+                            <DoorClosed className='closed' onClick={() => { onJoinPublicSongSet(songSet) }} />
+                            <DoorOpen className='open' onClick={() => { onJoinPublicSongSet(songSet) }} />
+                          </div>
+                      }
+                    </td>
+                    {/* <td>{item.createdAt}</td> */}
+                    {/* <SongSetItem
                   
                   songSet={item}
                   onJoinPublicSongSet={onJoinPublicSongSet}
                   pageType={pageType}
                 /> */}
-                </tr>
+                  </tr>
                 )
               )
             }) : <div>No Songs Set Found</div>}

@@ -6,6 +6,7 @@
   margin-top: 10px;
 
   .table-home-song-sets {
+    width: 100% !important;
     tbody {
       tr:last-child td:first-child {
         border-bottom-left-radius: 15px;
@@ -33,11 +34,34 @@
           }
         }
 
+        &:hover {
+          box-shadow: 0 0 10px 0 rgba(255,255,255, 0.1);
+        }
+        
+        @include mobile {
+          .score-td {
+            display: none;
+          }
+          .user-td {
+            display: none;
+          }
+        }
+
         .first-column {
 
           .title {
             font-size: 1.5rem;
             font-weight: 600;
+            width: 100%;
+
+            @include mobile {
+              width: 50%;
+            }
+
+            // white-space: nowrap;
+            // overflow: hidden !important;
+            // text-overflow: ellipsis;
+        
           }
 
           .songs {
@@ -67,6 +91,12 @@
         .icon-button {
           cursor: pointer;
 
+          @include mobile {
+            .icon-edit {
+              display: none;
+            }
+          }
+
           .open {
             display: none;
             margin-bottom: 2px;
@@ -88,4 +118,15 @@
     }
 
   }
+}
+
+.pointer{
+  cursor: pointer;
+}
+
+.page-item.active .page-link {
+  // color: #fff !important;
+  background: $secondaryColorHover !important;
+  box-shadow: unset;
+  border: 1px solid transparent;
 }

@@ -2,6 +2,7 @@ type UserPostData = {
   username: string;
   password: string;
   animeList: string;
+  email: string;
 }
 
 type UserUpdateData = {

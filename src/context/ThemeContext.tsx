@@ -37,9 +37,7 @@ export const ThemeProvider = ({ children, theme }: ThemeProviderProps) => {
     document.documentElement.classList.toggle('dark', newDarkMode);
     
     await update({
-      ...session,
       user: {
-        ...session?.user,
         theme: newTheme
       }
     });

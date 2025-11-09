@@ -22,7 +22,7 @@ const NavDropdown = forwardRef<HTMLUListElement, NavDropdownProps>(({ isOpen }: 
         </li>
       </Link>
 
-      <li className="item" onClick={toggleTheme}>
+      <li className="item" onClick={() => { toggleTheme() }}>
         <Moon className="icon" />
         <span>Change Theme</span>
       </li>

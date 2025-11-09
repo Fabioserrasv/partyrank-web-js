@@ -15,7 +15,7 @@ type CellProps = HTMLAttributes<HTMLDivElement> & {
 
 export function Table({ children }: CellProps) {
   return (
-    <div className="table">
+    <div className="table-container">
       {children}
     </div>
   )

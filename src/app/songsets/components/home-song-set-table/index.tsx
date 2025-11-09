@@ -14,6 +14,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Collapse from 'react-bootstrap/Collapse';
 import { TablePaginatedList } from '../table-paginated-list/TablePaginatedList';
+import { generatePlaceholderSets } from '@/lib/utils';
 
 const statusOptions = [
   { value: "", display: "Select Status" },
@@ -59,6 +60,10 @@ export function HomeSongSetTable({ initialSets, user, pageType, initialTotalSets
       toast.error("You don't have permission to vote on this songset");
       router.replace('/songsets', { scroll: false });
     }
+    if (error === 'no_songs_in_set') {
+      toast.error("You can't vote on a song set with no songs");
+      router.replace('/songsets', { scroll: false });
+    }
   }, [router, pathname, searchParams]);
 
   async function onSubmitFilter() {
@@ -76,6 +81,10 @@ export function HomeSongSetTable({ initialSets, user, pageType, initialTotalSets
     setTotalSets(count)
   }
 
+  useEffect(() => {
+    generatePlaceholderSets(sets, 8)
+  }, [sets])
+
   function onChangeFilter(filterQuery: FiltersQuerySongSet) {
     setFilterQuery(filterQuery)
     // onSubmitFilter()
@@ -84,7 +93,7 @@ export function HomeSongSetTable({ initialSets, user, pageType, initialTotalSets
   return (
     <Container className="main-table">
       <div className='d-flex align-items-center p-2'>
-        <div className='d-flex w-100' style={{ minHeight: '40px', maxHeight: '40px' }}>
+        <div className='d-flex w-100 div-filters-home' style={{ minHeight: '40px' }}>
           <Collapse className='collapse-filters' in={openFilters} dimension="width">
             <form action={onSubmitFilter}>
               <Row className="filters">

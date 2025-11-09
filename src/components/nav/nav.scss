@@ -27,6 +27,8 @@ nav {
       @include dark {
         background-color: $darkBackground;
       }
+      border-radius: .5rem;
+      box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.1);
     }
   }
 
@@ -79,6 +81,10 @@ nav {
   .user {
     display: flex;
     height: 100%;
+
+    @include mobile {
+      margin: 10px
+    }
 
     .info {
       display: flex;

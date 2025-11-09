@@ -3,6 +3,12 @@
   width: 200px;
   top: 95px;
   right: 10px;
+  
+  @include mobile {
+    top: 335px;
+    right: 15px;
+  }
+  
   background-color: $lightSecondBackground;
   border-radius: .3rem;
   padding: 1rem;

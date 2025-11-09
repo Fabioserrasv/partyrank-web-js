@@ -6,10 +6,11 @@ type ModalProps = {
   children: ReactNode;
   title: string;
   className: string;
+  footer?: boolean;
   closeModal: (isModalOpen: boolean) => void;
 }
 
-export default function Modal({ title, children, className, closeModal }: ModalProps) {
+export default function Modal({ title, children, className, footer = true, closeModal }: ModalProps) {
   return (
     <div className="modal">
       <div className={`modalContainer ${className}`}>
@@ -20,9 +21,11 @@ export default function Modal({ title, children, className, closeModal }: ModalP
         <div className="modalBody">
           {children}
         </div>
-        <div className="modalFooter">
-          
-        </div>
+        {footer && (
+          <div className="modalFooter">
+            
+          </div>
+        )}
       </div>
     </div>
   )

@@ -48,3 +48,19 @@ export function getUserImageUrlPathFromUsername(username: string): string {
   }
   return "/api/user-images/user_images/default_user_profilepic.png";
 }
+
+export function generatePlaceholderSets(songSets: SongSet[], itemsPerPage: number) {
+  if (songSets.length < itemsPerPage) {
+    const diff = itemsPerPage - songSets.length;
+    for (let i = 0; i < diff; i++) {
+      songSets.push({
+        id: Math.random() + i * 10,
+        name: `-`,
+        isPlaceholder: true,
+        coverImage: '',
+        songs: [],
+        user: null,
+      });
+    }
+  }
+}

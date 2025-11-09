@@ -3,6 +3,7 @@ import './songsets.scss';
 import { getServerSession } from "next-auth";
 import { options } from "../api/auth/[...nextauth]/options";
 import { HomeSongSetTable } from "./components/home-song-set-table";
+import { generatePlaceholderSets } from "@/lib/utils";
 
 // export const dynamic = 'force-dynamic';
 
@@ -18,6 +19,8 @@ export default async function SongSets() {
 
   let sets = resultSongSets.sets;
   let count = resultSongSets.count;
+
+  generatePlaceholderSets(sets, 8);
 
   return (
     <div className="songSetPage">

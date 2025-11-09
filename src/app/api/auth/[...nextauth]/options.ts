@@ -57,14 +57,21 @@ export const options: NextAuthOptions = {
   ],
   callbacks: {
     jwt: async ({ user, token, trigger, session }) => {
-      if (trigger === "update") return { ...token, ...session.user }
+      if (trigger === "update") {
+        return { 
+          ...token, 
+          ...(session?.user && {
+            theme: session.user.theme || token.theme || "dark"
+          })
+        }
+      }
 
       if (user) {
         token.id = user.id as number
         token.username = user.username
         token.animeList = user.animeList
         token.admin = user.admin;
-        token.theme = "dark"
+        token.theme = (user.theme as "dark" | "light") || "dark"
         token.average = user.average
         token.imageUrl = user.imageUrl
       }
@@ -76,7 +83,7 @@ export const options: NextAuthOptions = {
         session.user.username = token.username
         session.user.animeList = token.animeList
         session.user.id = token.id
-        session.user.theme = "dark"
+        session.user.theme = (token.theme as "dark" | "light") || "dark"
         session.user.average = token.average
         session.user.imageUrl = token.imageUrl
       }
