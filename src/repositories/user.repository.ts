@@ -32,6 +32,7 @@ export function convertDbUserToModel(dbUser: any): User {
 }
 
 function calculateAverage(scores: Score[]): number {
+  if(scores == null || scores == undefined || scores.length === 0) return 0;
   const avg = scores.map(score => score.value).reduce((acc: number, score: number) => acc + score, 0) / scores.length;
   if(isNaN(avg)) return 0;
   return Number(avg.toFixed(2));
