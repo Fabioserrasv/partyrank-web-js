@@ -113,6 +113,7 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
   }
 
   function onTimeStampInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+    console.log('onTimeStampInputChange')
     let value = parseFloat(e.target.value)
     value = Number.isNaN(value) ? 0 : value
     setSongUserData({ ...songUserData, timeStamp: Number(value) })
@@ -151,6 +152,7 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
 
     if(userDataForSong.new){
       setScore('')
+      setSongUserData({ score: 0, timeStamp: 0 })
       return
     }
     
@@ -163,12 +165,14 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
     } else{
       setScore(String(userDataForSong.score))
     }
-    setSongUserData({ score: userDataForSong.score, timeStamp: userDataForSong.timeStamp })
+    
+    setSongUserData({ score: userDataForSong.score, timeStamp: userDataForSong.timeStamp || 0 })
   }, [selectedSong, getSessionDataSong])
 
   useEffect(() => {
     setValue('score', String(songUserData.score));
-    setValue('timeStamp', String(songUserData.timeStamp));
+    setValue('timeStamp', String(songUserData.timeStamp || 0));
+
   }, [songUserData, setValue])
 
   useEffect(() => {

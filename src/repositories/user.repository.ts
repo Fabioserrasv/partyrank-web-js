@@ -25,7 +25,7 @@ export function convertDbUserToModel(dbUser: any): User {
     animeList: dbUser.animeList,
     average: calculateAverage(dbUser.scores),
     admin: dbUser.admin,
-    // scores: dbUser.scores,
+    scores: dbUser.scores,
     invites: dbUser.SongSetsOn && dbUser.SongSetsOn.length > 0 ? dbUser.SongSetsOn.map(convertDbUsersOn) : [],
     imageUrl: dbUser.imageUrl
   }

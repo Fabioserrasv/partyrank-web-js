@@ -16,7 +16,6 @@ export function NavUser({ user }: NavUserProps) {
   let imgRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
-    console.log(user)
     function checkChildsWasClicked(nodes: NodeListOf<ChildNode>, target: HTMLElement) {
       for (let i = 0; i < nodes.length; i++) {
         if (nodes[i] === target) {
