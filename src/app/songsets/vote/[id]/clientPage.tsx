@@ -204,7 +204,7 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
             selectedSong.link.includes('drive.google.com') ?
             <iframe src={selectedSong.link} ></iframe>
             :
-            <video src={selectedSong.link} controls autoplay muted></video>
+            <video src={selectedSong.link} controls muted></video>
           }
           <div className="video-controls">
             <Monitor onClick={() => { setIsTheaterMode(!isTheaterMode) }} />
