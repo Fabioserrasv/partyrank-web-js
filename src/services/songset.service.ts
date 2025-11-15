@@ -47,7 +47,8 @@ export class SongSetService {
               some: {
                 user: {
                   id: loggedUserId
-                }
+                },
+                accepted: true
               }
             }
           },
