@@ -90,7 +90,14 @@ export function AddSongForm({ updateSongState, song, addSongToSongSetState, song
       if (!isSetCreator) {
         setUsersOn(songSet.usersOn?.filter(userOn => userOn.user.id == user.id) || [])
       } else {
-        setUsersOn(songSet.usersOn || [])
+        const uOn = songSet.usersOn;
+        uOn?.push({
+          songSet: songSet,
+          user: songSet.user!,
+          accepted: true,
+          imageUrl: songSet.user!.imageUrl
+        })
+        setUsersOn(uOn || [])
       }
     }
   }, [song, setValue])
