@@ -125,7 +125,7 @@ export async function checkIsAllowed(id: number){
   
     if (!allowed) {
       set.usersOn?.map((relationUser) => {
-        if (relationUser.user.id == session.user.id) {
+        if (relationUser.user.id == session.user.id && relationUser.accepted) {
           allowed = true;
         }
       })
