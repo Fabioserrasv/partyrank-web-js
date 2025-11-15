@@ -146,6 +146,14 @@
       }
 
       .formAddSong {
+        .row-type-user {
+          display: flex;
+          
+          .inputGroup {
+            width: 50%;
+          }
+        }
+
         .inputGroup {
           margin-top: 15px;
         }

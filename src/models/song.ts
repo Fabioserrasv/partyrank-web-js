@@ -14,7 +14,10 @@ type SongPostData = {
   artist: string;
   name: string;
   link: string;
+  imageUrl?: string;
   type: string;
+  pickedById?: number;
+  pickedBy?: User;
 }
 
 type Song = {
@@ -24,8 +27,11 @@ type Song = {
   artist: string;
   name: string;
   link: string;
+  imageUrl?: string;
   type: SongType;
   scores: Score[];
+  pickedBy?: User;
+  pickedById?: number;
   meanScore?: number;
   createdAt?: Date;
   updatedAt?: Date;
@@ -38,6 +44,7 @@ type FiltersQuerySong = BaseFilters & {
   artist?: string;
   type?: SongType;
   songSetId?: number;
+  pickedById?: number;
 }
 
 type ResultSongs = {

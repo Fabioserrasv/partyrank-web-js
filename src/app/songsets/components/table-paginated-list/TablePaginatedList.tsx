@@ -53,7 +53,7 @@ export function TablePaginatedList({ itemsPerPage, pageType, sets, user, initial
 
   async function changePage(page: number) {
     const newFilterQuery = { ...filterQuery };
-    console.log('passou aq')
+
     newFilterQuery.offset = page * itemsPerPage;
 
     onChangeFilter(newFilterQuery);

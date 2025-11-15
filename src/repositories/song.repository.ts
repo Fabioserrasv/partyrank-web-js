@@ -1,3 +1,5 @@
+import { convertDbUserToModel } from "./user.repository"
+
 /*
   Convert a song from database to Song Model defined on src/models
 */
@@ -9,8 +11,10 @@ export function convertDbSongToModel(data: any): Song {
     artist: data.artist,
     name: data.name,
     link: data.link,
+    imageUrl: data.imageUrl,
     type: data.type,
     scores: data.scores,
+    pickedBy: data.pickedBy ? convertDbUserToModel(data.pickedBy) : undefined,
     createdAt: data.createdAt,
     updatedAt: data.updatedAt
   }

@@ -5,11 +5,13 @@ type SongSetPostData = {
   status?: SongSetStatus;
   type?: SongSetType;
   scoreSystem?: SongSetScoreSystemType;
+  pickSystem?: SongSetPickSystem;
 }
 
 type SongSetStatus = "RECRUITING" | "ON_GOING" | "PROCESSING" | "FINISHED" | "PAUSED"
 type SongSetType = "PRIVATE" | "PUBLIC"
 type SongSetScoreSystemType = "RANKING" | "SCORING" | "SCORING_AVERAGE"
+type SongSetPickSystem = "HOST" | "PICKED_BY_PARTICIPANTS"
 
 type SongSet = {
   id: number;
@@ -21,6 +23,7 @@ type SongSet = {
   type: SongSetType;
   status: SongSetStatus;
   scoreSystem: SongSetScoreSystemType;
+  pickSystem: SongSetPickSystem;
   user?: User;
   usersOn?: UserOn[];
   generateImageObject?: JsonToGenerateImages;

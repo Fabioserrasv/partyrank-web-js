@@ -1,5 +1,6 @@
 import axios from "axios"
 import { convertDbSongToModel } from "./song.repository"
+import { SongSetPickSystem } from "@prisma/client"
 
 /*
   Convert relation of User x SongSet to Model defined on src/models
@@ -59,7 +60,7 @@ export function convertSongSetScoreSystemToString(type: SongSetScoreSystemType):
 /*
   Convert a songset from database to SongSet Model defined on src/models
 */
-export async function convertDbSetToModel(data: any, generateJson: boolean = false): Promise<SongSet> {
+export async function convertDbSetToModel(data: any, generateJson: boolean = false, time: number = 15): Promise<SongSet> {
   return {
     id: data.id,
     name: data.name,
@@ -70,8 +71,9 @@ export async function convertDbSetToModel(data: any, generateJson: boolean = fal
     songs: data.songs !== undefined && data.songs.length > 0 ? data.songs.map(convertDbSongToModel) : [],
     usersOn: data.users !== undefined && data.users.length > 0 ? data.users.map(convertDbUsersOn) : [],
     scoreSystem: data.scoreSystem,
+    pickSystem: data.pickSystem,
     generateImageObject: generateJson ? generateImageObjectConverter(data) : undefined,
-    generateVideoObject: generateJson ? await generateVideoObject(data) : undefined,
+    generateVideoObject: generateJson ? await generateVideoObject(data, time) : undefined,
     createdAt: data.createdAt,
     updatedAt: data.updatedAt
   }
@@ -90,14 +92,20 @@ function generateImageObjectConverter(data: any) {
 
   for (let i = 0; i < times; i++) {
     let song: Song = data.songs[i]
-    let notes: ScoreNote[] = song.scores.map(score => {
+    let filteredScores = song.scores;
+
+    if(data.pickSystem == SongSetPickSystem.PICKED_BY_PARTICIPANTS) {
+      filteredScores = filteredScores.filter(score => score.user.id != song.pickedById)
+    }
+
+    let scores: ScoreNote[] = filteredScores.map(score => {
       return {
         participant: score.user?.username ? score.user.username : "Username not found",
         value: score.value
       }
     })
 
-    let sum = song.scores.map(score => score.value)
+    let sum = filteredScores.map(score => score.value)
     let average = (sum.reduce((a, b) => a + b, 0) / sum.length)
 
     song.scores.map(score =>  {
@@ -114,7 +122,7 @@ function generateImageObjectConverter(data: any) {
       cover: "",
       song: `${song.artist} - ${song.name}`,
       average: average,
-      scores: notes
+      scores: scores
     })
   }
 
@@ -124,7 +132,7 @@ function generateImageObjectConverter(data: any) {
 /*
   Outputs the object of JSON template (:JsonToGenerateVideo) for generating the video
 */
-async function generateVideoObject(data: any) {
+async function generateVideoObject(data: any, timeVideoPerClip: number = 15) {
   const finalResult: JsonToGenerateVideo[] = []
   const times = data.songs.length
 
@@ -144,20 +152,25 @@ async function generateVideoObject(data: any) {
     let song: Song = data.songs[i]
 
     let sum = song.scores.map(score => score.videoTimeStamp)
+
     let time = Math.floor(sum.reduce((a, b) => a + b, 0) / sum.length)
+
+    if(song.pickedBy) {
+      time = song.scores.find(score => score.user?.id == song.pickedBy?.id)?.videoTimeStamp!
+    }
 
     if(isNaN(time)){
       time = 1
     }
 
-    const DEFAULT_PER_CLIP_TIME = 20 // NEED TO CHANGE THIS TO CHANGEABLE VALUE 
+    // const DEFAULT_PER_CLIP_TIME = 20 // NEED TO CHANGE THIS TO CHANGEABLE VALUE 
 
     let title = await getVideoTitleFromGoogleDriveLink(song.link)
 
     finalResult.push({
       image_path: "/content/drive/MyDrive/images_party_rank/" + song.id + ".png",
       video_path: "/content/drive/MyDrive/videos_party_rank/" + title,
-      cut_time: [time, time + DEFAULT_PER_CLIP_TIME]
+      cut_time: [time, time + timeVideoPerClip]
     })
   }
 

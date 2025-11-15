@@ -1,3 +1,5 @@
+import { convertDbUserToModel } from "./user.repository";
+
 /*
   Convert a score from database to Score Model defined on src/models
 */
@@ -5,6 +7,7 @@ export function convertDbScoreToModel(data: any) : Score{
   return {
     id: data.id,
     songId: data.songId,
+    user: convertDbUserToModel(data.user),
     userId: data.userId,
     value: data.value,
     videoTimeStamp: data.videoTimeStamp,

@@ -33,9 +33,9 @@ export async function handleUpdateSongSet(set: SongSetPostData, id: number) {
   }
 }
 
-export async function handleGetSongSet(id: number, generateJson: boolean = false) {
+export async function handleGetSongSet(id: number, generateJson: boolean = false, time: number = 15) {
   try {
-    const set = await getSongSet(Number(id), generateJson);
+    const set = await getSongSet(Number(id), generateJson, time);
 
     return set;
   } catch (error) {

@@ -1,5 +1,6 @@
 'use client'
 import { Button } from '@/components/button/Button';
+import { Input } from '@/components/input';
 import { LoadingComponent } from '@/components/loading-component';
 import { Textarea } from '@/components/textarea'
 import { handleGetSongSet } from '@/handlers/songset.handlers';
@@ -23,11 +24,11 @@ export default function ResultTab({ songSetId }: ResultTabProps) {
     images: '',
     description: ''
   });
-
+  const [timeVideoPerClip, setTimeVideoPerClip] = useState<number>(15);
   async function getSongSetWithJson() {
     try {
       setIsLoadind(true);
-      const response = await handleGetSongSet(songSetId, true);
+      const response = await handleGetSongSet(songSetId, true, timeVideoPerClip);
       let videoJson = '';
 
 
@@ -72,6 +73,12 @@ export default function ResultTab({ songSetId }: ResultTabProps) {
           content={jsonsResult.description}
           className="textDesc">
         </Textarea>
+        <Input
+          displayName="Time Video Per Clip"
+          name="timeVideoPerClip"
+          value={timeVideoPerClip}
+          onChange={e => setTimeVideoPerClip(Number(e.target.value))}
+        />
       </div>
       {
         !isLoading ?

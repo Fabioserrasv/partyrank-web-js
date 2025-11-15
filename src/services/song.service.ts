@@ -16,7 +16,9 @@ export class SongService {
           artist: data.artist,
           name: data.name,
           link: data.link,
+          imageUrl: data.imageUrl,
           type: convertType(data.type),
+          pickedById: data.pickedById ? Number(data.pickedById) : undefined,
           createdAt: new Date()
         }
       })
@@ -37,12 +39,17 @@ export class SongService {
           artist: d.artist,
           name: d.name,
           link: d.link,
+          imageUrl: d.imageUrl,
           type: convertType(d.type),
+          pickedById: d.pickedById ? Number(d.pickedById) : undefined,
           createdAt: new Date()
         }))
       })
 
       const songs = await prisma.song.findMany({
+        include: {
+          pickedBy: true
+        },
         distinct: [
           'anime',
           'artist',
@@ -82,6 +89,8 @@ export class SongService {
           artist: data.artist,
           name: data.name,
           link: data.link,
+          imageUrl: data.imageUrl,
+          pickedById: data.pickedBy ? Number(data.pickedBy.id) : undefined,
           type: convertType(data.type),
           updatedAt: new Date()
         }
@@ -116,6 +125,9 @@ export class SongService {
         }),
         ...(filters.songSetId && {
           songSetId: filters.songSetId
+        }),
+        ...(filters.pickedById && {
+          pickedById: filters.pickedById
         }),
         deletedAt: null
       };

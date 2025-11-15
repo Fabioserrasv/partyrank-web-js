@@ -7,13 +7,14 @@ type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
   name: string;
   errorMessage?: string;
   children?: ReactNode;
-  options?: { value: string, display: string, disabled?: boolean }[];
+  options?: { value: string | number, display: string, disabled?: boolean }[];
+  required?: boolean;
 }
 
-const Select = forwardRef<HTMLSelectElement, SelectProps>(({ displayName, children, errorMessage, name, options, ...rest }: SelectProps, ref) => {
+const Select = forwardRef<HTMLSelectElement, SelectProps>(({ displayName, children, errorMessage, name, options, required, ...rest }: SelectProps, ref) => {
   return (
     <div className='inputGroup'>
-      <label htmlFor={name}>{displayName}</label>
+      <label htmlFor={name}>{displayName} {required ? <span className='required'>*</span> : <></>} {errorMessage ? <span className='error'>{errorMessage}</span> : <></>} </label>
       <select
         ref={ref}
         {...rest}

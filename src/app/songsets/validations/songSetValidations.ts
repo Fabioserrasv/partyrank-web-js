@@ -15,7 +15,9 @@ export const addSongSchema = z.object({
   artist: z.string().min(0),
   name: z.string().min(0),
   link: z.string().min(0),
+  imageUrl: z.string().nullable(),
   type: z.string().min(0),
+  pickedById: z.string().nullable(),
 })
 
 export const songFinderSchema = z.object({
@@ -33,4 +35,5 @@ export const songSetUpdateSchema = z.object({
   status: z.string(),
   type: z.string(),
   scoreSystem: z.string(),
+  pickSystem: z.string(),
 })

@@ -26,6 +26,10 @@ const scoreSystemOptions = [
   { value: "SCORING_AVERAGE", display: "Scoring (Average)" },
   { value: "RANKING", display: "Ranking", disabled: true}
 ]
+const pickSystemOptions = [
+  { value: "HOST", display: "Host" },
+  { value: "PICKED_BY_PARTICIPANTS", display: "Picked by Participants" }
+]
 
 type fields = "type" | "status"
 
@@ -37,6 +41,7 @@ export function SongSetOptionsForm({setSongSet, songSet}: SongSetOptionsFormProp
   async function onSubmitUpdate(data: SongSetPostData){
     try {
       data.name = songSet.name;
+
       const newSet = await handleUpdateSongSet(data, songSet.id)
 
       setSongSet(newSet)
@@ -82,6 +87,15 @@ export function SongSetOptionsForm({setSongSet, songSet}: SongSetOptionsFormProp
           options={scoreSystemOptions}
           {...register("scoreSystem")}
           value={songSet.scoreSystem}
+          onChange={onInputChange}
+        >
+        </Select>
+
+        <Select
+          displayName="Pick System"
+          options={pickSystemOptions}
+          {...register("pickSystem")}
+          value={songSet.pickSystem}
           onChange={onInputChange}
         >
         </Select>

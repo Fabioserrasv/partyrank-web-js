@@ -10,7 +10,9 @@ export async function handleAddSongFormSubmit(data: AddSongFormSchema, songSetId
       artist: data.artist,
       link: data.link,
       name: data.name,
+      imageUrl: data.imageUrl,
       type: data.type,
+      pickedBy: data.pickedBy,
       songSetId: songSetId
     };
 
@@ -34,8 +36,10 @@ export async function handleAddMultipleSongsFormSubmit(data: AddSongFormSchema[]
       artist: d.artist,
       link: d.link,
       name: d.name,
+      imageUrl: d.imageUrl,
       type: d.type,
-      songSetId: songSetId
+      songSetId: songSetId,
+      pickedById: d.pickedById ? Number(d.pickedById) : undefined
     })));
     
     return newSongs;

@@ -15,9 +15,11 @@ type AddMultipleSongsModalProps = {
   songSet: SongSet;
   addMultipleSongsToSongSetState: (songs: Song[]) => void;
   changeAddMultipleSongsModalOpen: Dispatch<SetStateAction<boolean>>
+  user: User;
+  isSetCreator: boolean;
 }
 
-export function AddMultipleSongsModal({ changeAddMultipleSongsModalOpen, addMultipleSongsToSongSetState, songSet }: AddMultipleSongsModalProps) {
+export function AddMultipleSongsModal({ changeAddMultipleSongsModalOpen, addMultipleSongsToSongSetState, songSet, user, isSetCreator }: AddMultipleSongsModalProps) {
   const [isLoading, setIsLoadind] = useState<boolean>(false);
   const [songs, setSongs] = useState<string>('');
 
@@ -40,9 +42,21 @@ export function AddMultipleSongsModal({ changeAddMultipleSongsModalOpen, addMult
       setIsLoadind(true);
       const songsData = JSON.parse(songs) as AddSongFormSchema[];
 
+      if(!isSetCreator) {
+        songsData.forEach(song => {
+          song.pickedById = user.id;
+        })
+      }
+
+      for(const song of songsData) {
+        if(song.pickedById && !songSet.usersOn?.some(userOn => userOn.user.id === Number(song.pickedById))) {
+          toast.error("User not found to pick the song");
+          return;
+        }
+      }
 
       const newSongs = await handleAddMultipleSongsFormSubmit(songsData, songSet.id)
-      console.log(newSongs);
+
       if(newSongs){
         toast.success("Songs added successfully")
 

@@ -1,7 +1,7 @@
 'use client'
 import { Check, X } from "lucide-react";
 import { InviteUserForm } from "../forms/inviteUserForm";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { SongSetOptionsForm } from "../forms/songSetOptionsForm";
 import toast from "react-hot-toast";
 import { handleAnswerInvite } from "@/handlers/songset.handlers";
@@ -16,7 +16,7 @@ type UsersTabProps = {
 
 export function UsersTab({ songSet, setSongSet }: UsersTabProps) {
   const { isDarkMode } = useTheme();
-  const [invites, setInvites] = useState<UserOn[]>(songSet && songSet.usersOn ? songSet.usersOn : []);
+  const [invites, setInvites] = useState<UserOn[]>(songSet && songSet.usersOn ? [...songSet.usersOn, {songSet: songSet, user: songSet.user!, accepted: true, imageUrl: (songSet.user ? songSet.user.imageUrl : undefined)}] : []);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [userIdToRemove, setUserIdToRemove] = useState<number | null>(null);
   
@@ -70,7 +70,10 @@ export function UsersTab({ songSet, setSongSet }: UsersTabProps) {
 
     if (!songSet.songs) return 0
 
+    if(songSet.songs == undefined) return 0
+
     songSet.songs.forEach(song => {
+      if(song.scores == undefined || song.scores.length == 0) return;
       song.scores.forEach(score => {
         if (score.user?.id == userId) {
           scores++
@@ -111,6 +114,9 @@ export function UsersTab({ songSet, setSongSet }: UsersTabProps) {
                         <div className='d-flex flex-column'>
                           <span>{invite.user.username}</span>
                           <div className="d-flex gap-3 mt-1">
+                            <span className='d-flex align-items-center gap-1'>
+                              id: {invite.user.id}
+                            </span>
                             <span className='d-flex align-items-center gap-1'>
                               <Check size={16} />
                               {invite.accepted ? 'Accepted' : 'Pending'}

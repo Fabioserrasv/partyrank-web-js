@@ -63,6 +63,7 @@ export function generatePlaceholderSets(songSets: SongSet[], itemsPerPage: numbe
         type: 'PRIVATE',
         status: 'PAUSED',
         scoreSystem: 'RANKING',
+        pickSystem: 'HOST',
         user: undefined,
       });
     }

@@ -40,7 +40,8 @@ export function InviteUserForm({ songSetId, addInvite }: InviteUserFormProps) {
             type: 'PRIVATE' as SongSetType,
             scoreSystem: "SCORING" as SongSetScoreSystemType,
             status: 'ON_GOING' as SongSetStatus,
-            songs: []
+            songs: [],
+            pickSystem: 'HOST',
           },
           user: {
             id: 0,

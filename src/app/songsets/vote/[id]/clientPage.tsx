@@ -113,7 +113,6 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
   }
 
   function onTimeStampInputChange(e: React.ChangeEvent<HTMLInputElement>) {
-    console.log('onTimeStampInputChange')
     let value = parseFloat(e.target.value)
     value = Number.isNaN(value) ? 0 : value
     setSongUserData({ ...songUserData, timeStamp: Number(value) })

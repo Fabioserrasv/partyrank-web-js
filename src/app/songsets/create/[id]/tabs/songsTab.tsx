@@ -2,7 +2,7 @@
 import { Select } from "@/components/select";
 import { Table, TableRow } from "@/components/table";
 import { reverseArray } from "@/lib/utils";
-import { Globe, Mic2, Monitor, X } from "lucide-react";
+import { Globe, Image, Mic2, Monitor, User, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import ConfirmDeleteModal from '@/components/confirm-delete-modal';
 
@@ -104,10 +104,26 @@ export function SongsTab({ onDeleteSong, onSongClick, songs, isSetCreator }: Son
                       <Mic2 />
                       {formattedTypes[song.type]}
                     </span>
+                    {
+                      song.pickedBy && (
+                        <span key={song.pickedBy.id}  >
+                          <User />
+                          {song.pickedBy?.username}
+                        </span>
+                      )
+                    }
                     <span>
                       <Globe />
                       {song.link}
                     </span>
+                    {
+                      song.imageUrl && (
+                        <span>
+                          <Image />
+                          {song.imageUrl}
+                        </span>
+                      )
+                    }            
                   </div>
                 </div>
                 {

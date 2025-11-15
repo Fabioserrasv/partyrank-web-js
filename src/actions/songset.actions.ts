@@ -38,11 +38,11 @@ export async function updateSongSet(set: SongSetPostData, id: number) {
   }
 }
 
-export async function getSongSet(id: number, generateJson: boolean = false) {
+export async function getSongSet(id: number, generateJson: boolean = false, time: number = 15) {
   const setService = new SongSetService;
 
   try {
-    const set = await setService.get(Number(id), generateJson);
+    const set = await setService.get(Number(id), generateJson, time);
 
     return set;
   } catch (error) {

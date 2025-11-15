@@ -57,7 +57,6 @@ export async function updateSong(song: SongPostData, id: number) {
     if (!validateSong.rules(song)) {
       throw new Error("Invalid data")
     }
-
     return await songService.update(song, id);
   } catch (error) {
     throw error

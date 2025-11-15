@@ -205,7 +205,7 @@ export class SongSetService {
     }
   }
 
-  async get(id: number, generateJson: boolean): Promise<SongSet | null> {
+  async get(id: number, generateJson: boolean, time: number = 15): Promise<SongSet | null> {
     try {
       if(Number.isNaN(id)) {
         return null;
@@ -236,6 +236,13 @@ export class SongSetService {
                   value: true,
                   videoTimeStamp: true
                 }
+              },
+              pickedBy: {
+                select: {
+                  id: true,
+                  username: true,
+                  animeList: true
+                }
               }
             }
           },
@@ -265,7 +272,7 @@ export class SongSetService {
         }
       })
       if (set !== null) {
-        return await convertDbSetToModel(set, generateJson)
+        return await convertDbSetToModel(set, generateJson, time)
       }
       return null
     } catch (error) {
@@ -311,6 +318,7 @@ export class SongSetService {
           status: data.status,
           type: data.type,
           scoreSystem: data.scoreSystem,
+          pickSystem: data.pickSystem,
           updatedAt: new Date()
         }
       })

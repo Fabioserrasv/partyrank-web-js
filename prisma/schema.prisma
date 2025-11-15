@@ -21,6 +21,7 @@ model User {
   scores Score[]
   SongSetsCreated SongSet[]
   SongSetsOn UsersOnSongSet[]
+  SongsPicked Song[]
   createdAt DateTime?
   updatedAt DateTime?
   deletedAt DateTime?
@@ -47,6 +48,11 @@ enum SongSetScoreSystemType {
   SCORING_AVERAGE
 }
 
+enum SongSetPickSystem {
+  HOST
+  PICKED_BY_PARTICIPANTS
+}
+
 model SongSet {
   id Int @id @default(autoincrement())
   name String
@@ -59,6 +65,7 @@ model SongSet {
   scoreSystem SongSetScoreSystemType @default(SCORING_AVERAGE)
   users UsersOnSongSet[]
   maxUsers Int? @default(0) 
+  pickSystem SongSetPickSystem @default(HOST)
   createdAt DateTime?
   updatedAt DateTime?
   deletedAt DateTime?
@@ -91,8 +98,11 @@ model Song {
   artist String
   name String
   link String
+  imageUrl String?
   type SongType @default(OPENING)
   scores Score[]
+  pickedBy User? @relation(fields: [pickedById], references: [id])
+  pickedById Int?
   createdAt DateTime?
   updatedAt DateTime?
   deletedAt DateTime?

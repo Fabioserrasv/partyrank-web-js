@@ -28,7 +28,10 @@ export type AddSongFormSchema = {
   artist: string;
   name: string;
   link: string;
+  imageUrl?: string;
   type: SongType;
+  pickedById?: number;
+  pickedBy?: User;
 }
 
 const initialValue: SongSet = {
@@ -38,7 +41,8 @@ const initialValue: SongSet = {
   status: 'ON_GOING' as SongSetStatus,
   scoreSystem: 'SCORING_AVERAGE' as SongSetScoreSystemType,
   songs: [],
-  anilistLink: ''
+  anilistLink: '',
+  pickSystem: 'HOST',
 }
 
 export const initialSongValue: AddSongFormSchema = {
@@ -47,7 +51,10 @@ export const initialSongValue: AddSongFormSchema = {
   artist: '',
   name: '',
   link: '',
-  type: 'OPENING' as SongType
+  imageUrl: '',
+  type: 'OPENING' as SongType,
+  pickedById: undefined,
+  pickedBy: undefined
 }
 
 export function ClientCreateSongPage({ dbSet, user, services }: ClientCreateSongPageProps) {
@@ -118,6 +125,7 @@ export function ClientCreateSongPage({ dbSet, user, services }: ClientCreateSong
       anime: song.anime,
       artist: song.artist,
       link: song.link,
+      imageUrl: song.imageUrl,
       type: song.type
     })
   }
@@ -194,6 +202,8 @@ export function ClientCreateSongPage({ dbSet, user, services }: ClientCreateSong
           songSet={songSet}
           addMultipleSongsToSongSetState={addMultipleSongsToSongSetState}
           changeAddMultipleSongsModalOpen={setAddMultipleSongsModalOpen}
+          user={user}
+          isSetCreator={isSetCreator}
         />
       }
       <div className="infoSection">
@@ -215,7 +225,33 @@ export function ClientCreateSongPage({ dbSet, user, services }: ClientCreateSong
           />
         }
         {
-          isSetCreator ?
+          !isSetCreator &&
+          (
+            songSet.id != 0 &&
+            <div className="not-creator-div mb-5">
+              <span className="titleSongSet">{songSet.name}</span>
+              <div className="d-flex gap-2 buttons">
+                {songSet.usersOn?.some(userOn => userOn.user.id == user.id) ? (
+                  <Button
+                    name='Leave Song Set'
+                    className="leave-button"
+                    type="button"
+                    onClick={openLeaveModal}
+                  />
+                ) : (
+                  <Button
+                    name='Join Song Set'
+                    className="join-button"
+                    type="button"
+                    onClick={() => onJoinPublicSongSet(songSet)}
+                  />
+                )}
+              </div>
+            </div>
+          )
+        }
+        {
+          (isSetCreator || (songSet.pickSystem == 'PICKED_BY_PARTICIPANTS' && songSet.usersOn?.some(userOn => userOn.user.id == user.id))) ?
             <>
               <div className="songFormSection">
                 <div className="sectionTitle">
@@ -235,33 +271,13 @@ export function ClientCreateSongPage({ dbSet, user, services }: ClientCreateSong
                   songSet={songSet}
                   addSongToSongSetState={addSongToSongSetState}
                   song={song}
+                  isSetCreator={isSetCreator}
+                  user={user}
                   updateSongState={setSong}
                 />
               </div>
             </> :
-            (
-              songSet.id != 0 &&
-              <div className="not-creator-div">
-                <span className="titleSongSet">{songSet.name}</span>
-                <div className="d-flex gap-2 buttons">
-                  {songSet.usersOn?.some(userOn => userOn.user.id == user.id) ? (
-                    <Button
-                      name='Leave Song Set'
-                      className="leave-button"
-                      type="button"
-                      onClick={openLeaveModal}
-                    />
-                  ) : (
-                    <Button
-                      name='Join Song Set'
-                      className="join-button"
-                      type="button"
-                      onClick={() => onJoinPublicSongSet(songSet)}
-                    />
-                  )}
-                </div>
-              </div>
-            )
+            (<></>)
         }
       </div>
       {(() => {
