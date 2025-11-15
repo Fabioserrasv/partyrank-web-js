@@ -160,25 +160,29 @@ export function AddSongForm({ updateSongState, song, addSongToSongSetState, song
           /></Col>
       </Row>
       <Row className="d-flex row-type-user">
-        <Select
-          required={true}
-          displayName="Type"
-          {...register("type")}
-        >
-          <option value="OPENING">Opening</option>
-          <option value="ENDING">Ending</option>
-          <option value="INSERT_SONG">Insert Song</option>
-        </Select>
-        {songSet.pickSystem === "PICKED_BY_PARTICIPANTS" && (
+        <Col md={(songSet.pickSystem === "PICKED_BY_PARTICIPANTS" ? 6 : 12)}>
           <Select
             required={true}
-            displayName="Picked By"
-            errorMessage={errors.pickedById?.message}
-            options={usersOn.map(user => ({ value: (user.user.id), display: user.user.username })) || []}
-            {...register("pickedById")}
-            defaultValue={song.pickedById}
-            value={song.pickedById}
-          ></Select>
+            displayName="Type"
+            {...register("type")}
+          >
+            <option value="OPENING">Opening</option>
+            <option value="ENDING">Ending</option>
+            <option value="INSERT_SONG">Insert Song</option>
+          </Select>
+        </Col>
+        {songSet.pickSystem === "PICKED_BY_PARTICIPANTS" && (
+          <Col md={6}>
+            <Select
+              required={true}
+              displayName="Picked By"
+              errorMessage={errors.pickedById?.message}
+              options={usersOn.map(user => ({ value: (user.user.id), display: user.user.username })) || []}
+              {...register("pickedById")}
+              defaultValue={song.pickedById}
+              value={song.pickedById}
+            ></Select>
+          </Col>
         )}
       </Row>
       <div className="buttons">
