@@ -19,8 +19,18 @@ function convertDbUsersOn(data: any): UserOn{
   Convert a user from database to User Model defined on src/models
 */
 export function convertDbUserToModel(dbUser: any): User {
+  if (dbUser == null || dbUser == undefined) return {
+    id: -1,
+    username: "",
+    animeList: "",
+    average: 0,
+    admin: false,
+    scores: [],
+    invites: [],
+    imageUrl: ""
+  };
   return {
-    id: dbUser.id,
+    id: dbUser.id || 0,
     username: dbUser.username,
     animeList: dbUser.animeList,
     average: calculateAverage(dbUser.scores),
