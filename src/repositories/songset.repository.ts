@@ -107,6 +107,7 @@ function generateImageObjectConverter(data: any) {
 
     let sum = filteredScores.map(score => score.value)
     let average = (sum.reduce((a, b) => a + b, 0) / sum.length)
+    song.meanScore = average;
 
     song.scores.map(score =>  {
       if(!finalResult.participants.some(participant => participant.id == score.user?.id)) {
@@ -145,26 +146,13 @@ async function generateVideoObject(data: any, timeVideoPerClip: number = 15) {
   const finalResult: JsonToGenerateVideo[] = []
   let songs: Song[] = data.songs
 
-  if(data.pickSystem == SongSetPickSystem.PICKED_BY_PARTICIPANTS) {
-    songs = songs.filter(song => song.pickedById != null)
-  }
+  const times = songs.length
 
-  const times = data.songs.length
-  
-  for(let i = 0; i < times; i++) {
-    let song: Song = data.songs[i]
-    let sum = song.scores.map(score => score.value)
-    let average = (sum.reduce((a, b) => a + b, 0) / song.scores.length)
-    if(isNaN(average)){
-      average = 0
-    }
-    song.meanScore = average
-  }
-
+  //Mean score defined on generateImageObjectConverter
   songs = songs.sort((a: Song, b: Song) => a.meanScore! - b.meanScore!)
 
   for (let i = 0; i < times; i++) {
-    let song: Song = data.songs[i]
+    let song: Song = songs[i]
 
     let sum = song.scores.map(score => score.videoTimeStamp)
 
