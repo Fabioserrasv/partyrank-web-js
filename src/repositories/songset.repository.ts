@@ -86,7 +86,7 @@ function generateImageObjectConverter(data: any) {
   let finalResult: JsonToGenerateImages = {
     title: data.name,
     participants: [],
-    series: []
+    items: []
   }
   const times = data.songs.length
 
@@ -100,8 +100,8 @@ function generateImageObjectConverter(data: any) {
 
     let scores: ScoreNote[] = filteredScores.map(score => {
       return {
-        id_usuario: score.user?.id ? score.user.id : -1,
-        nota: String(score.value)
+        id_user: score.user?.id ? score.user.id : -1,
+        value: score.value
       }
     })
 
@@ -112,17 +112,20 @@ function generateImageObjectConverter(data: any) {
       if(!finalResult.participants.some(participant => participant.id == score.user?.id)) {
         finalResult.participants.push({
           id: score.user?.id!,
-          nome: score.user?.username!
+          name: score.user?.username!
         })
       }
     })
-    finalResult.series.push({
-      type: song.type,
-      anime: song.anime,
-      cover: "",
-      song: `${song.artist} - ${song.name}`,
-      average: average,
-      notes: scores
+
+    finalResult.items.push({
+      [`id_${song.id}`]: {
+        type: song.type,
+        anime: song.anime,
+        cover: `${song.id}.jpg`,
+        song: `${song.artist} - ${song.name}`,
+        average: average,
+        scores: scores
+      }
     })
   }
 
