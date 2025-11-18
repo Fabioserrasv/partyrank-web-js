@@ -42,8 +42,10 @@ type UserOn ={
 // Changed json format for generating images, need to change on party-rank-video-generator
 
 type ScoreNote = {
-  participant: string;
-  value: number;
+  participant?: string;
+  id_usuario?: number;
+  value?: number | string;
+  nota?: number | string;
 }
 
 type JsonUserImages = {
@@ -58,7 +60,7 @@ type JsonToGenerateImages = {
     type: string,
     anime: string,
     song: string,
-    scores: ScoreNote[] | null,
+    notes: ScoreNote[] | null,
     average: number,
     cover: string
   }>
