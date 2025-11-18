@@ -17,7 +17,7 @@ export const addSongSchema = z.object({
   link: z.string().min(0),
   imageUrl: z.string().nullable(),
   type: z.string().min(0),
-  pickedById: z.string().nullable(),
+  // pickedById: z.string().nullable(),
 })
 
 export const songFinderSchema = z.object({
