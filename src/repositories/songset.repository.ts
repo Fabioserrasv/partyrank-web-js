@@ -170,8 +170,14 @@ async function generateVideoObject(data: any, timeVideoPerClip: number = 15) {
 
     let title = await getVideoTitleFromGoogleDriveLink(song.link)
 
+    if(title == ''){
+      title = `${song.id}.mp4`;
+    }
+
+    let imageFile = `${song.id}.png`;
+
     finalResult.push({
-      image_path: "/content/drive/MyDrive/images_party_rank/" + song.id + ".png",
+      image_path: "/content/drive/MyDrive/images_party_rank/" + imageFile,
       video_path: "/content/drive/MyDrive/videos_party_rank/" + title,
       cut_time: [time, time + timeVideoPerClip]
     })
