@@ -95,13 +95,13 @@ function generateImageObjectConverter(data: any) {
     let filteredScores = song.scores;
 
     if(data.pickSystem == SongSetPickSystem.PICKED_BY_PARTICIPANTS) {
-      filteredScores = filteredScores.filter(score => score.user.id != song.pickedById)
+      filteredScores = filteredScores.filter(score => score.user!.id != song.pickedById)
     }
 
     let scores: ScoreNote[] = filteredScores.map(score => {
       return {
-        participant: score.user?.username ? score.user.username : "Username not found",
-        value: score.value
+        id_usuario: score.user?.id ? score.user.id : -1,
+        nota: String(score.value)
       }
     })
 
@@ -122,7 +122,7 @@ function generateImageObjectConverter(data: any) {
       cover: "",
       song: `${song.artist} - ${song.name}`,
       average: average,
-      scores: scores
+      notes: scores
     })
   }
 
