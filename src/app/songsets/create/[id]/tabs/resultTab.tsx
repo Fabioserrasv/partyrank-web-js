@@ -32,9 +32,11 @@ export default function ResultTab({ songSetId }: ResultTabProps) {
       let videoJson = '';
 
 
-      response?.generateVideoObject?.map((v) => {
-        videoJson += JSON.stringify(v, undefined, 2)
-      })
+      videoJson = JSON.stringify(response?.generateVideoObject, undefined, 2)
+
+      // response?.generateVideoObject?.map((v) => {
+      //   videoJson += JSON.stringify(v, undefined, 2)
+      // })
 
       let imageJson = JSON.stringify(response?.generateImageObject, undefined, 2)
 
