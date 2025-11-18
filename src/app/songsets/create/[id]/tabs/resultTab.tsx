@@ -31,7 +31,6 @@ export default function ResultTab({ songSetId }: ResultTabProps) {
       const response = await handleGetSongSet(songSetId, true, timeVideoPerClip);
       let videoJson = '';
 
-
       videoJson = JSON.stringify(response?.generateVideoObject, undefined, 2)
 
       // response?.generateVideoObject?.map((v) => {

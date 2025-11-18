@@ -8,10 +8,10 @@ export async function GET(
 ) {
   try {
     const filename = params.path.join('/');
-    console.log(filename);
+
     // Construir o caminho do arquivo
     const filePath = join(process.cwd(), 'public', 'user_images', filename);
-    console.log(filePath);
+
     // Ler o arquivo
     const fileBuffer = await readFile(filePath);
     
@@ -42,7 +42,7 @@ export async function GET(
       status: 200,
       headers: {
         'Content-Type': contentType,
-        'Cache-Control': 'public, max-age=86400', // Cache por 1 dia
+        // 'Cache-Control': 'public, max-age=86400', // Cache por 1 dia
         'Content-Length': fileBuffer.length.toString(),
       },
     });
@@ -59,7 +59,7 @@ export async function GET(
         status: 200,
         headers: {
           'Content-Type': 'image/png',
-          'Cache-Control': 'public, max-age=86400',
+          // 'Cache-Control': 'public, max-age=86400',
           'Content-Length': defaultImageBuffer.length.toString(),
         },
       });

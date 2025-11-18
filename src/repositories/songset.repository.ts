@@ -128,6 +128,12 @@ function generateImageObjectConverter(data: any) {
       }
     })
   }
+  
+  finalResult.items = finalResult.items.sort((a, b) => {
+    const aKey = Object.keys(a)[0];
+    const bKey = Object.keys(b)[0];
+    return  a[aKey].average - b[bKey].average;
+  });
 
   return finalResult
 }
@@ -137,8 +143,14 @@ function generateImageObjectConverter(data: any) {
 */
 async function generateVideoObject(data: any, timeVideoPerClip: number = 15) {
   const finalResult: JsonToGenerateVideo[] = []
-  const times = data.songs.length
+  let songs: Song[] = data.songs
 
+  if(data.pickSystem == SongSetPickSystem.PICKED_BY_PARTICIPANTS) {
+    songs = songs.filter(song => song.pickedById != null)
+  }
+
+  const times = data.songs.length
+  
   for(let i = 0; i < times; i++) {
     let song: Song = data.songs[i]
     let sum = song.scores.map(score => score.value)
@@ -149,7 +161,7 @@ async function generateVideoObject(data: any, timeVideoPerClip: number = 15) {
     song.meanScore = average
   }
 
-  data.songs.sort((a: Song, b: Song) => a.meanScore! - b.meanScore!)
+  songs = songs.sort((a: Song, b: Song) => a.meanScore! - b.meanScore!)
 
   for (let i = 0; i < times; i++) {
     let song: Song = data.songs[i]
