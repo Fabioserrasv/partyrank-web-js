@@ -200,7 +200,7 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
         {selectedSong?.link ? 
         <>
           {
-            selectedSong.link.includes('drive.google.com') ?
+            (selectedSong.link.includes('drive.google.com') || selectedSong.link.includes('youtube.com')) ?
             <iframe src={selectedSong.link} ></iframe>
             :
             <video src={selectedSong.link} controls muted></video>
