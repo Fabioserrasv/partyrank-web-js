@@ -95,7 +95,7 @@ export function AddSongForm({ updateSongState, song, addSongToSongSetState, song
       } else {
         const uOn = songSet.usersOn;
         
-        if(uOn?.find(userOn => userOn.user.id == songSet.user.id)) {
+        if(uOn?.find(userOn => userOn.user.id == songSet.user!.id)) {
           return;
         }
         
