@@ -45,6 +45,7 @@ export function AddSongForm({ updateSongState, song, addSongToSongSetState, song
       setIsLoadind(true);
       data.id = song.id
 
+      console.log(data)
       if (data.pickedById) {
         data.pickedBy = songSet.usersOn?.find(user => user.user.id === Number(data.pickedById))?.user
       }
@@ -85,12 +86,19 @@ export function AddSongForm({ updateSongState, song, addSongToSongSetState, song
     setValue("link", song.link)
     setValue("type", song.type)
     setValue("imageUrl", song.imageUrl)
+    setValue("pickedById", song.pickedById)
 
     if (songSet.pickSystem == 'PICKED_BY_PARTICIPANTS') {
       if (!isSetCreator) {
+        console.log(songSet.usersOn)
         setUsersOn(songSet.usersOn?.filter(userOn => userOn.user.id == user.id) || [])
       } else {
         const uOn = songSet.usersOn;
+        
+        if(uOn?.find(userOn => userOn.user.id == songSet.user.id)) {
+          return;
+        }
+        
         uOn?.push({
           songSet: songSet,
           user: songSet.user!,
