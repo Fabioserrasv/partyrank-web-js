@@ -39,8 +39,11 @@ export default function ResultTab({ songSetId }: ResultTabProps) {
 
       let imageJson = JSON.stringify(response?.generateImageObject, undefined, 2)
 
+
+      let descriptionJson = response?.generateDescriptionObject
+      
       setJsonsResult({
-        description: '',
+        description: descriptionJson,
         video: videoJson,
         images: imageJson
       })

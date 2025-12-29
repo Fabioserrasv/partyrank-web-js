@@ -74,6 +74,7 @@ export async function convertDbSetToModel(data: any, generateJson: boolean = fal
     pickSystem: data.pickSystem,
     generateImageObject: generateJson ? generateImageObjectConverter(data) : undefined,
     generateVideoObject: generateJson ? await generateVideoObject(data, time) : undefined,
+    generateDescriptionObject: generateJson ? await generateDescriptionObject(data) : undefined,
     createdAt: data.createdAt,
     updatedAt: data.updatedAt
   }
@@ -118,6 +119,24 @@ function generateImageObjectConverter(data: any) {
       }
     })
 
+    // Encontrar melhores e piores notas
+    const maxScore = Math.max(...filteredScores.map(s => s.value))
+    const minScore = Math.min(...filteredScores.map(s => s.value))
+    
+    const bestScores = filteredScores
+      .filter(score => score.value === maxScore)
+      .map(score => ({
+        nome: score.user?.username || 'Desconhecido',
+        nota: score.value
+      }))
+    
+    const worstScores = filteredScores
+      .filter(score => score.value === minScore)
+      .map(score => ({
+        nome: score.user?.username || 'Desconhecido',
+        nota: score.value
+      }))
+
     finalResult.items.push({
       [`id_${song.id}`]: {
         type: song.type,
@@ -125,7 +144,9 @@ function generateImageObjectConverter(data: any) {
         cover: `${song.id}.jpg`,
         song: `${song.artist} - ${song.name}`,
         average: average,
-        scores: scores
+        scores: scores,
+        bestScores: bestScores,
+        worstScores: worstScores
       }
     })
   }
@@ -211,4 +232,70 @@ async function getVideoTitleFromGoogleDriveLink(url: string) {
       })
   }
   return result
+}
+
+async function generateDescriptionObject(data: any) {
+  let finalResult: string = 'Stats: \n'
+
+  const userStats: { [key: string]: { username: string, scores: number[], greenCount: number, redCount: number } } = {}
+
+  data.songs.forEach((song: any) => {
+    let filteredScores = song.scores;
+
+    if(data.pickSystem == SongSetPickSystem.PICKED_BY_PARTICIPANTS) {
+      filteredScores = filteredScores.filter((score: any) => score.user!.id != song.pickedById)
+    }
+
+    const maxScore = Math.max(...filteredScores.map((s: any) => s.value))
+    const minScore = Math.min(...filteredScores.map((s: any) => s.value))
+
+    filteredScores.forEach((score: any) => {
+      const userId = score.user?.id
+      const username = score.user?.username || 'Unknown'
+      const scoreValue = score.value
+
+      if (!userStats[userId]) {
+        userStats[userId] = {
+          username: username,
+          scores: [],
+          greenCount: 0,
+          redCount: 0
+        }
+      }
+
+      userStats[userId].scores.push(scoreValue)
+
+      if (scoreValue === maxScore) {
+        userStats[userId].greenCount++
+      }
+      
+      if (scoreValue === minScore) {
+        userStats[userId].redCount++
+      }
+    })
+  })
+
+  const userStatsArray = Object.values(userStats).map(stats => {
+    const average = stats.scores.reduce((a, b) => a + b, 0) / stats.scores.length
+    return {
+      username: stats.username,
+      average: average,
+      greenCount: stats.greenCount,
+      redCount: stats.redCount
+    }
+  }).sort((a, b) => b.average - a.average) 
+
+  userStatsArray.forEach(user => {
+    finalResult += `${user.username} (${user.average.toFixed(2)}) - Green: ${user.greenCount}, Red: ${user.redCount}\n`
+  })
+
+  finalResult += `\nSongs Used: \n\n`
+
+  const times = data.songs.length
+  for (let i = 0; i < times; i++) {
+    let song: Song = data.songs[i]
+    finalResult += `${song.anime} - ${song.name} by ${song.artist} \n`
+  }
+
+  return finalResult
 }

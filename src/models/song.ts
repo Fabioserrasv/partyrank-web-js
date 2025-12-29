@@ -33,6 +33,8 @@ type Song = {
   pickedBy?: User;
   pickedById?: number;
   meanScore?: number;
+  worstScores?: Score[];
+  bestScores?: Score[];
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: Date;
