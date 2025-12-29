@@ -124,18 +124,10 @@ function generateImageObjectConverter(data: any) {
     const minScore = Math.min(...filteredScores.map(s => s.value))
     
     const bestScores = filteredScores
-      .filter(score => score.value === maxScore)
-      .map(score => ({
-        nome: score.user?.username || 'Desconhecido',
-        nota: score.value
-      }))
+      .filter(score => score.value === maxScore);
     
     const worstScores = filteredScores
-      .filter(score => score.value === minScore)
-      .map(score => ({
-        nome: score.user?.username || 'Desconhecido',
-        nota: score.value
-      }))
+      .filter(score => score.value === minScore);
 
     finalResult.items.push({
       [`id_${song.id}`]: {

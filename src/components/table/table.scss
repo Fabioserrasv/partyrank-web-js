@@ -78,11 +78,7 @@
     .extraInfo{
       display: flex;
       margin-top: 10px;
-      
-      @include mobile {
-        display: none;
-
-      }
+    
 
       span{
         svg{

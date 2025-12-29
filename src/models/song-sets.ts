@@ -28,6 +28,7 @@ type SongSet = {
   usersOn?: UserOn[];
   generateImageObject?: JsonToGenerateImages;
   generateVideoObject?: JsonToGenerateVideo[];
+  generateDescriptionObject?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -61,7 +62,9 @@ type JsonToGenerateImages = {
       song: string,
       scores: ScoreNote[] | null,
       average: number,
-      cover: string
+      cover: string,
+      bestScores: Score[],
+      worstScores: Score[]
     }
   }>
 }

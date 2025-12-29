@@ -91,6 +91,8 @@
         .icon-button {
           cursor: pointer;
 
+          height: 70px !important;
+
           @include mobile {
             .icon-edit {
               display: none;
