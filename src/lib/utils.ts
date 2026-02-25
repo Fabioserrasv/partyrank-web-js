@@ -1,69 +1,73 @@
-
 /*
   Mask the value to a ##.## mask
 */
-export let maskValueToDecimal = (a: string | number) : number => {
-  if (a == '') a = 0
-  let n: number = parseFloat(a as string)
+export let maskValueToDecimal = (a: string | number): number => {
+  if (a == "") a = 0;
+  let n: number = parseFloat(a as string);
   if (isNaN(n)) return NaN;
-  if (n < 0) return 0
-  if(typeof a == 'string' && a.length == 2 && n % 10 == 0) return n
-  if (n > 10) return maskValueToDecimal(n / 10)
-  return n
-}
+  if (n < 0) return 0;
+  if (typeof a == "string" && a.length == 2 && n % 10 == 0) return n;
+  if (n > 10) return maskValueToDecimal(n / 10);
+  return n;
+};
 
 /*
   Output the reverse version of the array
 */
 export function reverseArray<T>(array: T[]): T[] {
-  const a = array
-  return [...a].reverse()
+  const a = array;
+  return [...a].reverse();
 }
 
 export function getUserImageUrlPath(url: string | null | undefined): string {
-  if (url != '' && url != null && url != undefined) {
+  const timestamp = new Date().getTime();
+  if (url != "" && url != null && url != undefined) {
     // Se a URL já contém o caminho completo, usar diretamente
-    if (url.startsWith('/user_images/')) {
-      url = url.replace('/user_images/', '/api/user-images/');
+    if (url.startsWith("/user_images/")) {
+      url = url.replace("/user_images/", "/api/user-images/");
       url = url.replace(" ", "");
-      return url;
+      return `${url}?t=${timestamp}`;
     }
     // Se for apenas o nome do arquivo, construir o caminho
-    return `/api/user-images/${url}`;
+    return `/api/user-images/${url}?t=${timestamp}`;
   }
-  return "/api/user-images/default_user_profilepic.png";
+  return `/api/user-images/default_user_profilepic.png?t=${timestamp}`;
 }
 
 export function normalizeUsername(username: string) {
   return username
-      .normalize('NFD') // Normaliza a string para decompor caracteres acentuados
-      .replace(/[\u0300-\u036f]/g, '') // Remove os diacríticos
-      .toLowerCase() // Converte para minúsculas
-      .replace(/[^a-z0-9]/g, ''); // Remove caracteres não alfanuméricos
+    .normalize("NFD") // Normaliza a string para decompor caracteres acentuados
+    .replace(/[\u0300-\u036f]/g, "") // Remove os diacríticos
+    .toLowerCase() // Converte para minúsculas
+    .replace(/[^a-z0-9]/g, ""); // Remove caracteres não alfanuméricos
 }
 
 export function getUserImageUrlPathFromUsername(username: string): string {
-  if (username != '' && username != null && username != undefined) {
-    return `/api/user-images/user_images/${normalizeUsername(username)}.png`;
+  const timestamp = new Date().getTime();
+  if (username != "" && username != null && username != undefined) {
+    return `/api/user-images/user_images/${normalizeUsername(username)}.png?t=${timestamp}`;
   }
-  return "/api/user-images/user_images/default_user_profilepic.png";
+  return `/api/user-images/user_images/default_user_profilepic.png?t=${timestamp}`;
 }
 
-export function generatePlaceholderSets(songSets: SongSet[], itemsPerPage: number) {
+export function generatePlaceholderSets(
+  songSets: SongSet[],
+  itemsPerPage: number,
+) {
   if (songSets.length < itemsPerPage) {
     const diff = itemsPerPage - songSets.length;
     for (let i = 0; i < diff; i++) {
       songSets.push({
         id: Math.random() + i * 10,
         name: `-`,
-        anilistLink: '',
+        anilistLink: "",
         isPlaceholder: true,
-        coverImage: '',
+        coverImage: "",
         songs: [],
-        type: 'PRIVATE',
-        status: 'PAUSED',
-        scoreSystem: 'RANKING',
-        pickSystem: 'HOST',
+        type: "PRIVATE",
+        status: "PAUSED",
+        scoreSystem: "RANKING",
+        pickSystem: "HOST",
         user: undefined,
       });
     }
@@ -76,8 +80,8 @@ export function generatePlaceholderUsers(users: User[], itemsPerPage: number) {
     for (let i = 0; i < diff; i++) {
       users.push({
         id: Math.random() + i * 10,
-        username: '-',
-        animeList: '',
+        username: "-",
+        animeList: "",
         isPlaceholder: true,
         imageUrl: undefined,
         average: undefined,

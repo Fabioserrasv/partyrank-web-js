@@ -1,26 +1,38 @@
-"use server"
-import { createUser, getUser, updateUserInfo, updateUserPassword, updateUserPicture } from "@/actions/user.actions"
-import { ChangeUserInfoFormSchema } from "@/app/profile/forms/changeUserInfoForm"
+"use server";
+import {
+  createUser,
+  getUser,
+  updateUserInfo,
+  updateUserPassword,
+  updateUserPicture,
+} from "@/actions/user.actions";
+import { ChangeUserInfoFormSchema } from "@/app/profile/forms/changeUserInfoForm";
 
 export async function handleCreateUserForm(data: UserPostData): Promise<User> {
   try {
-    data.animeList = ''
+    data.animeList = "";
     return await createUser(data);
   } catch (error) {
-    throw error
+    throw error;
   }
 }
 
-export async function handleUpdateUserInfoForm(data: ChangeUserInfoFormSchema, id: number) {
+export async function handleUpdateUserInfoForm(
+  data: ChangeUserInfoFormSchema,
+  id: number,
+) {
   try {
-    await updateUserInfo({
-      animeList: data.animelist,
-      username: data.username
-    }, id)
+    await updateUserInfo(
+      {
+        animeList: data.animelist,
+        username: data.username,
+      },
+      id,
+    );
 
-    return true
+    return true;
   } catch (error) {
-    throw error
+    throw error;
   }
 }
 
@@ -28,31 +40,36 @@ export async function handleGetUser(id: number) {
   try {
     return await getUser(id);
   } catch (error) {
-    throw error
+    throw error;
   }
 }
 
-
-export async function handleUpdatePasswordForm({ oldPass, newPass }: ChangePasswordType, id: number) {
+export async function handleUpdatePasswordForm(
+  { oldPass, newPass }: ChangePasswordType,
+  id: number,
+) {
   try {
-    const response = await updateUserPassword({
-      oldPass,
-      newPass
-    }, id)
+    const response = await updateUserPassword(
+      {
+        oldPass,
+        newPass,
+      },
+      id,
+    );
 
-    return response
+    return response;
   } catch (error) {
-    throw error
+    throw error;
   }
 }
 
 export async function handleChangeProfilePictureForm(formData: FormData) {
   try {
-    const file = formData.get('image') as File
-    const response = await updateUserPicture(file)
+    const file = formData.get("image") as File;
+    const newImageUrl = await updateUserPicture(file);
 
-    return response
+    return newImageUrl;
   } catch (error) {
-    throw error
+    throw error;
   }
 }
