@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { scoreVoteSchema } from "@/app/songsets/validations/songSetValidations";
 import { withMask } from 'use-mask-input';
+import { useEffect } from "react";
 
 export type FormVote = {
   id?: number | string;
@@ -29,10 +30,17 @@ export function VoteSong({
   onTimeStampInputChange,
   onFormSubmit
 }: VoteSongProps) {
-  const { register, handleSubmit, formState: { errors } } = useForm<FormVote>({
+  const { register, handleSubmit, formState: { errors }, setValue } = useForm<FormVote>({
     resolver: zodResolver(scoreVoteSchema)
   });
 
+
+  useEffect(() => {
+    setValue('score', String(songUserData.score));
+    setValue('timeStamp', String(songUserData.timeStamp || 0));
+
+  }, [songUserData, setValue])
+  
   return (
     <div className="left">
       <span>{`${selectedSong.artist} - ${selectedSong.name}`}</span>
