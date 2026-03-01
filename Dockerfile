@@ -15,7 +15,11 @@ RUN npm ci --only=production && npm cache clean --force
 # Reconstruir o código fonte apenas quando necessário
 FROM base AS builder
 WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+
+# Instalar todas as dependências (incluindo dev) para build e type-check
+COPY package.json package-lock.json* ./
+RUN npm ci
+
 COPY . .
 
 # Gerar o cliente Prisma
