@@ -1,39 +1,42 @@
-import type { NextAuthOptions } from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials';
-import { encode, decode } from 'next-auth/jwt';
-import { UserService } from '@/services/user.service';
+import type { NextAuthOptions } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { encode, decode } from "next-auth/jwt";
+import { UserService } from "@/services/user.service";
 
 export const options: NextAuthOptions = {
   pages: {
-    signIn: '/login',
-    error: '/error'
+    signIn: "/login",
+    error: "/error",
   },
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
       name: "Credentials",
       credentials: {
         username: {
           label: "Username",
-          type: "text"
+          type: "text",
         },
         password: {
           label: "Password",
-          type: "password"
-        }
+          type: "password",
+        },
       },
       async authorize(credentials) {
         try {
-          const userService = new UserService;
+          const userService = new UserService();
           const user = await userService.login({
             username: credentials?.username as string,
-            password: credentials?.password as string
-          })
+            password: credentials?.password as string,
+          });
 
-          let average = 0
+          let average = 0;
 
           if (user?.scores) {
-            let sum = user.scores.map(score => score.value)
-            average = Number((sum.reduce((a, b) => a + b, 0) / sum.length).toFixed(2))
+            let sum = user.scores.map((score) => score.value);
+            average = Number(
+              (sum.reduce((a, b) => a + b, 0) / sum.length).toFixed(2),
+            );
           }
 
           if (user != null) {
@@ -44,61 +47,62 @@ export const options: NextAuthOptions = {
               admin: user.admin || false,
               imageUrl: user.imageUrl,
               average: average,
-              theme: "light"
-            } 
+              theme: "light",
+            };
           }
 
-          return null
+          return null;
         } catch (error) {
           throw error;
         }
-      }
-    })
+      },
+    }),
   ],
   callbacks: {
     jwt: async ({ user, token, trigger, session }) => {
       if (trigger === "update") {
-        return { 
-          ...token, 
+        return {
+          ...token,
           ...(session?.user && {
-            theme: session.user.theme || token.theme || "dark"
-          })
-        }
+            theme: session.user.theme || token.theme || "dark",
+            imageUrl: session.user.imageUrl || token.imageUrl,
+          }),
+        };
       }
 
       if (user) {
-        token.id = user.id as number
-        token.username = user.username
-        token.animeList = user.animeList
+        token.id = user.id as number;
+        token.username = user.username;
+        token.animeList = user.animeList;
         token.admin = user.admin;
-        token.theme = (user.theme as "dark" | "light") || "dark"
-        token.average = user.average
-        token.imageUrl = user.imageUrl
+        token.theme = (user.theme as "dark" | "light") || "dark";
+        token.average = user.average;
+        token.imageUrl = user.imageUrl;
       }
       return token;
     },
     session: async ({ session, token }) => {
       if (session?.user) {
-        session.user.admin = token.admin
-        session.user.username = token.username
-        session.user.animeList = token.animeList
-        session.user.id = token.id
-        session.user.theme = (token.theme as "dark" | "light") || "dark"
-        session.user.average = token.average
-        session.user.imageUrl = token.imageUrl
+        session.user.admin = token.admin;
+        session.user.username = token.username;
+        session.user.animeList = token.animeList;
+        session.user.id = token.id;
+        session.user.theme = (token.theme as "dark" | "light") || "dark";
+        session.user.average = token.average;
+        session.user.imageUrl = token.imageUrl;
       }
       return session;
     },
     async redirect({ url, baseUrl }) {
       // Se a URL contém 'redirect=false', não redirecione (requisição de API)
-      if (url.includes('redirect=false') || url === baseUrl) {
+      if (url.includes("redirect=false") || url === baseUrl) {
         return url; // Retorna a mesma URL para não redirecionar
       }
-      return baseUrl + '/home'
-    }
+      return baseUrl + "/home";
+    },
   },
   session: {
-    strategy: "jwt"
+    strategy: "jwt",
   },
-  jwt: { encode, decode }
+  jwt: { encode, decode },
 };

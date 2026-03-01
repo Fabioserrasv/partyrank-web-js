@@ -1,250 +1,299 @@
-.pageserv{
-  width: 100%;
-  height: 100%;
+.pageserv {
+    width: 100%;
+    height: 100%;
 }
 
 .votePage {
-  width: 100%;
-  height: 100%;
+    width: 100%;
+    height: 100%;
+    padding: 8px;
+    box-sizing: border-box;
 
-  display: grid;
-  grid-template-areas: "video video video video"
-    "info info aside aside"
-  ;
-  grid-template-columns: 2fr 2fr 1fr 1fr;
-
-  @include mobile {
-    grid-template-areas: "video video video video"
-                          "info info info info"
-                          "aside aside aside aside";
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-  }
-
-  &.not-theater{
-    grid-template-areas: "video video aside aside"
-                          "video video aside aside"
-                          "info info aside aside";
+    display: grid;
+    grid-template-areas:
+        "video video video video"
+        "info info aside aside";
     grid-template-columns: 2fr 2fr 1fr 1fr;
-
-    .aside{
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-
-      .list {
-        height: 750px;
-        max-height: 750px;
-      }
-    }
-
-    .video{
-      // padding: 5px 5px 5px 20px;
-      width: 100%;
-      background-color: unset !important;
-      padding-top: -25px;
-
-      video, iframe{
-        border: none;
-        aspect-ratio: 16/9;
-        width: 100% !important;
-        height: unset !important;
-        padding-bottom: 17px;
-      }
-    }
-  }
-
-  .video {
-    grid-area: video;
-    display: flex;
-    justify-content: center;
-    position: relative;
-    background-color: black;
-
-    @include dark {
-      background-color: black;
-    }
-
-    iframe {
-      border: none;
-      height: 660px;
-      aspect-ratio: 16/9;
-
-      @include mobile {
-        height: 100%;
-        width: 100%;
-      }
-    }
-
-    video{
-      border: none;
-      width: 1244px;
-      height: 700px;
-    }
-
-    .video-controls {
-      position: absolute;
-      top: 60px;
-      right: 15px;
-      z-index: 10;
-      background-color: rgba(0, 0, 0, 0.6);
-      border-radius: 4px;
-      padding: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: background-color 0.2s;
-
-      @include mobile {
-        display: none;
-      }
-
-      &:hover {
-        background-color: rgba(0, 0, 0, 0.8);
-      }
-
-      svg {
-        color: white;
-        width: 24px;
-        height: 24px;
-        cursor: pointer;
-      }
-
-      @include mobile {
-        top: 5px;
-        right: 5px;
-        padding: 6px;
-
-        svg {
-          width: 20px;
-          height: 20px;
-        }
-      }
-    }
-  }
-
-  .left {
-    grid-area: info;
-    grid-column: 2fr;
-
-    padding: 0px 10px 0px 20px;
-
-    margin-top: 10px;
-
-    // box-sizing: border-box;
-
-    span {
-      font-weight: bold;
-      font-size: 1.5rem;
-
-      @include mobile {
-        font-size: 1rem;
-      }
-    }
+    grid-template-rows: auto 1fr;
+    gap: 8px;
 
     @include mobile {
-      form{
-        padding-top: 10px;
-      }
+        grid-template-areas:
+            "video video video video"
+            "info info info info"
+            "aside aside aside aside";
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        padding: 4px;
     }
 
-    .inputsvote {
-      padding-top: 20px;
-      display: flex;
-      align-items: flex-end;
+    &.not-theater {
+        grid-template-areas:
+            "video video aside aside"
+            "info info aside aside";
+        grid-template-columns: 2fr 2fr 1fr 1fr;
+        grid-template-rows: auto 1fr;
 
-      @include mobile {
-        padding-top: 0px;
-      }
+        .video {
+            width: 100%;
+            background-color: unset !important;
+            align-self: start;
+            position: sticky;
+            top: 8px;
 
-      .inputGroup {
-        width: 30%;
-
-        @include mobile {
-          label{
-            font-size: .7rem;
-          }
+            video,
+            iframe {
+                border: none;
+                aspect-ratio: 16/9;
+                width: 100% !important;
+                height: auto !important;
+            }
         }
 
-        &:not(:first-child) {
-          margin-left: 20px;
+        .left {
+            position: sticky;
+            top: calc(
+                8px + 56.25vw * 0.5 + 8px
+            ); // 8px padding + video height + 8px gap
+            align-self: start;
+            z-index: 10;
         }
-      }
 
-      button {
-        width: 20%;
-        height: 40px;
-        margin-left: 20px;
+        .aside {
+            display: flex;
+            flex-direction: column;
+            height: calc(
+                93vh - 16px
+            ); // Account for 7vh topbar, 93vh main, minus 16px padding
+            overflow: hidden;
 
-        // background-color: $primaryColor;
-
-        // @include dark {
-        //   background-color: $secondaryColor;
-        // }
-      }
-    }
-  }
-
-  .aside {
-    grid-area: aside;
-
-    .top-list{
-      display: flex;
-      align-items: center;
-
-      @include mobile {
-        h2{
-          font-size: 1.2rem;
-          margin-bottom: unset !important;
-        }
-      }
-    }
-
-    h2 {
-      padding: .5rem 0px 0px 1rem;
-      @include mobile {
-        padding: 0.5rem 1rem 0px 1rem;
-      }
-    }
-
-    .list {
-      display: block;
-      height: 600px;
-      max-height: 600px;
-      overflow: auto;
-      width: 90%;
-
-      @include mobile {
-        width: 98%;
-      }
-
-      // border: 1px solid blue;
-      padding: 10px 1rem 1rem 1rem;
-
-      .table-container {
-        width: 100%;
-
-        .cell {
-          width: 100%;
-          cursor: pointer;
-          .info {
-            max-width: 100%;
-
-            &>span {
-              font-size: 1.5rem;
-              width: 100%;
-              text-overflow: ellipsis;
-              white-space: nowrap;
-              overflow: hidden;
+            .top-list {
+                flex-shrink: 0;
             }
 
-          }
+            .list {
+                flex: 1;
+                overflow-y: auto;
+                height: auto;
+                max-height: unset;
+            }
         }
-      }
-
-      // background-color: $darkSecondBackground;
     }
-  }
 
+    .video {
+        grid-area: video;
+        display: flex;
+        justify-content: center;
+        position: relative;
+        background-color: black;
 
+        @include dark {
+            background-color: black;
+        }
+
+        iframe {
+            border: none;
+            height: 660px;
+            aspect-ratio: 16/9;
+
+            @include mobile {
+                height: 100%;
+                width: 100%;
+            }
+        }
+
+        video {
+            border: none;
+            width: 100%;
+            height: auto;
+            max-height: 700px;
+            aspect-ratio: 16/9;
+        }
+
+        .video-controls {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            z-index: 10;
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 4px;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.2s;
+
+            @include mobile {
+                display: none;
+            }
+
+            &:hover {
+                background-color: rgba(0, 0, 0, 0.8);
+            }
+
+            svg {
+                color: white;
+                width: 24px;
+                height: 24px;
+                cursor: pointer;
+            }
+
+            @include mobile {
+                top: 8px;
+                right: 8px;
+                padding: 6px;
+
+                svg {
+                    width: 20px;
+                    height: 20px;
+                }
+            }
+        }
+    }
+
+    .left {
+        grid-area: info;
+        padding: 0;
+
+        span {
+            font-weight: bold;
+            font-size: 1.5rem;
+
+            @include mobile {
+                font-size: 1rem;
+            }
+        }
+
+        @include mobile {
+            form {
+                padding-top: 10px;
+            }
+        }
+
+        .inputsvote {
+            padding-top: 20px;
+            display: flex;
+            align-items: flex-end;
+
+            @include mobile {
+                padding-top: 10px;
+                flex-wrap: wrap;
+            }
+
+            .inputGroup {
+                width: 30%;
+
+                @include mobile {
+                    width: 45%;
+                    label {
+                        font-size: 0.7rem;
+                    }
+                }
+
+                &:not(:first-child) {
+                    margin-left: 20px;
+
+                    @include mobile {
+                        margin-left: 10px;
+                    }
+                }
+            }
+
+            button {
+                width: 20%;
+                height: 40px;
+                margin-left: 20px;
+
+                @include mobile {
+                    width: 100%;
+                    margin-left: 0;
+                    margin-top: 10px;
+                }
+            }
+        }
+    }
+
+    .aside {
+        grid-area: aside;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        height: 100%;
+
+        .top-list {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            flex-shrink: 0;
+
+            @include mobile {
+                h2 {
+                    font-size: 1.2rem;
+                    margin-bottom: unset !important;
+                }
+            }
+
+            h2 {
+                padding: 0.5rem 1rem;
+                margin: 0;
+
+                @include mobile {
+                    padding: 0.5rem;
+                }
+            }
+        }
+
+        .list {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+
+            @include mobile {
+                padding: 8px;
+            }
+
+            .table-container {
+                width: 100%;
+
+                .cell {
+                    width: 100%;
+                    cursor: pointer;
+
+                    .info {
+                        max-width: 100%;
+
+                        & > span {
+                            font-size: 1.5rem;
+                            width: 100%;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                            overflow: hidden;
+
+                            @include mobile {
+                                font-size: 1rem;
+                            }
+                        }
+
+                        small {
+                            display: block;
+                            margin-top: 4px;
+                        }
+
+                        .extraInfo {
+                            margin-top: 8px;
+                            font-size: 0.9rem;
+
+                            @include mobile {
+                                font-size: 0.8rem;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

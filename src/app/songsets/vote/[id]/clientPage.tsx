@@ -1,85 +1,85 @@
-'use client'
-import { Button } from "@/components/button/Button";
-import { Input } from "@/components/input"
-import { Table, TableRow } from "@/components/table"
+"use client";
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { maskValueToDecimal } from "@/lib/utils";
 import toast from "react-hot-toast";
-import { scoreVoteSchema } from "@/app/songsets/validations/songSetValidations";
 import { handleScoreFormSubmit } from "@/handlers/score.handlers";
-import { Monitor } from "lucide-react";
-import { withMask } from 'use-mask-input';
+import { VideoPlayer } from "./videoPlayer";
+import { VoteSong, FormVote } from "./voteSong";
+import { SongList } from "./songList";
+import { SongsetStatistics } from "./songsetStatistics";
 
 type VoteClientPageProps = {
   user: User;
   set: SongSet;
-}
-
-export type FormVote = {
-  id?: number | string;
-  score: number | string;
-  timeStamp: number | string;
-}
+};
 
 export function VoteClientPage({ user, set }: VoteClientPageProps) {
   const router = useRouter();
   const [selectedSong, setSelectedSong] = useState<Song>(set?.songs[0]);
-  const [songUserData, setSongUserData] = useState<FormVote>({ score: 0, timeStamp: 0 })
-  const [songs, setSongs] = useState<Song[]>(set.songs)
-  const [average, setAverage] = useState<number>(0)
-  const [isTheaterMode, setIsTheaterMode] = useState<boolean>(false);
-  const { register, handleSubmit, formState: { errors }, setValue } = useForm<FormVote>({
-    resolver: zodResolver(scoreVoteSchema)
+  const [songUserData, setSongUserData] = useState<FormVote>({
+    score: 0,
+    timeStamp: 0,
   });
-  const [score, setScore] = useState<string>('0')
+  const [songs, setSongs] = useState<Song[]>(set.songs);
+  const [average, setAverage] = useState<number>(0);
+  const [isTheaterMode, setIsTheaterMode] = useState<boolean>(false);
+  const [score, setScore] = useState<string>("0");
 
   async function handleFormSubmit(data: FormVote) {
     try {
-      data.id = selectedSong.id
-      const id = await handleScoreFormSubmit(data)
+      data.id = selectedSong.id;
+      const id = await handleScoreFormSubmit(data);
 
       if (id) {
         setSessionDataSong(selectedSong, id as number, {
           score: data.score,
-          timeStamp: data.timeStamp
-        })
+          timeStamp: data.timeStamp,
+        });
 
-        let nextIndex = songs.indexOf(selectedSong) + 1
+        let nextIndex = songs.indexOf(selectedSong) + 1;
 
-        if (nextIndex <= (songs.length - 1)) {
-          setSelectedSong(songs[nextIndex])
+        if (nextIndex <= songs.length - 1) {
+          setSelectedSong(songs[nextIndex]);
         } else {
-          setSelectedSong(songs[0])
+          setSelectedSong(songs[0]);
         }
       }
     } catch (error) {
-      toast.error("Something went wrong")
+      toast.error("Something went wrong");
     }
   }
 
-  const getSessionDataSong = useCallback((song: Song) => {
-    const data = song.scores.filter((score) => score.user?.id === user.id)[0]
-    if (data !== undefined) {
-      return ({ score: data.value, timeStamp: data.videoTimeStamp, new: false });
-    }
-    return ({ score: 0, timeStamp: 0, new: true });
-  }, [user.id]);
+  const getSessionDataSong = useCallback(
+    (song: Song) => {
+      const data = song.scores.filter((score) => score.user?.id === user.id)[0];
+      if (data !== undefined) {
+        return {
+          score: data.value,
+          timeStamp: data.videoTimeStamp,
+          new: false,
+        };
+      }
+      return { score: 0, timeStamp: 0, new: true };
+    },
+    [user.id],
+  );
 
-  function setSessionDataSong(song: Song, scoreId: number, { score, timeStamp }: FormVote) {
+  function setSessionDataSong(
+    song: Song,
+    scoreId: number,
+    { score, timeStamp }: FormVote,
+  ) {
     let newScore = true;
     const updatedSongs = songs.map((songOld) => {
       if (songOld.id === song.id) {
         songOld.scores = songOld.scores.map((scoreOld) => {
           if (scoreOld.user?.id == user.id && songOld.id === song.id) {
-            scoreOld.value = Number(score)
-            scoreOld.videoTimeStamp = Number(timeStamp)
-            newScore = false
+            scoreOld.value = Number(score);
+            scoreOld.videoTimeStamp = Number(timeStamp);
+            newScore = false;
           }
-          return scoreOld
-        })
+          return scoreOld;
+        });
 
         if (newScore) {
           songOld.scores.push({
@@ -89,44 +89,47 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
             user: user,
             valid: 1,
             value: Number(score),
-            videoTimeStamp: Number(timeStamp)
-          })
+            videoTimeStamp: Number(timeStamp),
+          });
         }
       }
-      return songOld
-    })
-    setSongs(updatedSongs)
+      return songOld;
+    });
+    setSongs(updatedSongs);
   }
 
   function onScoreInputChange(e: React.ChangeEvent<HTMLInputElement>) {
-    let stringValue = (e.target.value)
-    let value = parseFloat(e.target.value)
-    if(value > 10 && stringValue[0] == '1'){
-      value = 10
-      stringValue = '10.00'
-    }else if(value > 10){
+    let stringValue = e.target.value;
+    let value = parseFloat(e.target.value);
+    if (value > 10 && stringValue[0] == "1") {
+      value = 10;
+      stringValue = "10.00";
+    } else if (value > 10) {
       return;
     }
 
-    setScore(stringValue)
-    setSongUserData({ ...songUserData, score: Number(value) })
+    setScore(stringValue);
+    setSongUserData({ ...songUserData, score: Number(value) });
   }
 
   function onTimeStampInputChange(e: React.ChangeEvent<HTMLInputElement>) {
-    let value = parseFloat(e.target.value)
-    value = Number.isNaN(value) ? 0 : value
-    setSongUserData({ ...songUserData, timeStamp: Number(value) })
+    let value = parseFloat(e.target.value);
+    value = Number.isNaN(value) ? 0 : value;
+    setSongUserData({ ...songUserData, timeStamp: Number(value) });
   }
 
-  function getScoreOfSong(scores: number[], scoreSystem: SongSetScoreSystemType) {
+  function getScoreOfSong(
+    scores: number[],
+    scoreSystem: SongSetScoreSystemType,
+  ) {
     const sum = Number(scores.reduce((a, b) => a + b, 0));
     if (scoreSystem == "SCORING_AVERAGE") {
-      return Number((sum / scores.length).toFixed(2))
+      return Number((sum / scores.length).toFixed(2));
     } else if (scoreSystem == "SCORING") {
-      return sum
+      return sum;
     } else {
       // TO DO RANKING
-      return sum
+      return sum;
     }
   }
 
@@ -149,30 +152,27 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
   useEffect(() => {
     const userDataForSong = getSessionDataSong(selectedSong);
 
-    if(userDataForSong.new){
-      setScore('')
-      setSongUserData({ score: 0, timeStamp: 0 })
-      return
+    if (userDataForSong.new) {
+      setScore("");
+      setSongUserData({ score: 0, timeStamp: 0 });
+      return;
     }
-    
-    if(userDataForSong.score == 10){
-      setScore('10.00')
-    }else if(String(userDataForSong.score).length == 3){
-      setScore(String(userDataForSong.score) + '0')
-    }else if(String(userDataForSong.score).length == 1){
-      setScore(String(userDataForSong.score) + '00')
-    } else{
-      setScore(String(userDataForSong.score))
+
+    if (userDataForSong.score == 10) {
+      setScore("10.00");
+    } else if (String(userDataForSong.score).length == 3) {
+      setScore(String(userDataForSong.score) + "0");
+    } else if (String(userDataForSong.score).length == 1) {
+      setScore(String(userDataForSong.score) + "00");
+    } else {
+      setScore(String(userDataForSong.score));
     }
-    
-    setSongUserData({ score: userDataForSong.score, timeStamp: userDataForSong.timeStamp || 0 })
-  }, [selectedSong, getSessionDataSong])
 
-  useEffect(() => {
-    setValue('score', String(songUserData.score));
-    setValue('timeStamp', String(songUserData.timeStamp || 0));
-
-  }, [songUserData, setValue])
+    setSongUserData({
+      score: userDataForSong.score,
+      timeStamp: userDataForSong.timeStamp || 0,
+    });
+  }, [selectedSong, getSessionDataSong]);
 
   useEffect(() => {
     const hasNoSongs = !set.songs || set.songs.length === 0;
@@ -183,91 +183,40 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
   }, [set.songs, router]);
 
   useEffect(() => {
-    document.querySelector('.votePage')?.classList.toggle('not-theater', isTheaterMode)
-  }, [isTheaterMode, songs])
+    document
+      .querySelector(".votePage")
+      ?.classList.toggle("not-theater", isTheaterMode);
+  }, [isTheaterMode, songs]);
 
   if (!set.songs || set.songs.length === 0) {
-    return null; // Or throw an error to exit the component
+    return null;
   }
 
-  const test = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setScore(e.target.value)
-  }
-  
   return (
     <div className={`votePage`}>
-      <div className={`video`}>
-        {selectedSong?.link ? 
-        <>
-          {
-            (selectedSong.link.includes('drive.google.com') || selectedSong.link.includes('youtube.com')) ?
-            <iframe src={selectedSong.link} ></iframe>
-            :
-            <video src={selectedSong.link} controls muted></video>
-          }
-          <div className="video-controls">
-            <Monitor onClick={() => { setIsTheaterMode(!isTheaterMode) }} />
-          </div>
-        </>
-        : <div>Song Not Found</div>}
-      </div>
+      <VideoPlayer
+        selectedSong={selectedSong}
+        isTheaterMode={isTheaterMode}
+        onToggleTheaterMode={() => setIsTheaterMode(!isTheaterMode)}
+      />
 
-      <div className="left">
-        <span>{`${selectedSong.artist} - ${selectedSong.name}`}</span>
-        <form onSubmit={handleSubmit(handleFormSubmit)}>
-          <div className='inputsvote'>
-            <Input
-              displayName='Score'
-              errorMessage={errors.score?.message}
-              {...register('score')}
-              defaultValue={score}
-              value={score}
-              ref={withMask(['9.99', '99.99'], {max: 10.00, allowMinus: false, clearMaskOnLostFocus: true, showMaskOnFocus: false})}
-              onChange={onScoreInputChange}
-            />
-            <Input
-              displayName='Time suggested'
-              errorMessage={errors.timeStamp?.message}
-              {...register('timeStamp')}
-              defaultValue={songUserData.timeStamp}
-              value={songUserData.timeStamp}
-              onChange={onTimeStampInputChange}
-            />
-            <Button
-              name='Send'
-              type="submit"
-            />
-          </div>
-        </form>
-      </div>
+      <VoteSong
+        selectedSong={selectedSong}
+        songUserData={songUserData}
+        score={score}
+        onScoreInputChange={onScoreInputChange}
+        onTimeStampInputChange={onTimeStampInputChange}
+        onFormSubmit={handleFormSubmit}
+      />
 
       <div className="aside">
-        <div className="top-list">
-          <h2>{`${set.name} | Score: ${average ? average : 0}`}</h2> 
-        </div>
-        <div className='list'>
-          <Table>
-            {
-              songs ? songs.map((song) => {
-                const userDataForSong = getSessionDataSong(song);
-
-                return (
-                  <TableRow key={song.id} onClick={() => { setSelectedSong(song) }}>
-                    <div className='info'>
-                      <span>{`${song.artist} - ${song.name}`}</span>
-                      <small>{song.anime}</small>
-                      <div className='extraInfo'>
-                        <span>{`Score: ${userDataForSong.score}`}</span>
-                        {/* <span>{`Time Suggested: ${userDataForSong.timeStamp}`}</span> */}
-                      </div>
-                    </div>
-                  </TableRow>
-                )
-              }) : <div>No songs found</div>
-            }
-          </Table>
-        </div>
+        <SongsetStatistics setName={set.name} average={average} />
+        <SongList
+          songs={songs}
+          onSongSelect={setSelectedSong}
+          getSessionDataSong={getSessionDataSong}
+        />
       </div>
     </div>
-  )
+  );
 }
