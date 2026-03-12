@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 
 
 export default withAuth(
-  function middleware(request: NextRequestWithAuth) {
+  function proxy(request: NextRequestWithAuth) {
     if (isRoute(request, "/api/user") && request.method == 'POST' && !request.nextauth.token?.admin) {
       return NextResponse.json({ "message": "Access denied" }, { status: 403 })
     }

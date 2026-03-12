@@ -64,10 +64,10 @@
 
     transition: .5s;
     &:hover{
-      background-color: transparentize(rgba(#6b717f, 0.5), 0.2); 
+      background-color: rgba(107, 113, 127, 0.3);
       
       @include dark {
-        background-color: transparentize(rgba(#6b717f, 0.5), 0.2); 
+        background-color: rgba(107, 113, 127, 0.3);
       }
     }
     

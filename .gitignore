@@ -45,3 +45,4 @@ docker/nginx/ssl_certs/
 docker/mariadb/init/01-init-user.sql
 prisma/app
 src/generated/
+generated/

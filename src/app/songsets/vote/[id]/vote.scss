@@ -56,6 +56,9 @@
             ); // 8px padding + video height + 8px gap
             align-self: start;
             z-index: 10;
+            display: flex;
+            flex-direction: column;
+            padding: 0 16px 16px 16px;
         }
 
         .aside {
@@ -174,6 +177,7 @@
             padding-top: 20px;
             display: flex;
             align-items: flex-end;
+            justify-content: center;
 
             @include mobile {
                 padding-top: 10px;
@@ -272,6 +276,7 @@
                             text-overflow: ellipsis;
                             white-space: nowrap;
                             overflow: hidden;
+                            margin-bottom: -6px;
 
                             @include mobile {
                                 font-size: 1rem;

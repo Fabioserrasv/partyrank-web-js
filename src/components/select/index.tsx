@@ -6,12 +6,13 @@ type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
   displayName: string;
   name: string;
   errorMessage?: string;
+  placeholder?: string;
   children?: ReactNode;
   options?: { value: string | number, display: string, disabled?: boolean }[];
   required?: boolean;
 }
 
-const Select = forwardRef<HTMLSelectElement, SelectProps>(({ displayName, children, errorMessage, name, options, required, ...rest }: SelectProps, ref) => {
+const Select = forwardRef<HTMLSelectElement, SelectProps>(({ displayName, children, errorMessage, name, options, required, placeholder, ...rest }: SelectProps, ref) => {
   return (
     <div className='inputGroup'>
       <label htmlFor={name}>{displayName} {required ? <span className='required'>*</span> : <></>} {errorMessage ? <span className='error'>{errorMessage}</span> : <></>} </label>
@@ -20,6 +21,9 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(({ displayName, childr
         {...rest}
         name={name}
       >
+        {placeholder && (
+          <option value="" disabled hidden>{placeholder}</option>
+        )}
         {
           options && options.map((option) => {
             return (

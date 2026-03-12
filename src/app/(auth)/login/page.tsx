@@ -1,7 +1,6 @@
 import { FormLogin } from './form';
-import { redirect } from 'next/navigation';
+import { redirect, RedirectType } from 'next/navigation';
 import { getServerSession } from "next-auth/next"
-import { RedirectType } from 'next/dist/client/components/redirect';
 import Link from 'next/link';
 import { Card } from '@/components/card';
 

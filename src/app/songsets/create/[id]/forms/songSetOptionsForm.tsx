@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { songSetUpdateSchema } from "@/app/songsets/validations/songSetValidations";
 import { handleUpdateSongSet } from "@/handlers/songset.handlers";
 import { Dispatch, SetStateAction } from "react";
+import { z } from "zod";
 
 type SongSetOptionsFormProps = {
   songSet: SongSet;
@@ -31,18 +32,25 @@ const pickSystemOptions = [
   { value: "PICKED_BY_PARTICIPANTS", display: "Picked by Participants" }
 ]
 
-type fields = "type" | "status"
+type SongSetOptionsFormValues = z.infer<typeof songSetUpdateSchema>
+type fields = keyof SongSetOptionsFormValues
 
 export function SongSetOptionsForm({setSongSet, songSet}: SongSetOptionsFormProps) {
-  const { register, handleSubmit, formState: { errors }, setValue } = useForm<SongSetPostData>({
+  const { register, handleSubmit, setValue } = useForm<SongSetOptionsFormValues>({
     resolver: zodResolver(songSetUpdateSchema)
   });
 
-  async function onSubmitUpdate(data: SongSetPostData){
+  async function onSubmitUpdate(data: SongSetOptionsFormValues){
     try {
-      data.name = songSet.name;
+      const payload: SongSetPostData = {
+        name: songSet.name,
+        type: data.type as SongSetType | undefined,
+        status: data.status as SongSetStatus | undefined,
+        scoreSystem: data.scoreSystem as SongSetScoreSystemType | undefined,
+        pickSystem: data.pickSystem as SongSetPickSystem | undefined,
+      };
 
-      const newSet = await handleUpdateSongSet(data, songSet.id)
+      const newSet = await handleUpdateSongSet(payload, songSet.id)
 
       setSongSet(newSet)
       toast.success("SongSet updated successfully")
@@ -53,11 +61,12 @@ export function SongSetOptionsForm({setSongSet, songSet}: SongSetOptionsFormProp
 
   function onInputChange(e: React.ChangeEvent<HTMLSelectElement>) {
     const key: fields = e.target.name as fields
+    const value = e.target.value as SongSetOptionsFormValues[typeof key]
 
-    setValue(key, e.target.value as (SongSetType | SongSetStatus ))
+    setValue(key, value)
     setSongSet({
       ...songSet,
-      [key]: e.target.value
+      [key]: value
     })
   }
 

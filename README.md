@@ -82,10 +82,13 @@ Execute seu server mysql ou inicie o docker compose para inicializar o projeto.
 
 ```bash
 #Initialize and create database
-npx migrate prisma dev
+npx prisma migrate dev
 
 #Create default user admin
 npx prisma db seed # username: admin | password: admin
+
+#Create prisma client
+npx prisma generate
 
 npm run dev
 # or

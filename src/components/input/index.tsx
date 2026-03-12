@@ -10,13 +10,17 @@ type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   required?: boolean;
 }
 
-const Input = forwardRef<HTMLInputElement, InputProps>(({ displayName, errorMessage, name, required, ...rest }: InputProps, ref) => {
+const Input = forwardRef<HTMLInputElement, InputProps>(({ displayName, errorMessage, name, required, value, defaultValue, ...rest }: InputProps, ref) => {
+  const valueProps = value !== undefined
+    ? { value }
+    : { defaultValue };
   return (
     <div className='inputGroup'>
       <label htmlFor={name}>{displayName} {required ? <span className='required'>*</span> : <></>} {errorMessage ? <span className='error'>{errorMessage}</span> : <></>} </label>
       <input
         ref={ref}
         {...rest}
+        {...valueProps}
         autoComplete="off"
         name={name}
       />

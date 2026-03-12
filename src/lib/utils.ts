@@ -20,18 +20,17 @@ export function reverseArray<T>(array: T[]): T[] {
 }
 
 export function getUserImageUrlPath(url: string | null | undefined): string {
-  const timestamp = new Date().getTime();
   if (url != "" && url != null && url != undefined) {
     // Se a URL já contém o caminho completo, usar diretamente
     if (url.startsWith("/user_images/")) {
       url = url.replace("/user_images/", "/api/user-images/");
       url = url.replace(" ", "");
-      return `${url}?t=${timestamp}`;
+      return url;
     }
     // Se for apenas o nome do arquivo, construir o caminho
-    return `/api/user-images/${url}?t=${timestamp}`;
+    return `/api/user-images/${url}`;
   }
-  return `/api/user-images/default_user_profilepic.png?t=${timestamp}`;
+  return `/api/user-images/default_user_profilepic.png`;
 }
 
 export function normalizeUsername(username: string) {
@@ -43,11 +42,10 @@ export function normalizeUsername(username: string) {
 }
 
 export function getUserImageUrlPathFromUsername(username: string): string {
-  const timestamp = new Date().getTime();
   if (username != "" && username != null && username != undefined) {
-    return `/api/user-images/user_images/${normalizeUsername(username)}.png?t=${timestamp}`;
+    return `/api/user-images/user_images/${normalizeUsername(username)}.png`;
   }
-  return `/api/user-images/user_images/default_user_profilepic.png?t=${timestamp}`;
+  return `/api/user-images/user_images/default_user_profilepic.png`;
 }
 
 export function generatePlaceholderSets(

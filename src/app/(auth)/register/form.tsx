@@ -9,14 +9,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "../validations/authValidations";
 import { handleCreateUserForm } from "@/handlers/user.handlers";
 import { useRouter } from "next/navigation";
+import z from "zod";
 type FormRegisterProps = {
 }
 
-type UserRegister = UserPostData & {
-  repassword: string
-  // email: string
-  // confirmEmail: string
-}
+type UserRegister = z.infer<typeof registerSchema>;
 
 export function FormRegister({  }: FormRegisterProps) {
   const { push } = useRouter();

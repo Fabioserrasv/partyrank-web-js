@@ -4,10 +4,11 @@ import { join } from 'path';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { path: string[] } }
+  { params }: { params: Promise<{ path: string[] }> }
 ) {
   try {
-    const filename = params.path.join('/');
+    const { path } = await params;
+    const filename = path.join('/');
 
     // Construir o caminho do arquivo
     const filePath = join(process.cwd(), 'public', 'user_images', filename);

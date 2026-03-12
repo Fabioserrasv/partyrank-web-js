@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import { useState } from "react";
 import { LoadingComponent } from "@/components/loading-component";
 import { handleSongFinderFormSubmit } from "@/handlers/songfinder.handlers";
+import { z } from "zod";
 import './songfindercomponent.scss';
 
 type SongFinderFormProps = {
@@ -17,16 +18,24 @@ type SongFinderFormProps = {
   services: SongService[]
 }
 
+type SongFinderFormValues = z.infer<typeof songFinderSchema>
+
 export function SongFinderForm({ populateTableSongsWeb, services }: SongFinderFormProps) {
-  const { register, handleSubmit, formState: { errors }, setValue } = useForm<SongFinderAction>({
+  const { register, handleSubmit, formState: { errors } } = useForm<SongFinderFormValues>({
     resolver: zodResolver(songFinderSchema)
   });
   const [isLoading, setIsLoadind] = useState<boolean>(false);
 
-  async function onSubmitSongFinderForm(data: SongFinderAction) {
+  async function onSubmitSongFinderForm(data: SongFinderFormValues) {
     try {
       setIsLoadind(true);
-      const songs = await handleSongFinderFormSubmit(data);
+      const payload: SongFinderAction = {
+        query: data.query,
+        serviceName: data.serviceName ?? "",
+        songName: data.songName,
+        artistName: data.artistName,
+      }
+      const songs = await handleSongFinderFormSubmit(payload);
 
       if( populateTableSongsWeb){
         populateTableSongsWeb(songs);
