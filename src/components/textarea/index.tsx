@@ -8,7 +8,7 @@ type InputProps = React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
   content: string;
 }
 
-const Textarea = forwardRef<HTMLTextAreaElement, InputProps>(({ content, displayName, errorMessage, name, ...rest }: InputProps, ref) => {
+const Textarea = forwardRef<HTMLTextAreaElement, InputProps>(({ content, displayName, errorMessage, name, onChange, ...rest }: InputProps, ref) => {
   return (
     <div className='inputGroup'>
       <label htmlFor={name}>{displayName} {errorMessage ? <span className='error'>{errorMessage}</span> : <></>} </label>
@@ -18,6 +18,8 @@ const Textarea = forwardRef<HTMLTextAreaElement, InputProps>(({ content, display
         autoComplete="off"
         name={name}
         value={content}
+        onChange={onChange}
+        readOnly={!onChange}
       >
       </textarea>
     </div>

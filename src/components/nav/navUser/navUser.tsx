@@ -1,9 +1,9 @@
 "use client";
 import { User } from "next-auth";
 import { NavDropdown } from "../navDropdown/navDropdown";
-import { RefAttributes, useEffect, useRef, useState } from "react";
-import { getUserImageUrlPath } from "@/lib/utils";
-import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+import { useSession } from "next-auth/react";
+import { ProfilePicture } from "@/components/profile-picture";
 
 type NavUserProps = {
   user: User;
@@ -11,9 +11,11 @@ type NavUserProps = {
 
 export function NavUser({ user }: NavUserProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+  const { data: session } = useSession();
+  const imageUrl = session?.user?.imageUrl ?? user.imageUrl;
 
   let menuRef = useRef<HTMLUListElement>(null);
-  let imgRef = useRef<HTMLImageElement>(null);
+  let pfpRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     function checkChildsWasClicked(
@@ -32,9 +34,9 @@ export function NavUser({ user }: NavUserProps) {
     let handler = (e: MouseEvent) => {
       if (
         menuRef.current &&
-        imgRef.current &&
+        pfpRef.current &&
         !menuRef.current.contains(e.target as HTMLElement) &&
-        !imgRef.current.contains(e.target as HTMLElement) &&
+        !pfpRef.current.contains(e.target as HTMLElement) &&
         !checkChildsWasClicked(
           menuRef.current.childNodes,
           e.target as HTMLElement,
@@ -59,17 +61,12 @@ export function NavUser({ user }: NavUserProps) {
       </div>
       <div
         className="pfp"
+        ref={pfpRef}
         onClick={() => {
           setIsDropdownOpen(!isDropdownOpen);
         }}
       >
-        <Image
-          width={0}
-          height={0}
-          src={getUserImageUrlPath(user.imageUrl)}
-          alt="Profile Picture"
-          ref={imgRef}
-        />
+        <ProfilePicture userId={user.id} imageUrl={imageUrl} width={0} height={0} />
       </div>
 
       <NavDropdown isOpen={isDropdownOpen} ref={menuRef} />

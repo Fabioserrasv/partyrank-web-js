@@ -3,7 +3,6 @@ import './nav.scss'
 import { FolderSearch2, Home, Library, Users } from "lucide-react"
 import { User } from "next-auth"
 import { NavDropdown } from "./navDropdown/navDropdown"
-import { headers } from "next/headers";
 import { NavItem } from "./navDropdown/navItem";
 import Link from "next/link";
 import { NavUser } from "./navUser/navUser";

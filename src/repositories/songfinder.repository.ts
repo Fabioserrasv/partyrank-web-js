@@ -1,6 +1,7 @@
 import { similarity } from "@/lib/similiarity";
 import { AnimeThemesService } from "../app/api/song-finder/services/AnimeThemes.service";
 import { AnisongDBService } from "@/app/api/song-finder/services/AnisongDB.service";
+export { convertType } from "./songfinder.utils";
 
 /*
   Check if API responses types of songs are supported
@@ -14,12 +15,7 @@ function checkTypeEqual(a: string, b: string) {
 /*
   Convert type of song from string to enum 
 */
-export function convertType(type: string) : SongType{
-  if (type.includes("Opening")) return "OPENING" as SongType;
-  if (type.includes("Ending")) return "ENDING" as SongType;
-  if (type.includes("Insert")) return "INSERT_SONG" as SongType;
-  return "OPENING" as SongType;
-}
+// convertType is defined in ./songfinder.utils and re-exported above
 
 export function getMostPossibleSong(songWebs: SongWeb[], songDb: Song) {
   let result: SongWeb | null = null

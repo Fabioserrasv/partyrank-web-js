@@ -7,20 +7,21 @@ import { checkIsAllowed } from '@/handlers/songset.handlers';
 import './vote.scss';
 
 type VotePageProps = {
-  params: {
+  params: Promise<{
     id: number;
-  }
+  }>
 }
 
 export default async function Vote({ params }: VotePageProps) {
+  const { id } = await params;
   const session = await getServerSession(options);
-  if(Number.isNaN(params.id)){
+  if(Number.isNaN(id)){
     return;
   }
-  const set = await getSongSet(Number(params.id));
+  const set = await getSongSet(Number(id));
   if (session == null || set == null) redirect("/songsets");
 
-  const allowed = await checkIsAllowed(params.id);
+  const allowed = await checkIsAllowed(id);
 
   if (!allowed) {
     redirect("/songsets?error=not_allowed");
@@ -28,8 +29,7 @@ export default async function Vote({ params }: VotePageProps) {
 
   if(set.songs.length == 0) {
     if(set.user?.id == session.user.id) {
-      redirect("/songsets/create/" + params.id);
-      return;
+      redirect("/songsets/create/" + id);
     }
     redirect("/songsets?error=no_songs_in_set");
   }

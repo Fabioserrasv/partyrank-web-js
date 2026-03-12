@@ -12,6 +12,7 @@ import { LoadingComponent } from "@/components/loading-component";
 import { handleAddSongFormSubmit } from "@/handlers/song.handlers";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { z } from "zod";
 
 type AddSongFormProps = {
   songSet: SongSet;
@@ -22,10 +23,12 @@ type AddSongFormProps = {
   isSetCreator: boolean;
 }
 
-type fields = "name" | "anime" | "artist" | "name" | "type"
+type fields = "name" | "anime" | "artist" | "type" | "link" | "imageUrl"
+type AddSongFormValuesInput = z.input<typeof addSongSchema>
+type AddSongFormValuesOutput = z.output<typeof addSongSchema>
 
 export function AddSongForm({ updateSongState, song, addSongToSongSetState, songSet, isSetCreator, user }: AddSongFormProps) {
-  const { register, handleSubmit, formState: { errors }, setValue } = useForm<AddSongFormSchema>({
+  const { register, handleSubmit, formState: { errors }, setValue } = useForm<AddSongFormValuesInput, unknown, AddSongFormValuesOutput>({
     resolver: zodResolver(addSongSchema)
   });
   const [isLoading, setIsLoadind] = useState<boolean>(false);
@@ -40,31 +43,39 @@ export function AddSongForm({ updateSongState, song, addSongToSongSetState, song
     })
   }
 
-  async function onSubmitHandleAddSong(data: AddSongFormSchema) {
+  async function onSubmitHandleAddSong(data: AddSongFormValuesOutput) {
     try {
       setIsLoadind(true);
-      data.id = song.id
 
-      console.log(data)
-      if (data.pickedById) {
-        data.pickedBy = songSet.usersOn?.find(user => user.user.id === Number(data.pickedById))?.user
+      const payload: AddSongFormSchema = {
+        ...song,
+        ...data,
+        imageUrl: data.imageUrl ?? undefined,
+        pickedById: data.pickedById ? Number(data.pickedById) : undefined,
+        type: data.type as SongType,
+        id: song.id
       }
 
-      const id = await handleAddSongFormSubmit(data, songSet.id)
+      console.log(payload)
+      if (payload.pickedById) {
+        payload.pickedBy = songSet.usersOn?.find(user => user.user.id === Number(payload.pickedById))?.user
+      }
+
+      const id = await handleAddSongFormSubmit(payload, songSet.id)
       if (id) {
         addSongToSongSetState({
           id: Number(id),
-          anime: data.anime,
-          artist: data.artist,
-          link: data.link,
-          name: data.name,
-          imageUrl: data.imageUrl,
-          type: data.type,
-          pickedBy: data.pickedBy,
+          anime: payload.anime,
+          artist: payload.artist,
+          link: payload.link,
+          name: payload.name,
+          imageUrl: payload.imageUrl,
+          type: payload.type,
+          pickedBy: payload.pickedBy,
           scores: [],
           songSet: songSet
         })
-        initialSongValue.type = data.type
+        initialSongValue.type = payload.type
         updateSongState(initialSongValue)
         toast.success("Song added successfully")
       }
@@ -86,7 +97,7 @@ export function AddSongForm({ updateSongState, song, addSongToSongSetState, song
     setValue("link", song.link)
     setValue("type", song.type)
     setValue("imageUrl", song.imageUrl)
-    setValue("pickedById", song.pickedById)
+    setValue("pickedById", song.pickedById ? String(song.pickedById) : undefined)
 
     if (songSet.pickSystem == 'PICKED_BY_PARTICIPANTS') {
       if (!isSetCreator) {

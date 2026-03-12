@@ -6,7 +6,10 @@ services:
     restart: unless-stopped
     environment:
       - NODE_ENV=production
-      - DATABASE_URL=mysql://partyrank_user:${MYSQL_PASSWORD}@mariadb:3306/partyrank
+      - DATABASE_HOST=mariadb
+      - DATABASE_USER=partyrank_user
+      - DATABASE_PASSWORD=${MYSQL_PASSWORD}
+      - DATABASE_NAME=partyrank
       - NEXTAUTH_URL=https://new.party-rank.win
       - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
       - ANIMETHEMES_API_URL=https://beta.animethemes.moe/api/animetheme

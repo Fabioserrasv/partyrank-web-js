@@ -4,7 +4,7 @@ import Modal from "@/components/modal";
 import { Dispatch, SetStateAction, useState } from "react";
 import toast from "react-hot-toast";
 import { AddSongFormSchema } from "../clientPage";
-import { convertType } from "@/repositories/songfinder.repository";
+import { convertType } from "@/repositories/songfinder.utils";
 import { LoadingComponent } from "@/components/loading-component";
 import SongFinderComponent from "@/components/songfinder";
 import { handleAddSongFormSubmit } from "@/handlers/song.handlers";

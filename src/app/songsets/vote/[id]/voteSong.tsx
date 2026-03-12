@@ -6,12 +6,20 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { scoreVoteSchema } from "@/app/songsets/validations/songSetValidations";
 import { withMask } from 'use-mask-input';
 import { useEffect } from "react";
+import { z } from "zod";
 
 export type FormVote = {
   id?: number | string;
-  score: number | string;
-  timeStamp: number | string;
+  score: number;
+  timeStamp: number;
 }
+
+export type ScoreVoteForm = z.infer<typeof scoreVoteSchema>;
+
+type ScoreVoteFields = {
+  score: string;
+  timeStamp: string;
+};
 
 type VoteSongProps = {
   selectedSong: Song;
@@ -19,7 +27,7 @@ type VoteSongProps = {
   score: string;
   onScoreInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onTimeStampInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onFormSubmit: (data: FormVote) => Promise<void>;
+  onFormSubmit: (data: ScoreVoteForm) => Promise<void>;
 }
 
 export function VoteSong({
@@ -30,7 +38,8 @@ export function VoteSong({
   onTimeStampInputChange,
   onFormSubmit
 }: VoteSongProps) {
-  const { register, handleSubmit, formState: { errors }, setValue } = useForm<FormVote>({
+  
+  const { register, handleSubmit, formState: { errors }, setValue } = useForm<ScoreVoteFields, any, ScoreVoteForm>({
     resolver: zodResolver(scoreVoteSchema)
   });
 
@@ -38,7 +47,6 @@ export function VoteSong({
   useEffect(() => {
     setValue('score', String(songUserData.score));
     setValue('timeStamp', String(songUserData.timeStamp || 0));
-
   }, [songUserData, setValue])
   
   return (

@@ -7,13 +7,14 @@ import { redirect } from 'next/navigation';
 import { getAllServices } from '@/actions/song-service.actions';
 
 type CreateSongSetProps = {
-  params: {
+  params: Promise<{
     id: number;
-  }
+  }>
 }
 
 export default async function CreateSongSet({ params }: CreateSongSetProps) {
-  const set = await handleGetSongSet(params.id);
+  const { id } = await params;
+  const set = await handleGetSongSet(id);
   const services = await getAllServices();
   const session = await getServerSession(options)
   const user = session?.user
@@ -22,8 +23,8 @@ export default async function CreateSongSet({ params }: CreateSongSetProps) {
   /*
     If not a creation of a new song set, check if it is allowed to join.
   */
-  if (params.id != 0) {
-    const allowed = await checkIsAllowed(params.id);
+  if (id != 0) {
+    const allowed = await checkIsAllowed(id);
 
     // if (!allowed) {
     //   redirect("/songsets")

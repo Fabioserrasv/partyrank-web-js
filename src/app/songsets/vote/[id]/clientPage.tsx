@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { handleScoreFormSubmit } from "@/handlers/score.handlers";
 import { VideoPlayer } from "./videoPlayer";
-import { VoteSong, FormVote } from "./voteSong";
+import { VoteSong, FormVote, ScoreVoteForm } from "./voteSong";
 import { SongList } from "./songList";
 import { SongsetStatistics } from "./songsetStatistics";
 
@@ -25,10 +25,10 @@ export function VoteClientPage({ user, set }: VoteClientPageProps) {
   const [isTheaterMode, setIsTheaterMode] = useState<boolean>(false);
   const [score, setScore] = useState<string>("0");
 
-  async function handleFormSubmit(data: FormVote) {
+  async function handleFormSubmit(data: ScoreVoteForm) {
     try {
-      data.id = selectedSong.id;
-      const id = await handleScoreFormSubmit(data);
+      const vote: FormVote = { ...data, id: selectedSong.id };
+      const id = await handleScoreFormSubmit(vote);
 
       if (id) {
         setSessionDataSong(selectedSong, id as number, {

@@ -1,7 +1,7 @@
 'use client'
 import { useTheme } from '@/context/ThemeContext';
-import { getUserImageUrlPath, generatePlaceholderUsers } from "@/lib/utils";
-import Image from "next/image";
+import { generatePlaceholderUsers } from "@/lib/utils";
+import { ProfilePicture } from "@/components/profile-picture";
 import Table from 'react-bootstrap/Table';
 import Pagination from 'react-bootstrap/Pagination';
 import { useEffect, useState } from 'react';
@@ -49,7 +49,7 @@ export function UsersTable({ users, itemsPerPage = 5 }: UsersTableProps) {
               ) : (
                 <tr key={u.id}>
                   <td>
-                    <Image width={120} height={120} src={getUserImageUrlPath(u.imageUrl!)} alt="" />
+                    <ProfilePicture userId={u.id} imageUrl={u.imageUrl} width={120} height={120} alt="" />
                   </td>
                   <td>
                     <div className='d-flex align-items-center username-td flex-column'>
